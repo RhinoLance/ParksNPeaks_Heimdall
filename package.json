@@ -1,0 +1,19 @@
+{
+  "name": "parksnpeaks_heimdall",
+  "version": "1.0.0",
+  "description": "An interface to the Parks 'n Peaks website.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RhinoLance/ParksNPeaks_Heimdall.git"
+  },
+  "author": "Lance Conry @RhinoLance",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/RhinoLance/ParksNPeaks_Heimdall/issues"
+  },
+  "homepage": "https://github.com/RhinoLance/ParksNPeaks_Heimdall#readme"
+}

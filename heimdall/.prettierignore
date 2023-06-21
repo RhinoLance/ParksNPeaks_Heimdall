@@ -1,0 +1,15 @@
+
+# Ignore artifacts:
+/build
+coverage
+
+# Compiled output
+/dist
+/tmp
+/out-tsc
+
+# Dependencies
+/node_modules
+
+# IDE - VSCode
+.vscode/*

@@ -8,7 +8,8 @@ import { PnPSpot, Spot } from '../models/Spot';
 export class PNPClient {
     
     //_phpBaseHref: string = 'https://parksnpeaks.org/api/';
-    _phpBaseHref: string = 'https://localhost:44321/api/PnP/Get?suffix=';
+    //_phpBaseHref: string = 'https://localhost:44321/api/PnP/Get?suffix=';
+    _phpBaseHref: string = 'https://rhinoswtools.azurewebsites.net/api/PnP/Get?suffix=';
     
     constructor() {
 

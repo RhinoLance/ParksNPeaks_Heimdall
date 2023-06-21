@@ -28,7 +28,7 @@ export class SpotListComponent implements OnInit {
 class DisplaySpot extends Spot {
 
   public modeIcon: string = "";
-  public modeColor: string = "";
+  public modeColour: string = "";
   
   constructor( spot: Spot) {
 
@@ -46,37 +46,44 @@ class DisplaySpot extends Spot {
     this.spotter = spot.spotter;
     this.time = spot.time;
 
-    this.
+    [this.modeIcon, this.modeColour] = this.getModeIconAndColour();
 
   }
 
-  private getModeIcon(): string {
+  private getModeIconAndColour(): [string,string] {
     
     var icon: string;
+    var colour: string;
 
     switch (this.mode) {
-      case SpotMode.SSB:
-        icon = "mdi-waveform";
+      case SpotMode.AM:
+        icon = "mdi-radio";
+        colour = "#335c67";
         break;
       case SpotMode.CW:
         icon = "mdi-dots-horizontal";
-        break;
-      case SpotMode.FM:
-        icon = "mdi-radio-handheld";
-        break;
-      case SpotMode.AM:
-        icon = "mdi-radio";
+        colour = "#9a031e";
         break;
       case SpotMode.DATA:
         icon = "mdi-memory";
+        colour = "#fb8b24";
+        break;
+      case SpotMode.FM:
+        icon = "mdi-radio-handheld";
+        colour = "#e36414";
+        break;
+      case SpotMode.SSB:
+        icon = "mdi-waveform";
+        colour = "#e36414";
         break;
       default:
         icon = "radio";
+        colour = "#f2e9e4";
         break;
     }
 
-    return icon;
-    
+    return [icon, colour];
+
   }
 
 

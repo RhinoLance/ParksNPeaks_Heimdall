@@ -7,16 +7,9 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
 import { MainComponent } from './components/main/main.component';
 
 @NgModule({
-  declarations: [
-    SpotListComponent,
-    PageNotFoundComponent,
-    MainComponent
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule
-  ],
-  providers: [],
-  bootstrap: [MainComponent]
+	declarations: [SpotListComponent, PageNotFoundComponent, MainComponent],
+	imports: [BrowserModule, AppRoutingModule],
+	providers: [],
+	bootstrap: [MainComponent],
 })
-export class AppModule { }
+export class AppModule {}

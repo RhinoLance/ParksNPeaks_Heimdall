@@ -5,24 +5,15 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
 import { PNPClient } from './services/PNPClient';
 
 const routes: Routes = [
-  { path: 'spotList', component: SpotListComponent },
-  { path: '', redirectTo: '/spotList', pathMatch: 'full' },
-  { path: '**', component: PageNotFoundComponent}
+	{ path: 'spotList', component: SpotListComponent },
+	{ path: '', redirectTo: '/spotList', pathMatch: 'full' },
+	{ path: '**', component: PageNotFoundComponent },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+	imports: [RouterModule.forRoot(routes)],
+	exports: [RouterModule],
 })
 export class AppRoutingModule {
-
-  
-  
-  constructor( pnpClient: PNPClient) { 
-
-  }
-
-  
-
-
+	constructor(pnpClient: PNPClient) {}
 }

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Spot } from 'src/app/models/Spot';
+import { PNPClient } from 'src/app/services/PNPClient';
 
 @Component({
   selector: 'app-spot-list',
@@ -7,7 +9,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SpotListComponent implements OnInit {
 
-  constructor() { }
+  _spotList: Spot[] = [];
+
+  constructor( _pnpClient: PNPClient) { 
+
+    _pnpClient.getSpotList().then((spots) => {
+      this._spotList.length = 0;
+      this._spotList = spots;
+    });
+
+  }
 
   ngOnInit(): void {
   }

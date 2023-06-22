@@ -135,6 +135,14 @@
 									<div style="margin-top: 5px">
 										{{ spot.comment }}
 									</div>
+									<div style="margin-top: 5px">
+										{{ spot.subSpotCount }}
+									</div>
+								</div>
+							</div>
+							<div class="align-items-center row">
+								<div class="col-auto">
+									<spot-history-card [spotList]="getSubSpots(spot)"></spot-history-card>
 								</div>
 							</div>
 						</div>

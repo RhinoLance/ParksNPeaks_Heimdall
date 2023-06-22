@@ -1,7 +1,19 @@
+import { PnPSpot } from "./PnPSpot";
+
 export class Spot {
+	
+	public modeIcon: string = '';
+	public modeColour: string = '';
+	public modeName: string = '';
+	public classImage: string = '';
+	public type: SpotType = SpotType.NotSet;
+	public subSpotCount: number = 0;
+	public shortTime: string = '';
+
 	public altClass: SpotClass = SpotClass.Other;
 	public altLocation: string = '';
 	public callsign: string = '';
+	public callsignRoot: string = '';
 	public class: SpotClass = SpotClass.Other;
 	public comment: string = '';
 	public frequency: number = 0;
@@ -10,36 +22,40 @@ export class Spot {
 	public siteId: string = '';
 	public spotter: string = '';
 	public time: Date = new Date();
-}
 
-export class PnPSpot {
-	public altClass: string = '';
-	public altLocation: string = '';
-	public actCallsign: string = '';
-	public actClass: string = '';
-	public actComments: string = '';
-	public actFreq: number = 0;
-	public actLocation: string = '';
-	public actMode: string = '';
-	public actSiteID: string = '';
-	public actSpoter: string = '';
-	public actTime: string = '';
+	private getModeIconAndColour(): [string, string, string] {
+		var icon: string;
+		var colour: string;
+		var name: string = SpotMode[this.mode];
 
-	static toSpot(pnpSpot: PnPSpot): Spot {
-		const spot = new Spot();
-		spot.altClass = SpotClass[pnpSpot.altClass as keyof typeof SpotClass];
-		spot.altLocation = pnpSpot.altLocation;
-		spot.callsign = pnpSpot.actCallsign;
-		spot.class = SpotClass[pnpSpot.actClass as keyof typeof SpotClass];
-		spot.comment = pnpSpot.actComments;
-		spot.frequency = pnpSpot.actFreq;
-		spot.location = pnpSpot.actLocation;
-		spot.mode = SpotMode[pnpSpot.actMode as keyof typeof SpotMode];
-		spot.siteId = pnpSpot.actSiteID;
-		spot.spotter = pnpSpot.actSpoter;
-		spot.time = new Date(pnpSpot.actTime);
+		switch (this.mode) {
+			case SpotMode.AM:
+				icon = 'mdi-radio';
+				colour = '#ff9f1c';
+				break;
+			case SpotMode.CW:
+				icon = 'mdi-dots-horizontal';
+				colour = '#16425b';
+				break;
+			case SpotMode.DATA:
+				icon = 'mdi-memory';
+				colour = '#fb8b24';
+				break;
+			case SpotMode.FM:
+				icon = 'mdi-radio-handheld';
+				colour = '#2ec4b6';
+				break;
+			case SpotMode.SSB:
+				icon = 'mdi-waveform';
+				colour = '#e71d36';
+				break;
+			default:
+				icon = 'radio';
+				colour = '#f2e9e4';
+				break;
+		}
 
-		return spot;
+		return [name, icon, colour];
 	}
 }
 
@@ -73,4 +89,12 @@ export enum SpotClass {
 	ZL_OTA,
 	ZL_SOTA,
 	ZL_WWFF,
+	ZLOTA
+}
+
+export enum SpotType {
+	Respot,
+	Spot,
+	New,
+	NotSet
 }

@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
-import { PnPSpot, Spot } from '../models/Spot';
 import { environment } from 'src/environments/environment';
+import { PnPSpot } from '../models/PnPSpot';
+import { Spot } from '../models/Spot';
+import { SpotBuilder } from '../models/SpotBuilder';
 
 @Injectable({
 	providedIn: 'root',
@@ -17,7 +19,7 @@ export class PNPClient {
 		const data = await this.get<any[]>('ALL');
 
 		const output: Spot[] = data.map((pnpSpot: PnPSpot) =>
-			PnPSpot.toSpot(pnpSpot)
+			new SpotBuilder().addPnpSpot(pnpSpot).build()
 		);
 
 		return output;

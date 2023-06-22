@@ -4,7 +4,7 @@
 
 export const environment = {
 	production: false,
-	pnpBaseHref: '/assets/devData/pnp.spots.all.json/?suffix='
+	pnpBaseHref: '/assets/devData/pnp.spots.all.json/?suffix=',
 };
 
 /*

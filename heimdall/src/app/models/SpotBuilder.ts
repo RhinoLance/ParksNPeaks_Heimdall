@@ -84,7 +84,7 @@ export class SpotBuilder{
 		const spot = new Spot();
 		spot.altClass = SpotClass[pnpSpot.altClass as keyof typeof SpotClass];
 		spot.callsign = pnpSpot.actCallsign;
-		spot.callsignRoot = pnpSpot.actCallsign.split('/')[0];
+		spot.callsignRoot = pnpSpot.actCallsign.split('/P')[0];
 		spot.class = SpotClass[pnpSpot.actClass as keyof typeof SpotClass];
 		spot.comment = pnpSpot.actComments;
 		spot.frequency = pnpSpot.actFreq;

@@ -3,8 +3,13 @@
 	rel="stylesheet"
 />
 
-<div class="container">
+<div class="container" *ngIf="spotList.length > 0">
 	<ul class="timeline" [ngClass]="viewState.bodyDisplay" (click)="toggleBodyDisplay()">
+		<li>
+			<div class="timeline-icon timeline-clock">
+				<i class="mdi mdi-clock-outline"></i>
+			</div>
+		</li>
 		<li *ngFor="let spot of spotList; index as cI">
 			<div class="timeline-time">
 				<!--

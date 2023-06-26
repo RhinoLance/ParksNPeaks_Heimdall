@@ -61,3 +61,71 @@ a {
 .mt-1 {
 	margin-top: 0.25rem !important;
 }
+
+
+.timeline {
+	display: table;
+	width: 90%;
+	position: relative;
+}
+
+.timeline > li:before {
+	content: "";
+	position: absolute;
+	left: 5px;
+	right: 5px;
+	height: 3px;
+	background: #cccccc;
+	_left: 20%;
+	_margin-left: -2.5px;
+}
+
+.timeline > li {
+	display: table-cell;
+	border: 3px solid orange;
+	list-style-position: inside;
+}
+
+.timeline .timeline-time {
+	position: absolute;
+	left: -5px;
+	text-align: right;
+	top: 30px;
+}
+
+.timeline .timeline-time .date,
+.timeline .timeline-time .time {
+	display: block;
+	font-weight: 600;
+}
+
+.timeline .timeline-time .date {
+	line-height: 16px;
+	font-size: 12px;
+}
+
+.timeline .timeline-time .time {
+	line-height: 24px;
+	font-size: 20px;
+	color: #242a30;
+}
+
+.timeline .timeline-icon {
+	text-align: center;
+	position:absolute;
+	top: -10px;
+}
+
+.timeline .timeline-icon a {
+	text-decoration: none;
+	width: 14px;
+	height: 14px;
+	display: inline-block;
+	border-radius: 20px;
+	background: #ffffff;
+	line-height: 10px;
+	color: #fff;
+	font-size: 14px;
+	border: 3px solid #cccccc;
+	transition: border-color 0.2s linear;
+}

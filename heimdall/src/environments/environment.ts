@@ -5,6 +5,7 @@
 export const environment = {
 	production: false,
 	pnpBaseHref: '/assets/devData/pnp.spots.vk.json/?suffix=',
+	//pnpBaseHref: 'https://rhinoswtools.azurewebsites.net/api/PnP/Get?suffix=',
 };
 
 /*

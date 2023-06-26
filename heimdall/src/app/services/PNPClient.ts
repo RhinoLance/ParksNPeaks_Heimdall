@@ -15,8 +15,8 @@ export class PNPClient {
 	constructor() {}
 
 	public async getSpotList(): Promise<Spot[]> {
-		//const data = await this.get<any[]>('VK');
-		const data = await this.get<any[]>('ALL');
+		const data = await this.get<any[]>('VK');
+		//const data = await this.get<any[]>('ALL');
 
 		const output: Spot[] = data.map((pnpSpot: PnPSpot) =>
 			new SpotBuilder().addPnpSpot(pnpSpot).build()

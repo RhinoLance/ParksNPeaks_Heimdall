@@ -2,8 +2,9 @@
 	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"
 	rel="stylesheet"
 />
+
 <div class="container">
-	<ul class="timeline">
+	<ul class="timeline" [ngClass]="viewState.bodyDisplay" (click)="toggleBodyDisplay()">
 		<li *ngFor="let spot of spotList; index as cI">
 			<div class="timeline-time">
 				<!--
@@ -12,34 +13,28 @@
 				-->
 			</div>
 			<div class="timeline-icon">
-				<a href="javascript:;">&nbsp;</a>
 			</div>
 			<div class="timeline-body">
 				<div class="timeline-content">
-					<div *ngIf="spot.type==0">
+					<div>
 						<div class="h6">
-							<span class="float-right text-muted">{{spot.shortTime}}</span>
-							
+							<span class="float-right text-muted">{{spot.shortTime}}&nbsp;</span>
+							<span *ngIf="spot.type==1">
+								{{spot.frequency}}
+								<span
+									class="badge ms-1"
+									[style.backgroundColor]="spot.modeColour">
+									<i
+										class="mdi align-middle"
+										[ngClass]="spot.modeIcon"
+									></i>
+									{{ spot.modeName }}
+								</span>
+								&nbsp;
+							</span>
+							<span class="h6">{{spot.spotter}}&nbsp;</span><span style="font-weight: normal;">{{spot.comment}}</span>
 						</div>
-						<span class="h6">{{spot.spotter}}</span> {{spot.comment}}
-					</div>
-
-					<div *ngIf="spot.type==1">
-						<div class="h6">
-							<span class="float-right text-muted">{{spot.shortTime}}</span>
-							{{spot.frequency}}
-							<span
-												class="badge ms-1"
-												[style.backgroundColor]="spot.modeColour"
-											>
-												<i
-													class="mdi align-middle"
-													[ngClass]="spot.modeIcon"
-												></i>
-												{{ spot.modeName }}
-											</span>
-						</div>
-						<span class="h6">{{spot.spotter}}</span> {{spot.comment}}
+						
 					</div>
 				</div>
 			</div>

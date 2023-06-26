@@ -10,12 +10,36 @@ import { Spot } from 'src/app/models/Spot';
 export class SpotHistoryCardComponent implements OnInit {
 	
 	@Input() spotList: Spot[] = [];
+	@Input() expanded: boolean = false;
+
+	public viewState = {
+		bodyDisplay: "collapsed"
+	}
 
 	constructor() {
 		
 	}
 
-	ngOnInit(): void {}
+	ngOnInit(): void {
+
+		this.viewState.bodyDisplay = "collapsed";
+	}
+
+	public toggleBodyDisplay(): void {
+		
+		switch( this.viewState.bodyDisplay ){
+			case "collapsed":
+				this.viewState.bodyDisplay = "inline";
+
+				break;
+			case "inline":
+				this.viewState.bodyDisplay = "expanded";
+				break;
+
+			default:
+				this.viewState.bodyDisplay = "collapsed";
+		}
+	}
 }
 
 

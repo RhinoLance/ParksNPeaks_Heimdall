@@ -9,6 +9,7 @@ export class Spot {
 	public type: SpotType = SpotType.NotSet;
 	public subSpotCount: number = 0;
 	public shortTime: string = '';
+	public tPlusMinutes: number = 0;
 
 	public altClass: SpotClass = SpotClass.Other;
 	public altLocation: string = '';

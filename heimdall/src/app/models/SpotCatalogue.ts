@@ -1,19 +1,16 @@
 import { Spot, SpotType } from "./Spot";
 
-export class SpotCatalogue{
+export class SpotCatalogue {
 	
 	private _spotCatalogue: Map<string, Spot[]>;
 
-	constructor( spotList: Spot[] ) {
+	constructor() {
 		
 		this._spotCatalogue = new Map<string, Spot[]>();
 
-		this.loadSpots(spotList);
-		this.setSpotOrder();
-		this.setSpotTypes();
 	}
-
-	private loadSpots( spotList: Spot[] ): void {
+	
+	public addSpots( spotList: Spot[] ): void {
 		
 		spotList.map( spot => {
 			const key = spot.callsignRoot + spot.siteId;
@@ -24,6 +21,9 @@ export class SpotCatalogue{
 
 			this._spotCatalogue.get(key)!.push(spot);
 		});
+
+		this.setSpotOrder();
+		this.setSpotTypes();
 	}
 
 	
@@ -69,7 +69,7 @@ export class SpotCatalogue{
 		});
 	}
 
-	public GetCurrentSpots(): Spot[] {
+	public getCurrentSpots(): Spot[] {
 	
 		const outputList: Spot[] = [];
 	
@@ -109,6 +109,23 @@ export class SpotCatalogue{
 		return outputList;
 
 	}
+
+	public getSpots(): Spot[]{
+		
+		const outputList: Spot[] = [];
+	
+		this._spotCatalogue.forEach( (spotList, key) => {
+			spotList.map( spot => {
+				outputList.push(spot);
+			});
+		});
+	
+		this.orderSpotsByTimeDesc(outputList);
+
+		return outputList;
+	}
+
+
 	
 
 }

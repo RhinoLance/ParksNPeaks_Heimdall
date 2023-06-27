@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 
 @Component({
-	selector: 'app-root',
+	selector: 'pph-root',
 	templateUrl: './main.component.html',
 	styleUrls: ['./main.component.scss'],
 })
 export class MainComponent {
-	title = 'heimdall';
+	public title = 'heimdall';
 }

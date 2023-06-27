@@ -4,7 +4,7 @@ export class SpotCatalogue {
 	
 	private _spotCatalogue: Map<string, Spot[]>;
 
-	constructor() {
+	public constructor() {
 		
 		this._spotCatalogue = new Map<string, Spot[]>();
 

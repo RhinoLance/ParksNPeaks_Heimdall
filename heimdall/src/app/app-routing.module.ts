@@ -17,5 +17,5 @@ const routes: Routes = [
 	exports: [RouterModule],
 })
 export class AppRoutingModule {
-	constructor(pnpClient: PNPClient) {}
+	public constructor(pnpClient: PNPClient) {}
 }

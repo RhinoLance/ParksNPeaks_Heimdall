@@ -13,7 +13,7 @@ export class PnPSpot {
 	public actSpoter: string = '';
 	public actTime: string = '';
 
-	static toSpot(pnpSpot: PnPSpot): Spot {
+	public static toSpot(pnpSpot: PnPSpot): Spot {
 		const spot = new Spot();
 		spot.altClass = SpotClass[pnpSpot.altClass as keyof typeof SpotClass];
 		spot.altLocation = pnpSpot.altLocation;

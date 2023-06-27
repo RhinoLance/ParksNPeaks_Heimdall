@@ -4,7 +4,7 @@ export class TimeUpdator{
 
 	private _updateTimeout: any | null = null;
 
-	constructor( private _spotCatalogue: SpotCatalogue, private _updateMinutes?: number) {
+	public constructor( private _spotCatalogue: SpotCatalogue, private _updateMinutes?: number) {
 		
 	}
 	

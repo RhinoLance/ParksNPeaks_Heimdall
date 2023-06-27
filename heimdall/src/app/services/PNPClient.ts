@@ -10,9 +10,9 @@ import { SpotBuilder } from '../models/SpotBuilder';
 export class PNPClient {
 	//_phpBaseHref: string = 'https://parksnpeaks.org/api/';
 	//_phpBaseHref: string = 'https://localhost:44321/api/PnP/Get?suffix=';
-	_phpBaseHref: string = environment.pnpBaseHref;
+	private _phpBaseHref: string = environment.pnpBaseHref;
 
-	constructor() {}
+	public constructor() {}
 
 	public async getSpotList(): Promise<Spot[]> {
 		const data = await this.get<any[]>('VK');

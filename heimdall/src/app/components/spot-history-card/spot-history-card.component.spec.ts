@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { SpotHistoryCardComponent } from './spot-history-card.component';
+import { SpotHistoryCardComponent } from "./spot-history-card.component";
 
-describe('SpotHistoryCardComponent', () => {
+describe("SpotHistoryCardComponent", () => {
 	let component: SpotHistoryCardComponent;
 	let fixture: ComponentFixture<SpotHistoryCardComponent>;
 
@@ -18,7 +18,7 @@ describe('SpotHistoryCardComponent', () => {
 		fixture.detectChanges();
 	});
 
-	it('should create', () => {
+	it("should create", () => {
 		expect(component).toBeTruthy();
 	});
 });

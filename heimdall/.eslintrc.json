@@ -15,8 +15,11 @@
         "createDefaultProgram": true
       },
       "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended",
         "plugin:@angular-eslint/recommended",
-        "plugin:@angular-eslint/template/process-inline-templates"
+        "plugin:@angular-eslint/template/process-inline-templates",
+        "plugin:prettier/recommended"
       ],
       "rules": {
         "@angular-eslint/directive-selector": [
@@ -35,9 +38,21 @@
             "style": "kebab-case"
           }
         ],
+
+		"no-unused-vars": "off",
+		"@typescript-eslint/no-unused-vars": [
+			"warn", // or "error"
+			{ 
+				"argsIgnorePattern": "^_$",
+				"varsIgnorePattern": "^_$",
+				"caughtErrorsIgnorePattern": "^_$"
+			}
+		],
+
 		"no-console": ["error", { "allow": ["assert"] }],
 		"@typescript-eslint/explicit-member-accessibility": "warn",
-		"@typescript-eslint/no-namespace": [2, { "allowDeclarations": true }]
+		"@typescript-eslint/no-namespace": [2, { "allowDeclarations": true }],
+		"@typescript-eslint/no-inferrable-types": ["warn", { "ignoreParameters": true, "ignoreProperties": true }]
       }
     },
     {
@@ -45,7 +60,8 @@
         "*.html"
       ],
       "extends": [
-        "plugin:@angular-eslint/template/recommended"
+        "plugin:@angular-eslint/template/recommended",
+        "plugin:prettier/recommended"
       ],
       "rules": {}
     }

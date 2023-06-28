@@ -1,21 +1,19 @@
-import { Injectable } from '@angular/core';
-import { environment } from 'src/environments/environment';
-import { PnPSpot } from '../models/PnPSpot';
-import { Spot } from '../models/Spot';
-import { SpotBuilder } from '../models/SpotBuilder';
+import { Injectable } from "@angular/core";
+import { environment } from "src/environments/environment";
+import { PnPSpot } from "../models/PnPSpot";
+import { Spot } from "../models/Spot";
+import { SpotBuilder } from "../models/SpotBuilder";
 
 @Injectable({
-	providedIn: 'root',
+	providedIn: "root",
 })
 export class PNPClient {
 	//_phpBaseHref: string = 'https://parksnpeaks.org/api/';
 	//_phpBaseHref: string = 'https://localhost:44321/api/PnP/Get?suffix=';
 	private _phpBaseHref: string = environment.pnpBaseHref;
 
-	public constructor() {}
-
 	public async getSpotList(): Promise<Spot[]> {
-		const data = await this.get<any[]>('VK');
+		const data = await this.get<PnPSpot[]>("VK");
 		//const data = await this.get<any[]>('ALL');
 
 		const output: Spot[] = data.map((pnpSpot: PnPSpot) =>
@@ -27,9 +25,9 @@ export class PNPClient {
 
 	private async get<T>(suffix: string): Promise<T> {
 		const request: RequestInit = {
-			method: 'GET',
+			method: "GET",
 			headers: {
-				'Content-Type': 'text/html; charset=UTF-8',
+				"Content-Type": "text/html; charset=UTF-8",
 			},
 		};
 

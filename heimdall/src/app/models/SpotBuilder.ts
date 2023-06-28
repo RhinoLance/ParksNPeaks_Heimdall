@@ -1,50 +1,47 @@
 import { PnPSpot } from "./PnPSpot";
 import { Spot, SpotClass, SpotMode } from "./Spot";
 
-export class SpotBuilder{
-
+export class SpotBuilder {
 	private _pnpSpot: PnPSpot = new PnPSpot();
 
-	public addPnpSpot( pnpSpot: PnPSpot ): SpotBuilder {
+	public addPnpSpot(pnpSpot: PnPSpot): SpotBuilder {
 		this._pnpSpot = pnpSpot;
 		return this;
 	}
 
 	public build(): Spot {
-
-		return this.createFromPnPSpot( this._pnpSpot );
-
+		return this.createFromPnPSpot(this._pnpSpot);
 	}
 
 	private getModeIconAndColour(spot: Spot): [string, string, string] {
-		var icon: string;
-		var colour: string;
-		var name: string = SpotMode[spot.mode];
+		let icon: string;
+		let colour: string;
+		const name: string = SpotMode[spot.mode];
 
 		switch (spot.mode) {
 			case SpotMode.AM:
-				icon = 'mdi-radio';
-				colour = '#ff9f1c';
+				icon = "mdi-radio";
+				colour = "#ff9f1c";
 				break;
 			case SpotMode.CW:
-				icon = 'mdi-dots-horizontal';
-				colour = '#16425b';
+				icon = "mdi-dots-horizontal";
+				colour = "#16425b";
 				break;
 			case SpotMode.DATA:
-				icon = 'mdi-memory';
-				colour = '#fb8b24';
+				icon = "mdi-memory";
+				colour = "#fb8b24";
 				break;
 			case SpotMode.FM:
-				icon = 'mdi-radio-handheld';
-				colour = '#2ec4b6';
+				icon = "mdi-radio-handheld";
+				colour = "#2ec4b6";
 				break;
 			case SpotMode.SSB:
-				icon = 'mdi-waveform';
-				colour = '#e71d36';
+				icon = "mdi-waveform";
+				colour = "#e71d36";
 				break;
 			default:
-				icon = 'radio';
-				colour = '#f2e9e4';
+				icon = "radio";
+				colour = "#f2e9e4";
 				break;
 		}
 
@@ -52,27 +49,27 @@ export class SpotBuilder{
 	}
 
 	private getClassImage(spot: Spot): string {
-		var image: string = '';
+		let image = "";
 
 		switch (spot.class) {
 			case SpotClass.BOTA:
-				image = 'assets/images/classLogo/BOTA.png';
+				image = "assets/images/classLogo/BOTA.png";
 				break;
 			case SpotClass.POTA:
-				image = 'assets/images/classLogo/POTA.jpg';
+				image = "assets/images/classLogo/POTA.jpg";
 				break;
 			case SpotClass.VK_SOTA:
 			case SpotClass.ZL_SOTA:
 			case SpotClass.SOTA:
-				image = 'assets/images/classLogo/SOTA.svg';
+				image = "assets/images/classLogo/SOTA.svg";
 				break;
 			case SpotClass.VK_WWFF:
-			case SpotClass.VK_WWFF:
+			case SpotClass.ZL_WWFF:
 			case SpotClass.WWFF:
-				image = 'assets/images/classLogo/WWFF.png';
+				image = "assets/images/classLogo/WWFF.png";
 				break;
 			default:
-				image = 'assets/images/classLogo/Other.png';
+				image = "assets/images/classLogo/Other.png";
 				break;
 		}
 
@@ -80,11 +77,10 @@ export class SpotBuilder{
 	}
 
 	private createFromPnPSpot(pnpSpot: PnPSpot): Spot {
-		
 		const spot = new Spot();
 		spot.altClass = SpotClass[pnpSpot.altClass as keyof typeof SpotClass];
 		spot.callsign = pnpSpot.actCallsign;
-		spot.callsignRoot = pnpSpot.actCallsign.split('/P')[0];
+		spot.callsignRoot = pnpSpot.actCallsign.split("/P")[0];
 		spot.class = SpotClass[pnpSpot.actClass as keyof typeof SpotClass];
 		spot.comment = pnpSpot.actComments;
 		spot.frequency = pnpSpot.actFreq;
@@ -94,24 +90,22 @@ export class SpotBuilder{
 		spot.time = new Date(pnpSpot.actTime);
 
 		[spot.modeName, spot.modeIcon, spot.modeColour] =
-		this.getModeIconAndColour(spot);
+			this.getModeIconAndColour(spot);
 		spot.classImage = this.getClassImage(spot);
 
-		if( pnpSpot.altLocation == "") {
+		if (pnpSpot.altLocation == "") {
 			spot.location = pnpSpot.actSiteID;
 			spot.altLocation = pnpSpot.actLocation;
-		}
-		else{
+		} else {
 			spot.location = pnpSpot.actLocation;
 			spot.altLocation = pnpSpot.altLocation;
 		}
 
-		spot.shortTime = spot.time.getHours().toString().padStart(2,"0") + ':' + spot.time.getMinutes().toString().padStart(2,"0");
+		spot.shortTime =
+			spot.time.getHours().toString().padStart(2, "0") +
+			":" +
+			spot.time.getMinutes().toString().padStart(2, "0");
 
 		return spot;
 	}
-
-
-
-
 }

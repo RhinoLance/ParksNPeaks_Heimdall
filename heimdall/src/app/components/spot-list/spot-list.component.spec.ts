@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { SpotListComponent } from './spot-list.component';
+import { SpotListComponent } from "./spot-list.component";
 
-describe('SpotListComponent', () => {
+describe("SpotListComponent", () => {
 	let component: SpotListComponent;
 	let fixture: ComponentFixture<SpotListComponent>;
 
@@ -18,7 +18,7 @@ describe('SpotListComponent', () => {
 		fixture.detectChanges();
 	});
 
-	it('should create', () => {
+	it("should create", () => {
 		expect(component).toBeTruthy();
 	});
 });

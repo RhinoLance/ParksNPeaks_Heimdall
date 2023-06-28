@@ -21,9 +21,11 @@ jobs:
           submodules: true
 
       - name: lint
+        working-directory: ./heimdall
         run: npm run lint
 
       - name: test
+        working-directory: ./heimdall
         run: npm run test:ci
 
       - name: Build And Deploy

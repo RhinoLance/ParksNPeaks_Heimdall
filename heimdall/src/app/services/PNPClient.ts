@@ -14,9 +14,11 @@ export class PNPClient {
 
 	public async getSpotList(): Promise<Spot[]> {
 		//const data = await this.get<PnPSpot[]>("VK");
-		var data = await this.get<any[]>('ALL');
+		let data = await this.get<PnPSpot[]>("ALL");
 
-		data = data.filter(v=> v.actCallsign.includes("VK") || v.actCallsign.includes("NZ"));
+		data = data.filter(
+			(v) => v.actCallsign.includes("VK") || v.actCallsign.includes("NZ")
+		);
 
 		const output: Spot[] = data.map((pnpSpot: PnPSpot) =>
 			new SpotBuilder().addPnpSpot(pnpSpot).build()

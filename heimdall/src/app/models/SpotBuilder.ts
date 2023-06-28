@@ -87,7 +87,7 @@ export class SpotBuilder {
 		spot.mode = SpotMode[pnpSpot.actMode as keyof typeof SpotMode];
 		spot.siteId = pnpSpot.actSiteID;
 		spot.spotter = pnpSpot.actSpoter;
-		spot.time = new Date(pnpSpot.actTime);
+		spot.time = new Date(pnpSpot.actTime + "Z");
 
 		[spot.modeName, spot.modeIcon, spot.modeColour] =
 			this.getModeIconAndColour(spot);

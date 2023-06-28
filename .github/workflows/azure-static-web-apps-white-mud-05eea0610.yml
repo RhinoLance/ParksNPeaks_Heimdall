@@ -20,6 +20,10 @@ jobs:
         with:
           submodules: true
 
+      - name: install dependencies
+        working-directory: ./heimdall
+        run: npm install
+
       - name: lint
         working-directory: ./heimdall
         run: npm run lint

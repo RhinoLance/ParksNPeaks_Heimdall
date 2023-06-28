@@ -30,7 +30,7 @@ jobs:
 
       - name: test
         working-directory: ./heimdall
-        run: npm run test:ci
+        run: npm run test:cI
 
       - name: Build And Deploy
         id: builddeploy

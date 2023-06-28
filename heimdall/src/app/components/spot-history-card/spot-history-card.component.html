@@ -1,0 +1,51 @@
+<link
+	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"
+	rel="stylesheet"
+/>
+
+<div class="container" *ngIf="spotList.length > 0">
+	<ul
+		class="timeline"
+		[ngClass]="viewState.bodyDisplay"
+		(click)="toggleBodyDisplay()"
+	>
+		<li>
+			<div class="timeline-icon timeline-clock">
+				<i class="mdi mdi-clock-outline"></i>
+			</div>
+		</li>
+		<li *ngFor="let spot of spotList; index as cI">
+			<div class="timeline-time">
+				<!--
+				<span class="date text-muted">today</span>
+				<span class="time text-muted">{{spot.shortTime}}</span>
+				-->
+			</div>
+			<div class="timeline-icon"></div>
+			<div class="timeline-body">
+				<div class="timeline-content">
+					<div>
+						<div class="h6">
+							<span class="float-right text-muted"
+								>{{ spot.tPlusMinutes }} mins ago&nbsp;</span
+							>
+							<span *ngIf="spot.type === 1">
+								{{ spot.frequency }}
+								<span
+									class="badge ms-1"
+									[style.backgroundColor]="spot.modeColour"
+								>
+									<i class="mdi align-middle" [ngClass]="spot.modeIcon"></i>
+									{{ spot.modeName }}
+								</span>
+								&nbsp;
+							</span>
+							<span class="h6">{{ spot.spotter }}&nbsp;</span
+							><span style="font-weight: normal">{{ spot.comment }}</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</li>
+	</ul>
+</div>

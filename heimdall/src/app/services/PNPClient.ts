@@ -13,8 +13,10 @@ export class PNPClient {
 	private _phpBaseHref: string = environment.pnpBaseHref;
 
 	public async getSpotList(): Promise<Spot[]> {
-		const data = await this.get<PnPSpot[]>("VK");
-		//const data = await this.get<any[]>('ALL');
+		//const data = await this.get<PnPSpot[]>("VK");
+		var data = await this.get<any[]>('ALL');
+
+		data = data.filter(v=> v.actCallsign.includes("VK") || v.actCallsign.includes("NZ"));
 
 		const output: Spot[] = data.map((pnpSpot: PnPSpot) =>
 			new SpotBuilder().addPnpSpot(pnpSpot).build()

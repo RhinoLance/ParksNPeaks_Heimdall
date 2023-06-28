@@ -22,7 +22,7 @@ jobs:
 
       - name: install dependencies
         working-directory: ./heimdall
-        run: npm install
+        run: npm install --ignore-scripts
 
       - name: lint
         working-directory: ./heimdall

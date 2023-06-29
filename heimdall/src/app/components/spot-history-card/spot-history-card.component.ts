@@ -11,17 +11,17 @@ export class SpotHistoryCardComponent implements OnInit {
 	@Input() public expanded: boolean = false;
 
 	public viewState = {
-		bodyDisplay: "collapsed",
+		bodyDisplay: "",
 	};
 
 	public ngOnInit(): void {
-		this.viewState.bodyDisplay = "collapsed";
+		this.viewState.bodyDisplay = "expanded";
 	}
 
 	public toggleBodyDisplay(): void {
 		switch (this.viewState.bodyDisplay) {
 			case "collapsed":
-				this.viewState.bodyDisplay = "inline";
+				this.viewState.bodyDisplay = "expanded";
 
 				break;
 			case "inline":

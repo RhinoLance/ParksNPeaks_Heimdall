@@ -1,180 +1,170 @@
-.timeline.collapsed,
-.timeline.inline{
-	
-	margin-left: -56px;
+.timeline {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	position: relative;
+	font-size: 0.7em;
+	//border: 2px dashed orangered;
 
 	li {
 		position: relative;
+		list-style-position: inside;
+
+		.timeline-icon {
+			position: absolute;
+			background: #ffffff;
+		}
+
+		.timeline-icon:not(:first-child) {
+			width: 2em;
+			height: 2em;
+			border-radius: 20px;
+			border: 3px solid #cccccc;
+		}
+
+		.timeline-icon:first-child {
+			font-size: 3em;
+			color: #cccccc;
+			font-weight: bold;
+			width: 1em;
+			height: 1em;
+		}
+
+		&:first-child:before,
+		&:last-child:before {
+			content: "";
+			position: absolute;
+			list-style-position: inside;
+			border: solid #cccccc;
+		}
+	}
+}
+
+.timeline.collapsed {
+	overflow: hidden;
+	height: 3em;
+
+	li {
 		min-height: 0px;
 		padding: 20px 0;
 		float: left;
-		width: 100px;
-		list-style-position: inside;
+		width: 3em;
+		margin: 1.5em 0 0 0;
 
 		.timeline-icon {
-			left: 44px;
-			top: -7px;
+			left: 1em;
 		}
 
-		.timeline-icon.timeline-icon.timeline-clock {
-			top: -12px;
-		}
-	
 		.timeline-body {
 			display: none;
 		}
-	}
 
-	li:not(:first-child):not(:last-child) {
-		list-style-position: inside;
-		border-top: 3px solid #cccccc;
-		border-left: none;		
+		&:not(:first-child):not(:last-child) {
+			border-top: 3px solid #cccccc;
 
-		.timeline-icon {
-			top: -9px;
+			.timeline-icon {
+				top: calc(-1em);
+			}
+		}
+
+		&:first-child:before,
+		&:last-child:before {
 			left: 50%;
+			height: 3px;
+			border-top: 3px;
+			width: 50%;
 		}
-	}
 
-	li:first-child:before,
-	li:last-child:before {
-		left:"50%";
-		height: 3px;
-		list-style-position: inside;
-		border-top: 3px solid #cccccc;
-		position: absolute;
-		
-		width: 50px;
+		&:first-child {
+			.timeline-icon {
+				top: -0.75em;
+				left: -6px;
 
-	}
+				i {
+					position: absolute;
+					left: 6px;
+				}
+			}
 
-	li:first-child:before {
-		left: 50%;
-		top: 0;
-	}
-	
-	li:last-child:before {
-		top: 0;
-		right: 50%;
-	}
-	
-}
-
-.timeline.inline {
-	li {
-		.timeline-body {
-			display: block;
+			&:before {
+				left: 50%;
+				top: 0;
+			}
 		}
-	}
-}
 
-.timeline.collapsed{
-	
-	li {
-		.timeline-body {
-			display: none;
+		&:last-child {
+			.timeline-icon {
+				top: calc(-1em + 3px);
+			}
+
+			&:before {
+				top: 0;
+				right: 50%;
+			}
 		}
 	}
 }
 
 .timeline.expanded {
-	margin-top: -35px;
-}
-
-.timeline {
-
-	list-style-type: none;
-	margin: 0;
-	padding: 0;
-	position: relative;
-
 	.timeline-body {
 		transition: display 4s;
 	}
 
-
 	li {
-		position: relative;
-		min-height: 50px;
-		_padding: 20px 0;
-	}
-
-	li:not(:first-child):not(:last-child) {
-		list-style-position: inside;
-		border-left: 3px solid #cccccc;
-
 		.timeline-icon {
-			left: -8px;
+			top: calc(50% - 0.5em);
+		}
+
+		.timeline-body {
+			width: 100%;
+			position: relative;
+			padding: 20px 0 0 25px;
+		}
+
+		&:not(:first-child):not(:last-child) {
+			border-left: 3px solid #cccccc;
+
+			.timeline-icon {
+				left: calc(-1em - 1.5px);
+			}
+		}
+
+		&:first-child:before,
+		&:last-child:before {
+			left: 50%;
+			width: 3px;
+			border-left: 3px;
+			height: 50%;
+		}
+
+		&:first-child {
+			.timeline-icon {
+				left: calc(-0.5em + 1.5px);
+				top: -6px;
+				line-height: 1em;
+
+				i {
+					position: absolute;
+					top: 6px;
+				}
+			}
+
+			&:before {
+				left: 0;
+				top: 50%;
+				min-height: 3em;
+			}
+		}
+
+		&:first-child:before {
+		}
+
+		&:last-child:before {
+			top: 50%;
+			right: 0;
 		}
 	}
-
-	li:first-child:before,
-	li:last-child:before {
-		content: "";
-		left:"50%";
-		width: 3px;
-		list-style-position: inside;
-		border-left: 3px solid #cccccc;
-		position: absolute;
-	}
-
-	li:first-child:before {
-		top: 50%;
-		bottom: 0;
-	}
-	
-	li:last-child:before {
-		top: 0;
-		bottom: 50%;
-	}
-
-	.timeline-icon{
-		position: absolute;
-		text-align: center;
-		top: 23px;
-		left: -5px;
-		text-decoration: none;
-		width: 14px;
-		height: 14px;
-		display: inline-block;
-		border-radius: 20px;
-		background: #ffffff;
-		line-height: 10px;
-		color: #fff;
-		font-size: 14px;
-		border: 3px solid #cccccc;
-		transition: border-color 0.2s linear;
-	}
-
-	.timeline-icon.timeline-clock {
-		border: none;
-		color: #cccccc;
-		font-weight: bold;
-		width: 24px;
-		height: 24px;
-		font-size: 28px;
-		left: -12px;
-		top: 23px;
-
-		i {
-			top: 7px;
-			position: absolute;
-			left: -0px;
-		}
-	}
-
-	.timeline-body {
-		width: 100%;
-		position: relative;
-		padding: 20px 0 0 25px;
-	}
-
 }
-
-
-
-
-
 
 .timeline .timeline-time {
 	position: absolute;

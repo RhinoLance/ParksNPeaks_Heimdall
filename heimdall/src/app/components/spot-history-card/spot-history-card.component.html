@@ -8,13 +8,17 @@
 		class="timeline"
 		[ngClass]="viewState.bodyDisplay"
 		(click)="toggleBodyDisplay()"
+		[ngStyle]="{'data-spot-list-length': spotList.length }"
 	>
 		<li>
 			<div class="timeline-icon timeline-clock">
+				<!--<div class="timeline-clock-background"></div>-->
 				<i class="mdi mdi-clock-outline"></i>
 			</div>
+			<div class="timeline-body"><h6>&nbsp</h6></div>
 		</li>
 		<li *ngFor="let spot of spotList; index as cI">
+			
 			<div class="timeline-time">
 				<!--
 				<span class="date text-muted">today</span>

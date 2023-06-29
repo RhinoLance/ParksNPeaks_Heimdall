@@ -1,9 +1,13 @@
 .timeline {
+	--clock-size: 5em;
+	--circle-size: 0.4em;
+	--collapsed-spacing: 7em;
+
 	list-style-type: none;
 	margin: 0;
 	padding: 0;
 	position: relative;
-	font-size: 0.7em;
+	font-size: 0.4em;
 	//border: 2px dashed orangered;
 
 	li {
@@ -23,7 +27,7 @@
 		}
 
 		.timeline-icon:first-child {
-			font-size: 3em;
+			font-size: var(--clock-size);
 			color: #cccccc;
 			font-weight: bold;
 			width: 1em;
@@ -42,17 +46,17 @@
 
 .timeline.collapsed {
 	overflow: hidden;
-	height: 3em;
+	height: var(--clock-size);
 
 	li {
 		min-height: 0px;
 		padding: 20px 0;
 		float: left;
-		width: 3em;
-		margin: 1.5em 0 0 0;
+		width: var(--collapsed-spacing);
+		margin: calc(var(--clock-size) / 2) 0 0 0;
 
 		.timeline-icon {
-			left: 1em;
+			left: calc((var(--collapsed-spacing) / 2) - 1em);
 		}
 
 		.timeline-body {
@@ -63,7 +67,7 @@
 			border-top: 3px solid #cccccc;
 
 			.timeline-icon {
-				top: calc(-1em);
+				top: calc(-1em - 1.5px);
 			}
 		}
 
@@ -94,12 +98,12 @@
 
 		&:last-child {
 			.timeline-icon {
-				top: calc(-1em + 3px);
+				top: calc(-1em + 1.5px);
 			}
 
 			&:before {
 				top: 0;
-				right: 50%;
+				left: 0;
 			}
 		}
 	}
@@ -140,28 +144,30 @@
 		&:first-child {
 			.timeline-icon {
 				left: calc(-0.5em + 1.5px);
-				top: -6px;
-				line-height: 1em;
+				top: -50%;
 
 				i {
 					position: absolute;
-					top: 6px;
+					top: 2px;
 				}
 			}
 
 			&:before {
 				left: 0;
 				top: 50%;
-				min-height: 3em;
+				min-height: var(--clock-size);
 			}
 		}
 
-		&:first-child:before {
-		}
+		&:last-child {
+			.timeline-icon {
+				left: calc(-1em + 1.5px);
+			}
 
-		&:last-child:before {
-			top: 50%;
-			right: 0;
+			&:before {
+				top: 0;
+				left: 0;
+			}
 		}
 	}
 }

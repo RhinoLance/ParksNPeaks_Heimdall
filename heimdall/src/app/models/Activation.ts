@@ -20,8 +20,6 @@ export class Activation {
 		return this._spotList.length;
 	}
 
-
-
 	public constructor(spot: Spot) {
 		this.callsign = spot.callsign;
 		this.callsignRoot = spot.callsignRoot;

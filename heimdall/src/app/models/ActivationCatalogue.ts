@@ -2,39 +2,35 @@ import { Activation } from "./Activation";
 import { Spot } from "./Spot";
 
 export class ActivationCatalogue {
-	
 	private _activationList: Activation[] = [];
 
 	public get activations(): Activation[] {
 		return this._activationList;
 	}
 
-	public addSpot( spot: Spot ): void {
+	public addSpot(spot: Spot): void {
+		const activation = this.findActivation(spot);
 
-		const activation = this.findActivation( spot );
-
-		if( activation ) {
-			activation.addSpot( spot );
+		if (activation) {
+			activation.addSpot(spot);
 		} else {
-			this._activationList.push( new Activation( spot ) );
+			this._activationList.push(new Activation(spot));
 		}
-
 	}
 
-	public addSpots( spots: Spot[] ): void {
-
-		spots.map( v=> this.addSpot( v ) );
+	public addSpots(spots: Spot[]): void {
+		spots.map((v) => this.addSpot(v));
 	}
-	
-	private findActivation( spot: Spot ): Activation|null {
 
-		const callSignActivations = this._activationList.filter( v=> v.callsignRoot == spot.callsignRoot );
+	private findActivation(spot: Spot): Activation | null {
+		const callSignActivations = this._activationList.filter(
+			(v) => v.callsignRoot == spot.callsignRoot
+		);
 
 		let retVal = null;
-		for( let cI = 0; cI < this._activationList.length; cI++ ) {
-			
-			const activation = this._activationList[cI];
-			if( activation.isPartOfThisActivation( spot ) ) {
+		for (let cI = 0; cI < callSignActivations.length; cI++) {
+			const activation = callSignActivations[cI];
+			if (activation.isPartOfThisActivation(spot)) {
 				retVal = activation;
 				break;
 			}

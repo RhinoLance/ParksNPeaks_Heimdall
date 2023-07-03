@@ -5,21 +5,18 @@ import { SpotMode } from "./SpotMode";
 import { SpotType } from "./SpotType";
 
 describe("Activation", () => {
-	
 	it("It should add a spot", () => {
-		
 		// Arrange
 		const spot = new Spot();
-		
+
 		// Act
 		const activation = new Activation(spot);
-		
+
 		// Assert
 		expect(activation.spotCount).toBe(1);
 	});
 
 	describe("Testing if spots are part of the same activation", () => {
-
 		const spot1 = new Spot();
 		spot1.callsignRoot = "VK1AD";
 		spot1.siteId = "VK1/AC-042";
@@ -27,8 +24,7 @@ describe("Activation", () => {
 		spot1.time = new Date(2020, 1, 1, 12, 0, 0);
 		spot1.award = AwardScheme.SOTA;
 
-		it( "Same callsignRoot, site and time", () => {
-			
+		it("Same callsignRoot, site and time", () => {
 			// Arrange
 			const spot2 = new Spot();
 			spot2.callsignRoot = spot1.callsignRoot;
@@ -45,8 +41,7 @@ describe("Activation", () => {
 			expect(result).toBe(true);
 		});
 
-		it( "Different callsign", () => {
-			
+		it("Different callsign", () => {
 			// Arrange
 			const spot2 = new Spot();
 			spot2.callsignRoot = "VK3OOO";
@@ -63,8 +58,7 @@ describe("Activation", () => {
 			expect(result).toBe(false);
 		});
 
-		it( "Different site, same award", () => {
-			
+		it("Different site, same award", () => {
 			// Arrange
 			const spot2 = new Spot();
 			spot2.callsignRoot = spot1.callsignRoot;
@@ -81,8 +75,7 @@ describe("Activation", () => {
 			expect(result).toBe(false);
 		});
 
-		it( "Wrong name", () => {
-			
+		it("Wrong name", () => {
 			// Arrange
 			const spot2 = new Spot();
 			spot2.callsignRoot = spot1.callsignRoot;
@@ -99,8 +92,7 @@ describe("Activation", () => {
 			expect(result).toBe(true);
 		});
 
-		it( "Different site and award, withing 5 minutes", () => {
-			
+		it("Different site and award, withing 5 minutes", () => {
 			// Arrange
 			const spot2 = new Spot();
 			spot2.callsignRoot = spot1.callsignRoot;
@@ -116,9 +108,8 @@ describe("Activation", () => {
 			// Assert
 			expect(result).toBe(true);
 		});
-		
-		it( "Different site and award, 30 min difference", () => {
-			
+
+		it("Different site and award, 30 min difference", () => {
 			// Arrange
 			const spot2 = new Spot();
 			spot2.callsignRoot = spot1.callsignRoot;
@@ -132,12 +123,10 @@ describe("Activation", () => {
 			const result = activation.isPartOfThisActivation(spot2);
 
 			// Assert
-			expect(result).toBe(false); 
+			expect(result).toBe(false);
 		});
-		
 
-		it( "Different award and site, different name", () => {
-			
+		it("Different award and site, different name", () => {
 			// Arrange
 			const spot2 = new Spot();
 			spot2.callsignRoot = spot1.callsignRoot;
@@ -153,10 +142,8 @@ describe("Activation", () => {
 			// Assert
 			expect(result).toBe(false);
 		});
-		
 
-		it( "Different award and site, similar name", () => {
-			
+		it("Different award and site, similar name", () => {
 			// Arrange
 			const spot2 = new Spot();
 			spot2.callsignRoot = spot1.callsignRoot;
@@ -175,7 +162,6 @@ describe("Activation", () => {
 	});
 
 	describe("Set spot type correctly.", () => {
-
 		const spot1 = new Spot();
 		spot1.callsignRoot = "VK1AD";
 		spot1.siteId = "VK1/AC-042";
@@ -185,21 +171,18 @@ describe("Activation", () => {
 		spot1.frequency = 7.032;
 		spot1.mode = SpotMode.CW;
 
-		it( "Shoule be type: Spot", () => {
-			
+		it("Shoule be type: Spot", () => {
 			// Arrange
-			
 
 			// Act
 			const activation = new Activation(spot1);
 			const addedSpot = activation.getLatestSpot();
-			
+
 			// Assert
-			expect(addedSpot?.type).toBe(SpotType.Spot); 
+			expect(addedSpot?.type).toBe(SpotType.Spot);
 		});
 
-		it( "Subsequent spot with same freq and mode should be ReSpot", () => {
-			
+		it("Subsequent spot with same freq and mode should be ReSpot", () => {
 			// Arrange
 			const spot2 = new Spot();
 			spot2.callsignRoot = spot1.callsignRoot;
@@ -214,13 +197,12 @@ describe("Activation", () => {
 			const activation = new Activation(spot1);
 			activation.addSpot(spot2);
 			const addedSpot = activation.getLatestSpot();
-			
+
 			// Assert
-			expect(addedSpot?.type).toBe(SpotType.Respot); 
+			expect(addedSpot?.type).toBe(SpotType.Respot);
 		});
 
-		it( "Changing frequency should result in type: ReSpot", () => {
-			
+		it("Changing frequency should result in type: ReSpot", () => {
 			// Arrange
 			const spot2 = new Spot();
 			spot2.callsignRoot = spot1.callsignRoot;
@@ -235,13 +217,12 @@ describe("Activation", () => {
 			const activation = new Activation(spot1);
 			activation.addSpot(spot2);
 			const addedSpot = activation.getLatestSpot();
-			
+
 			// Assert
-			expect(addedSpot?.type).toBe(SpotType.Spot); 
+			expect(addedSpot?.type).toBe(SpotType.Spot);
 		});
 
-		it( "Changing mode should result in type: ReSpot", () => {
-			
+		it("Changing mode should result in type: ReSpot", () => {
 			// Arrange
 			const spot2 = new Spot();
 			spot2.callsignRoot = spot1.callsignRoot;
@@ -256,12 +237,9 @@ describe("Activation", () => {
 			const activation = new Activation(spot1);
 			activation.addSpot(spot2);
 			const addedSpot = activation.getLatestSpot();
-			
+
 			// Assert
-			expect(addedSpot?.type).toBe(SpotType.Spot); 
+			expect(addedSpot?.type).toBe(SpotType.Spot);
 		});
-
 	});
-
-	
 });

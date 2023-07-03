@@ -1,16 +1,16 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed } from "@angular/core/testing";
 
-import { SpotCatalogueService } from './SpotCatalogue.service';
+import { SpotCatalogueService } from "./SpotCatalogue.service";
 
-describe('SpotCatalogueServiceService', () => {
-  let service: SpotCatalogueService;
+describe("SpotCatalogueServiceService", () => {
+	let service: SpotCatalogueService;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(SpotCatalogueService);
-  });
+	beforeEach(() => {
+		TestBed.configureTestingModule({});
+		service = TestBed.inject(SpotCatalogueService);
+	});
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
+	it("should be created", () => {
+		expect(service).toBeTruthy();
+	});
 });

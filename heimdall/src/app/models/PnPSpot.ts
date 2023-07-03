@@ -1,5 +1,3 @@
-import { Spot } from "./Spot";
-
 export class PnPSpot {
 	public altClass: string = "";
 	public altLocation: string = "";

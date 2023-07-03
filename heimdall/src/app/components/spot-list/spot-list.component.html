@@ -88,8 +88,10 @@
                 </div>
                 -->
 				<div class="candidate-list">
-					
-					<pph-activation *ngFor="let activation of viewState.activationList; index as cI" [activation]="activation"></pph-activation>
+					<pph-activation
+						*ngFor="let activation of viewState.activationList; index as cI"
+						[activation]="activation"
+					></pph-activation>
 				</div>
 			</div>
 		</div>

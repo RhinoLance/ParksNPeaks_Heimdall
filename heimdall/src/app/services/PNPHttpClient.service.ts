@@ -16,12 +16,13 @@ export class PNPClientService {
 		//const data = await this.get<PnPSpot[]>("VK");
 		let data = await this.get<PnPSpot[]>("ALL");
 
-		data = data.filter(
-			v => v.actCallsign.includes("VK") || v.actCallsign.includes("ZL")
-		)
-		.sort((a, b) => {
-			return new Date(a.actTime).getTime() - new Date(b.actTime).getTime();
-		});
+		data = data
+			.filter(
+				(v) => v.actCallsign.includes("VK") || v.actCallsign.includes("ZL")
+			)
+			.sort((a, b) => {
+				return new Date(a.actTime).getTime() - new Date(b.actTime).getTime();
+			});
 
 		const output: Spot[] = data.map((pnpSpot: PnPSpot) =>
 			new SpotBuilder().addPnpSpot(pnpSpot).build()

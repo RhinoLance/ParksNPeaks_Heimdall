@@ -9,8 +9,6 @@ export class TimeUpdator {
 	) {}
 
 	private updateTMinus(): void {
-		const now = Date.now();
-
 		/*
 		const spots = this._spotCatalogue.getSpots();
 

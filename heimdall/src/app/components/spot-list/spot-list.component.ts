@@ -1,5 +1,4 @@
 import { Component, OnDestroy } from "@angular/core";
-import { Spot } from "src/app/models/Spot";
 import { ActivationCatalogue } from "src/app/models/ActivationCatalogue";
 import { TimeUpdator } from "src/app/models/TimeUpdator";
 import { PNPClientService } from "src/app/services/PNPHttpClient.service";

@@ -14,7 +14,7 @@ import { ActivationComponent } from "./components/activation/activation.componen
 		PageNotFoundComponent,
 		MainComponent,
 		SpotHistoryCardComponent,
-		ActivationComponent
+		ActivationComponent,
 	],
 	imports: [BrowserModule, AppRoutingModule],
 	providers: [],

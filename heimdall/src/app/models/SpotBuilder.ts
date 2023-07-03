@@ -71,6 +71,10 @@ export class SpotBuilder {
 			case AwardScheme.WWFF:
 				image = "assets/images/classLogo/WWFF.png";
 				break;
+			case AwardScheme.ZLOTA:
+			case AwardScheme.ZL_OTA:
+				image = "assets/images/classLogo/ZLOTA.jpg";
+				break;
 			default:
 				image = "assets/images/classLogo/Other.png";
 				break;

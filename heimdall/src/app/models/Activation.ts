@@ -12,9 +12,15 @@ export class Activation {
 
 	private _spotList: Spot[] = [];
 
+	public get awardCount(): number {
+		return this.awardList.length;
+	}
+
 	public get spotCount(): number {
 		return this._spotList.length;
 	}
+
+
 
 	public constructor(spot: Spot) {
 		this.callsign = spot.callsign;

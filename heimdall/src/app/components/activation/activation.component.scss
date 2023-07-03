@@ -5,6 +5,36 @@ body {
 	box-shadow: 0 10px 17px 0 rgb(0 0 0 / 5%);
 }
 
+.activation-list-images {
+	max-height: 108px;
+	max-width: 108px;
+
+	.award-icon {
+		border-radius: 50%;
+		background: #fff;
+		background-size: contain;
+		background-size: cover;
+		background-size: 100%;
+		margin: 2px;
+		box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+		display: inline-block;
+		height: calc(100px / var(--award-count));
+		width: calc(100px / var(--award-count));
+		_height: 50px;
+		_width: 50px;
+
+		&.award-8 {
+			background-image: url("../../../assets/images/classLogo/POTA.jpg");
+		}
+		&.award-13 {
+			background-image: url("../../../assets/images/classLogo/WWFF.png");
+		}
+		&.award-20 {
+			background-image: url("../../../assets/images/classLogo/ZLOTA.jpg");
+		}
+	}
+}
+
 .avatar-md {
 	height: 5rem;
 	width: 5rem;

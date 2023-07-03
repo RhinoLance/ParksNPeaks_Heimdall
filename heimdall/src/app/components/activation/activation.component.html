@@ -5,13 +5,10 @@
 	<div class="p-4 card-body">
 		<div class="align-items-center row">
 			<div class="col-auto">
-				<div class="activation-list-images">
-					<a href="#"
-						><img
-							[src]="viewState.spot.classImage"
-							alt=""
-							class="avatar-md img-thumbnail rounded-circle"
-					/></a>
+				<div class="activation-list-images" [style.--award-count]="activation.awardCount">
+					<div *ngFor="let award of activation.awardList; index as cI" href="#"
+						[ngClass]="'award-' + award.award" class="award-icon"
+						></div>
 				</div>
 			</div>
 			<div class="col-lg-3">

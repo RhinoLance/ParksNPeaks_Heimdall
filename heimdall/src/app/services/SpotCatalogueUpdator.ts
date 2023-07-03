@@ -1,6 +1,6 @@
-import { ActivationCatalogue } from "./ActivationCatalogue";
+import { ActivationCatalogue } from "../models/ActivationCatalogue";
 
-export class TimeUpdator {
+export class SpotCatalogueUpdator {
 	private _updateTimeout?: ReturnType<typeof setInterval>;
 
 	public constructor(

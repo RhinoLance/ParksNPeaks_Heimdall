@@ -6,6 +6,7 @@ import { SpotListComponent } from "./components/spot-list/spot-list.component";
 import { PageNotFoundComponent } from "./components/page-not-found/page-not-found.component";
 import { MainComponent } from "./components/main/main.component";
 import { SpotHistoryCardComponent } from "./components/spot-history-card/spot-history-card.component";
+import { ActivationComponent } from "./components/activation/activation.component";
 
 @NgModule({
 	declarations: [
@@ -13,6 +14,7 @@ import { SpotHistoryCardComponent } from "./components/spot-history-card/spot-hi
 		PageNotFoundComponent,
 		MainComponent,
 		SpotHistoryCardComponent,
+		ActivationComponent
 	],
 	imports: [BrowserModule, AppRoutingModule],
 	providers: [],

@@ -1,4 +1,10 @@
+import { Guid } from "guid-typescript";
+import { SpotType } from "./SpotType";
+import { AwardScheme } from "./AwardScheme";
+import { SpotMode } from "./SpotMode";
+
 export class Spot {
+	public id: Guid = Guid.create();
 	public modeIcon: string = "";
 	public modeColour: string = "";
 	public modeName: string = "";
@@ -8,16 +14,15 @@ export class Spot {
 	public shortTime: string = "";
 	public tPlusMinutes: number = 0;
 
-	public altClass: SpotClass = SpotClass.Other;
-	public altLocation: string = "";
+	public altAward: AwardScheme = AwardScheme.Other;
 	public callsign: string = "";
 	public callsignRoot: string = "";
-	public class: SpotClass = SpotClass.Other;
+	public award: AwardScheme = AwardScheme.Other;
 	public comment: string = "";
 	public frequency: number = 0;
-	public location: string = "";
 	public mode: SpotMode = SpotMode.Other;
 	public siteId: string = "";
+	public siteName: string = "";
 	public spotter: string = "";
 	public time: Date = new Date();
 
@@ -57,42 +62,3 @@ export class Spot {
 	}
 }
 
-export enum SpotMode {
-	SSB,
-	CW,
-	FM,
-	AM,
-	DATA,
-	Other,
-}
-
-export enum SpotClass {
-	BOTA,
-	DXCluster,
-	HEMA,
-	ILLW,
-	IOTA,
-	JOTA,
-	KRNMPA,
-	Other,
-	POTA,
-	QRP,
-	SANPCPA,
-	SiOTA,
-	SOTA,
-	WWFF,
-	VK_Shires,
-	VK_SOTA,
-	VK_WWFF,
-	ZL_OTA,
-	ZL_SOTA,
-	ZL_WWFF,
-	ZLOTA,
-}
-
-export enum SpotType {
-	Respot,
-	Spot,
-	New,
-	NotSet,
-}

@@ -7,7 +7,7 @@ import { SpotBuilder } from "../models/SpotBuilder";
 @Injectable({
 	providedIn: "root",
 })
-export class PNPClient {
+export class PNPClientService {
 	//_phpBaseHref: string = 'https://parksnpeaks.org/api/';
 	//_phpBaseHref: string = 'https://localhost:44321/api/PnP/Get?suffix=';
 	private _phpBaseHref: string = environment.pnpBaseHref;
@@ -17,8 +17,11 @@ export class PNPClient {
 		let data = await this.get<PnPSpot[]>("ALL");
 
 		data = data.filter(
-			(v) => v.actCallsign.includes("VK") || v.actCallsign.includes("NZ")
-		);
+			v => v.actCallsign.includes("VK") || v.actCallsign.includes("ZL")
+		)
+		.sort((a, b) => {
+			return new Date(a.actTime).getTime() - new Date(b.actTime).getTime();
+		});
 
 		const output: Spot[] = data.map((pnpSpot: PnPSpot) =>
 			new SpotBuilder().addPnpSpot(pnpSpot).build()

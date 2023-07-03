@@ -1,0 +1,61 @@
+<div *ngIf="activation !== null" class="activation-list-box bookmark-post card mt-4">
+	<div class="p-4 card-body">
+		<div class="align-items-center row">
+			<div class="col-auto">
+				<div class="activation-list-images">
+					<a href="#"
+						><img
+							[src]="viewState.spot.classImage"
+							alt=""
+							class="avatar-md img-thumbnail rounded-circle"
+					/></a>
+				</div>
+			</div>
+			<div class="col-lg-3">
+				<div class="activation-list-content mt-3 mt-lg-0">
+					<div class="h5 text-muted">
+						{{ activation.callsign }}
+					</div>
+					<div>
+						<span class="h3">{{ viewState.spot.frequency }}</span>
+						<span
+							class="badge ms-1"
+							[style.backgroundColor]="viewState.spot.modeColour"
+						>
+							<i
+								class="mdi align-middle"
+								[ngClass]="viewState.spot.modeIcon"
+							></i>
+							{{ viewState.spot.modeName }}
+						</span>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-6 text-muted mb-2">
+				<div *ngFor="let site of activation.awardList; index as cI">
+					<i class="mdi mdi-map-marker"></i> {{ site.siteId }}:
+					{{ site.award }}
+				</div>
+				<div>{{ activation.siteName }}</div>
+				<div>
+					<i class="mdi mdi-post"></i> activation by {{ activation.callsign }}
+				</div>
+				<div style="margin-top: 5px">
+					{{ viewState.spot.comment }}
+				</div>
+				<div style="margin-top: 5px">
+					{{ viewState.spot.tPlusMinutes }} minutes ago at
+					{{ viewState.spot.shortTime }} (local)
+				</div>
+			</div>
+		</div>
+		<div class="align-items-center row">
+			<div class="col-auto">
+				<pph-spot-history-card
+					[spotList]="viewState.supersededSpotList"
+					[expanded]="false"
+				></pph-spot-history-card>
+			</div>
+		</div>
+	</div>
+</div>

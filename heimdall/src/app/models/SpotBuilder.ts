@@ -1,5 +1,8 @@
+import { AwardScheme } from "./AwardScheme";
 import { PnPSpot } from "./PnPSpot";
-import { Spot, SpotClass, SpotMode } from "./Spot";
+import { Spot } from "./Spot";
+import { SpotMode } from "./SpotMode";
+import { SpotType } from "./SpotType";
 
 export class SpotBuilder {
 	private _pnpSpot: PnPSpot = new PnPSpot();
@@ -51,21 +54,21 @@ export class SpotBuilder {
 	private getClassImage(spot: Spot): string {
 		let image = "";
 
-		switch (spot.class) {
-			case SpotClass.BOTA:
+		switch (spot.award) {
+			case AwardScheme.BOTA:
 				image = "assets/images/classLogo/BOTA.png";
 				break;
-			case SpotClass.POTA:
+			case AwardScheme.POTA:
 				image = "assets/images/classLogo/POTA.jpg";
 				break;
-			case SpotClass.VK_SOTA:
-			case SpotClass.ZL_SOTA:
-			case SpotClass.SOTA:
+			case AwardScheme.VK_SOTA:
+			case AwardScheme.ZL_SOTA:
+			case AwardScheme.SOTA:
 				image = "assets/images/classLogo/SOTA.svg";
 				break;
-			case SpotClass.VK_WWFF:
-			case SpotClass.ZL_WWFF:
-			case SpotClass.WWFF:
+			case AwardScheme.VK_WWFF:
+			case AwardScheme.ZL_WWFF:
+			case AwardScheme.WWFF:
 				image = "assets/images/classLogo/WWFF.png";
 				break;
 			default:
@@ -78,27 +81,28 @@ export class SpotBuilder {
 
 	private createFromPnPSpot(pnpSpot: PnPSpot): Spot {
 		const spot = new Spot();
-		spot.altClass = SpotClass[pnpSpot.altClass as keyof typeof SpotClass];
+		spot.altAward = AwardScheme[pnpSpot.altClass as keyof typeof AwardScheme];
 		spot.callsign = pnpSpot.actCallsign;
 		spot.callsignRoot = pnpSpot.actCallsign.split("/P")[0];
-		spot.class = SpotClass[pnpSpot.actClass as keyof typeof SpotClass];
+		spot.award = AwardScheme[pnpSpot.actClass as keyof typeof AwardScheme];
 		spot.comment = pnpSpot.actComments;
 		spot.frequency = pnpSpot.actFreq;
 		spot.mode = SpotMode[pnpSpot.actMode as keyof typeof SpotMode];
 		spot.siteId = pnpSpot.actSiteID;
 		spot.spotter = pnpSpot.actSpoter;
 		spot.time = new Date(pnpSpot.actTime + "Z");
+		spot.type = SpotType.NotSet;
 
 		[spot.modeName, spot.modeIcon, spot.modeColour] =
 			this.getModeIconAndColour(spot);
 		spot.classImage = this.getClassImage(spot);
 
 		if (pnpSpot.altLocation == "") {
-			spot.location = pnpSpot.actSiteID;
-			spot.altLocation = pnpSpot.actLocation;
+			spot.siteId = pnpSpot.actSiteID;
+			spot.siteName = pnpSpot.actLocation;
 		} else {
-			spot.location = pnpSpot.actLocation;
-			spot.altLocation = pnpSpot.altLocation;
+			spot.siteId = pnpSpot.actLocation;
+			spot.siteName = pnpSpot.altLocation;
 		}
 
 		spot.shortTime =

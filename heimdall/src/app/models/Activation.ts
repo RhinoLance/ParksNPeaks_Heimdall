@@ -4,7 +4,8 @@ import "../extensions/Date";
 import { AwardScheme } from "./AwardScheme";
 import { SpotType } from "./SpotType";
 
-import commonSiteNamewords from '../../assets/data/commonSiteNameWords.json';
+import commonSiteNamewords from "../../assets/data/commonSiteNameWords.json";
+import { ActivationAward } from "./ActivationAward";
 
 export class Activation {
 	public awardList: ActivationAward[] = [];
@@ -141,6 +142,4 @@ export class Activation {
 	}
 }
 
-export class ActivationAward {
-	public constructor(public award: AwardScheme, public siteId: string) {}
-}
+

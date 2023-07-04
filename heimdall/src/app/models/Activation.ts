@@ -141,5 +141,3 @@ export class Activation {
 		}
 	}
 }
-
-

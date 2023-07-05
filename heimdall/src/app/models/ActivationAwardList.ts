@@ -7,7 +7,7 @@ export class ActivationAwardList implements Iterable<ActivationAward> {
 	public constructor(...activationAward: ActivationAward[]) {
 		this._awardList.push(...activationAward);
 	}
-	
+
 	public *[Symbol.iterator]() {
 		yield* this._awardList;
 	}

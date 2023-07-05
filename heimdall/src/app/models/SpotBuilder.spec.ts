@@ -52,25 +52,21 @@ describe("SpotBuilder", () => {
 	});
 
 	describe("Invalid states", () => {
-
-		it( "should throw an error if no PnPSpot is provided", () => {
-			
+		it("should throw an error if no PnPSpot is provided", () => {
 			// Arrange
 			const builder = new SpotBuilder();
-			
+
 			// Act
 			let threwError = false;
 
-			try{
+			try {
 				builder.build();
-			}
-			catch(e) {
+			} catch (e) {
 				threwError = true;
-			}		
-			
+			}
+
 			// Assert
 			expect(threwError).toEqual(true);
 		});
-
 	});
 });

@@ -14,8 +14,8 @@ export class SpotBuilder {
 	}
 
 	public build(): Spot {
-		if( this._pnpSpot == null ) throw new Error("No PnPSpot to build from.");
-		
+		if (this._pnpSpot == null) throw new Error("No PnPSpot to build from.");
+
 		return this.createFromPnPSpot(this._pnpSpot);
 	}
 

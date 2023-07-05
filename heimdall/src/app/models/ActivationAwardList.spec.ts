@@ -4,20 +4,18 @@ import { AwardScheme } from "./AwardScheme";
 
 describe("ActivationAwardList", () => {
 	describe("Mirrors Array Methods", () => {
-		
 		const testList = new ActivationAwardList(
 			new ActivationAward(AwardScheme.WWFF, "VKFF-1234"),
 			new ActivationAward(AwardScheme.SOTA, "VK7/SW-1234"),
 			new ActivationAward(AwardScheme.ZLOTA, "ZL-1234"),
 			new ActivationAward(AwardScheme.BOTA, "BB-1234")
-
-		)
+		);
 
 		it("Has a length property", () => {
 			// Arrange
 
 			// Act
-			
+
 			// Assert
 			expect(testList.length).toBe(4);
 		});

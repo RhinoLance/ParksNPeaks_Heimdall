@@ -3,5 +3,5 @@
 
 cd heimdall
 
-npm run lint:fix
 npm run prettier:staged
+npm run lint

@@ -50,4 +50,27 @@ describe("SpotBuilder", () => {
 			expect(spot.awardList.getAtIndex(1).siteId).toEqual("VKFF-0344");
 		});
 	});
+
+	describe("Invalid states", () => {
+
+		it( "should throw an error if no PnPSpot is provided", () => {
+			
+			// Arrange
+			const builder = new SpotBuilder();
+			
+			// Act
+			let threwError = false;
+
+			try{
+				builder.build();
+			}
+			catch(e) {
+				threwError = true;
+			}		
+			
+			// Assert
+			expect(threwError).toEqual(true);
+		});
+
+	});
 });

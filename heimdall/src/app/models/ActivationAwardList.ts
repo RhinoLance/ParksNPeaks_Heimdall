@@ -1,11 +1,15 @@
 import { ActivationAward } from "./ActivationAward";
 import { AwardScheme } from "./AwardScheme";
 
-export class ActivationAwardList {
+export class ActivationAwardList implements Iterable<ActivationAward> {
 	private _awardList: ActivationAward[] = [];
 
 	public constructor(...activationAward: ActivationAward[]) {
 		this._awardList.push(...activationAward);
+	}
+	
+	public *[Symbol.iterator]() {
+		yield* this._awardList;
 	}
 
 	public get length(): number {

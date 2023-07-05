@@ -6,7 +6,7 @@ import { SpotMode } from "./SpotMode";
 import { SpotType } from "./SpotType";
 
 export class SpotBuilder {
-	private _pnpSpot: PnPSpot = new PnPSpot();
+	private _pnpSpot: PnPSpot | null = null;
 
 	public addPnpSpot(pnpSpot: PnPSpot): SpotBuilder {
 		this._pnpSpot = pnpSpot;
@@ -14,6 +14,8 @@ export class SpotBuilder {
 	}
 
 	public build(): Spot {
+		if( this._pnpSpot == null ) throw new Error("No PnPSpot to build from.");
+		
 		return this.createFromPnPSpot(this._pnpSpot);
 	}
 

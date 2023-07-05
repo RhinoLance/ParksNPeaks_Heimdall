@@ -34,13 +34,7 @@
 							>
 							<span *ngIf="spot.type === 1">
 								{{ spot.frequency }}
-								<span
-									class="badge ms-1"
-									[style.backgroundColor]="spot.modeColour"
-								>
-									<i class="mdi align-middle" [ngClass]="spot.modeIcon"></i>
-									{{ spot.modeName }}
-								</span>
+								<pph-mode-badge [mode]="spot.mode"></pph-mode-badge>
 								&nbsp;
 							</span>
 							<span class="h6">{{ spot.spotter }}&nbsp;</span

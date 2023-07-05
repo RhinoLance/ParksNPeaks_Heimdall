@@ -23,14 +23,20 @@ body {
 		_height: 50px;
 		_width: 50px;
 
-		&.award-8 {
+		&.award-POTA {
 			background-image: url("../../../assets/images/classLogo/POTA.jpg");
 		}
-		&.award-13 {
+		&.award-WWFF {
 			background-image: url("../../../assets/images/classLogo/WWFF.png");
 		}
-		&.award-20 {
+		&.award-ZLOTA {
 			background-image: url("../../../assets/images/classLogo/ZLOTA.jpg");
+		}
+		&.award-SOTA {
+			background-image: url("../../../assets/images/classLogo/SOTA.svg");
+		}
+		&.award-BOTA {
+			background-image: url("../../../assets/images/classLogo/BOTA.png");
 		}
 	}
 }

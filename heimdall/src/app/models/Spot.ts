@@ -1,63 +1,60 @@
 import { Guid } from "guid-typescript";
 import { SpotType } from "./SpotType";
-import { AwardScheme } from "./AwardScheme";
 import { SpotMode } from "./SpotMode";
+import { AwardScheme } from "./AwardScheme";
+import { ActivationAwardList } from "./ActivationAwardList";
 
 export class Spot {
 	public id: Guid = Guid.create();
-	public modeIcon: string = "";
-	public modeColour: string = "";
-	public modeName: string = "";
-	public classImage: string = "";
 	public type: SpotType = SpotType.NotSet;
-	public subSpotCount: number = 0;
-	public shortTime: string = "";
 	public tPlusMinutes: number = 0;
 
-	public altAward: AwardScheme = AwardScheme.Other;
 	public callsign: string = "";
 	public callsignRoot: string = "";
-	public award: AwardScheme = AwardScheme.Other;
 	public comment: string = "";
 	public frequency: number = 0;
 	public mode: SpotMode = SpotMode.Other;
-	public siteId: string = "";
 	public siteName: string = "";
 	public spotter: string = "";
 	public time: Date = new Date();
 
-	private getModeIconAndColour(): [string, string, string] {
-		let icon: string;
-		let colour: string;
-		const name: string = SpotMode[this.mode];
+	public awardList: ActivationAwardList = new ActivationAwardList();
 
-		switch (this.mode) {
-			case SpotMode.AM:
-				icon = "mdi-radio";
-				colour = "#ff9f1c";
-				break;
-			case SpotMode.CW:
-				icon = "mdi-dots-horizontal";
-				colour = "#16425b";
-				break;
-			case SpotMode.DATA:
-				icon = "mdi-memory";
-				colour = "#fb8b24";
-				break;
-			case SpotMode.FM:
-				icon = "mdi-radio-handheld";
-				colour = "#2ec4b6";
-				break;
-			case SpotMode.SSB:
-				icon = "mdi-waveform";
-				colour = "#e71d36";
-				break;
-			default:
-				icon = "radio";
-				colour = "#f2e9e4";
-				break;
-		}
+	private _shortTime: string = "";
 
-		return [name, icon, colour];
+	public get primaryAward(): AwardScheme {
+		return this.awardList.getAtIndex(0).award;
+	}
+
+	public get primarySiteId(): string {
+		return this.awardList.getAtIndex(0).siteId;
+	}
+
+	public get shortTime(): string {
+		if (this._shortTime != "") return this._shortTime;
+
+		return (
+			this.time.getHours().toString().padStart(2, "0") +
+			":" +
+			this.time.getMinutes().toString().padStart(2, "0")
+		);
+	}
+
+	public clone() {
+		const retVal = new Spot();
+		retVal.id = this.id;
+		retVal.type = this.type;
+		retVal.tPlusMinutes = this.tPlusMinutes;
+		retVal.callsign = this.callsign;
+		retVal.callsignRoot = this.callsignRoot;
+		retVal.comment = this.comment;
+		retVal.frequency = this.frequency;
+		retVal.mode = this.mode;
+		retVal.siteName = this.siteName;
+		retVal.spotter = this.spotter;
+		retVal.time = this.time;
+		retVal.awardList = this.awardList.clone();
+		retVal._shortTime = this._shortTime;
+		return retVal;
 	}
 }

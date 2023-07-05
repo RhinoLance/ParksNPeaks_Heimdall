@@ -7,6 +7,7 @@ import { PageNotFoundComponent } from "./components/page-not-found/page-not-foun
 import { MainComponent } from "./components/main/main.component";
 import { SpotHistoryCardComponent } from "./components/spot-history-card/spot-history-card.component";
 import { ActivationComponent } from "./components/activation/activation.component";
+import { ModeBadgeComponent } from "./mode-badge/mode-badge.component";
 
 @NgModule({
 	declarations: [
@@ -15,6 +16,7 @@ import { ActivationComponent } from "./components/activation/activation.componen
 		MainComponent,
 		SpotHistoryCardComponent,
 		ActivationComponent,
+		ModeBadgeComponent,
 	],
 	imports: [BrowserModule, AppRoutingModule],
 	providers: [],

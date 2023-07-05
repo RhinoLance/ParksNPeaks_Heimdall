@@ -1,14 +1,13 @@
 import { Spot } from "./Spot";
 
 import "../extensions/Date";
-import { AwardScheme } from "./AwardScheme";
 import { SpotType } from "./SpotType";
 
 import commonSiteNamewords from "../../assets/data/commonSiteNameWords.json";
-import { ActivationAward } from "./ActivationAward";
+import { ActivationAwardList } from "./ActivationAwardList";
 
 export class Activation {
-	public awardList: ActivationAward[] = [];
+	public awardList: ActivationAwardList = new ActivationAwardList();
 	public siteName: string = "";
 	public callsign: string = "";
 	public callsignRoot: string = "";
@@ -50,7 +49,11 @@ export class Activation {
 			return false;
 		}
 
-		if (this.hasDifferentSiteIdForSameAwardScheme(spot)) {
+		if (
+			this.awardList.containsDifferentSiteIdForSameAwardScheme(
+				...spot.awardList.toArray()
+			)
+		) {
 			return false;
 		}
 
@@ -65,16 +68,8 @@ export class Activation {
 		return false;
 	}
 
-	private hasDifferentSiteIdForSameAwardScheme(spot: Spot): boolean {
-		return (
-			this.awardList.filter(
-				(v) => v.award == spot.award && v.siteId != spot.siteId
-			).length > 0
-		);
-	}
-
 	private hasMatchingSite(spot: Spot): boolean {
-		return this.awardList.filter((v) => v.siteId == spot.siteId).length > 0;
+		return this.awardList.containsSite(...spot.awardList.getSiteIds());
 	}
 
 	private hasMatchingSpot(spot: Spot): boolean {
@@ -136,8 +131,10 @@ export class Activation {
 	}
 
 	private addAwardIfRequired(spot: Spot): void {
-		if (this.awardList.filter((v) => v.award == spot.award).length === 0) {
-			this.awardList.push(new ActivationAward(spot.award, spot.siteId));
-		}
+		spot.awardList.toArray().map((v) => {
+			if (!this.awardList.getAwards().includes(v.award)) {
+				this.awardList.add(v);
+			}
+		});
 	}
 }

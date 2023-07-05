@@ -1,8 +1,8 @@
 export enum SpotMode {
-	SSB,
-	CW,
-	FM,
-	AM,
-	DATA,
-	Other,
+	SSB = "SSB",
+	CW = "CW",
+	FM = "FM",
+	AM = "AM",
+	DATA = "DATA",
+	Other = "Other",
 }

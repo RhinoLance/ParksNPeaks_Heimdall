@@ -24,16 +24,7 @@
 					</div>
 					<div>
 						<span class="h3">{{ viewState.spot.frequency }}</span>
-						<span
-							class="badge ms-1"
-							[style.backgroundColor]="viewState.spot.modeColour"
-						>
-							<i
-								class="mdi align-middle"
-								[ngClass]="viewState.spot.modeIcon"
-							></i>
-							{{ viewState.spot.modeName }}
-						</span>
+						<pph-mode-badge [mode]="viewState.spot.mode"></pph-mode-badge>
 					</div>
 				</div>
 			</div>
@@ -43,9 +34,6 @@
 					{{ site.award }}
 				</div>
 				<div>{{ activation.siteName }}</div>
-				<div>
-					<i class="mdi mdi-post"></i> activation by {{ activation.callsign }}
-				</div>
 				<div style="margin-top: 5px">
 					{{ viewState.spot.comment }}
 				</div>

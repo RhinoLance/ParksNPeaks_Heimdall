@@ -1,0 +1,38 @@
+.badge {
+	&.AM {
+		--mode-icon: "\F0439";
+		--mode-colour: #ff9f1c;
+	}
+
+	&.CW {
+		--mode-icon: "\F01D8";
+		--mode-colour: #16425b;
+	}
+
+	&.DATA {
+		--mode-icon: "\F035B";
+		--mode-colour: #fb8b24;
+	}
+
+	&.FM {
+		--mode-icon: "\F043A";
+		--mode-colour: #2ec4b6;
+	}
+
+	&.SSB {
+		--mode-icon: "\F147D";
+		--mode-colour: #e71d36;
+	}
+
+	&.DEFAULT {
+		--mode-icon: "\F043B";
+		--mode-colour: #f2e9e4;
+	}
+
+	background-color: var(--mode-colour);
+
+	i:before {
+		content: var(--mode-icon);
+		font-size: 1.5em;
+	}
+}

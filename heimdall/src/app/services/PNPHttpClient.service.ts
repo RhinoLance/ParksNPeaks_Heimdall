@@ -3,14 +3,26 @@ import { environment } from "src/environments/environment";
 import { PnPSpot } from "../models/PnPSpot";
 import { Spot } from "../models/Spot";
 import { SpotBuilder } from "../models/SpotBuilder";
+import { Observable, from, interval, map, switchMap, takeUntil } from "rxjs";
+import { CancellationToken } from "../models/CancellationToken";
+import { IFetch } from "./IFetch";
+import { FetchService } from "./FetchService";
 
 @Injectable({
 	providedIn: "root",
 })
-export class PNPClientService {
-	//_phpBaseHref: string = 'https://parksnpeaks.org/api/';
-	//_phpBaseHref: string = 'https://localhost:44321/api/PnP/Get?suffix=';
+export class PnPClientService {
 	private _phpBaseHref: string = environment.pnpBaseHref;
+
+	private _pnpSubscription = {
+		latestSpot: new Date("1970-01-01T00:00:00.000Z"),
+	};
+
+	private _fetchSvc: IFetch;
+
+	public constructor(_fetchSvc: FetchService) {
+		this._fetchSvc = _fetchSvc;
+	}
 
 	public async getSpotList(): Promise<Spot[]> {
 		//const data = await this.get<PnPSpot[]>("VK");
@@ -31,6 +43,31 @@ export class PNPClientService {
 		return output;
 	}
 
+	/***
+	 * Subscribe to spots
+	 * @param updateInterval - how often to check for new spots in minutes
+	 */
+	public subscribeToSpots(
+		updateInterval?: number,
+		cancellationToken?: CancellationToken
+	): Observable<Spot[]> {
+		updateInterval = updateInterval || 3;
+
+		cancellationToken = cancellationToken || new CancellationToken();
+
+		const obs = interval(updateInterval * 60 * 1000).pipe(
+			switchMap(() => {
+				return from(this.getSpotList());
+			}),
+			map((spots) => {
+				return this.filterOldSpots(spots);
+			}),
+			takeUntil(cancellationToken.token)
+		);
+
+		return obs;
+	}
+
 	private async get<T>(suffix: string): Promise<T> {
 		const request: RequestInit = {
 			method: "GET",
@@ -39,16 +76,28 @@ export class PNPClientService {
 			},
 		};
 
-		const data: Promise<T> = await fetch(this._phpBaseHref + suffix, request)
-			.then((response) => {
-				const output = response.json();
-				return output;
-			})
-			.then((data) => {
-				const output = data;
-				return output;
-			});
+		const data = await this._fetchSvc.getJson<T>(
+			this._phpBaseHref + suffix,
+			request
+		);
 
 		return data;
+	}
+
+	private filterOldSpots(spots: Spot[]): Spot[] {
+		const output = spots.filter((spot) => {
+			return (
+				new Date(spot.time).getTime() >
+				this._pnpSubscription.latestSpot.getTime()
+			);
+		});
+
+		if (spots.length > 0) {
+			this._pnpSubscription.latestSpot = spots.reduce((prev, current) =>
+				prev.time > current.time ? prev : current
+			).time;
+		}
+
+		return output;
 	}
 }

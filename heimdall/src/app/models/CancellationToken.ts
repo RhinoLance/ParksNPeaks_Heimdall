@@ -14,5 +14,6 @@ export class CancellationToken {
 	public cancel() {
 		this._isCancelled = true;
 		this._token.next(true);
+		this._token.complete();
 	}
 }

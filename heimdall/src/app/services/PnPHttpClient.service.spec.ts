@@ -1,6 +1,6 @@
 import { PnPSpot } from "../models/PnPSpot";
 import { PnPClientService } from "./PnPHttpClient.service";
-import { map, take } from "rxjs";
+import { Observable, from, interval, map, switchMap, take } from "rxjs";
 import { CancellationToken } from "../models/CancellationToken";
 import { TestScheduler } from "rxjs/testing";
 import { FetchService } from "./FetchService";
@@ -53,34 +53,35 @@ describe("PnPHttpClientService", () => {
 		// Arrange
 
 		const fetch = new FetchService();
+
+		const fetchValue = [clonePnPSpot(templateSpot)];
+
 		spyOn(fetch, "getJson").and.returnValues(
-			Promise.resolve(clonePnPSpot(templateSpot)),
-			Promise.resolve(clonePnPSpot(templateSpot))
+			Promise.resolve(fetchValue),
+			Promise.resolve(fetchValue)
 		);
 
 		const svc = new PnPClientService(fetch);
 
-		const expectedMarbles = "-a-|";
 		const expectedValues = {
-			a: templateSpot,
+			a: "one",
+			b: "two",
+			c: "three",
 		};
 
-		const cancellationToken = new CancellationToken();
-		const sub = svc.subscribeToSpots(0.001, cancellationToken).pipe(
-			take(2),
-			map((v: Spot[]) => {
-				cancellationToken.cancel();
-				return v;
-			})
-		);
+		const expectedMarbles = "-abc|";
+		const subMarbles = "----!";
 
+		//const sub = svc.subscribeToSpots(1/60/1000);
+		const sub = svc.subscribeToSpots2();
 		// Act
 		testScheduler.run(({ expectObservable }) => {
-			expectObservable(sub).toBe(expectedMarbles, expectedValues);
+			expectObservable(sub, subMarbles).toBe(expectedMarbles, expectedValues);
 		});
 	});
 
 	/*
+
 	it("subscribing should return two results", (done: DoneFn) => {
 		
 		// Arrange

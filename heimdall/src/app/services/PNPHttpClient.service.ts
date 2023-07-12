@@ -18,7 +18,7 @@ export class PnPClientService {
 		latestSpot: new Date("1970-01-01T00:00:00.000Z"),
 	};
 
-	private _fetchSvc: IFetch;
+	private _fetchSvc: FetchService;
 
 	public constructor(_fetchSvc: FetchService) {
 		this._fetchSvc = _fetchSvc;
@@ -44,8 +44,10 @@ export class PnPClientService {
 	}
 
 	/***
-	 * Subscribe to spots
+	 * Returns an observable of spots that will update every updateInterval minutes
 	 * @param updateInterval - how often to check for new spots in minutes
+	 * @param cancellationToken - a cancellation token to cancel the updating of spots
+	 * @returns an observable of spots
 	 */
 	public subscribeToSpots(
 		updateInterval?: number,
@@ -66,6 +68,10 @@ export class PnPClientService {
 		);
 
 		return obs;
+	}
+
+	public subscribeToSpots2() {
+		return from(["one", "two", "three"]);
 	}
 
 	private async get<T>(suffix: string): Promise<T> {

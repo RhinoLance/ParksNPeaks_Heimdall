@@ -25,6 +25,14 @@
         "webpack:///./~/*": "${webRoot}/node_modules/*",
         "meteor://💻app/*": "${webRoot}/*"
       }
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Current File",
+      "cwd": "${workspaceFolder}",
+      "runtimeArgs": ["--loader", "ts-node/esm"],
+      "program": "${relativeFile}"
     }
   ]
 }

@@ -2,11 +2,10 @@ import { Injectable } from "@angular/core";
 import { environment } from "src/environments/environment";
 import { PnPSpot } from "../models/PnPSpot";
 import { Spot } from "../models/Spot";
-import { SpotBuilder } from "../models/SpotBuilder";
-import { Observable, from, interval, map, switchMap, takeUntil } from "rxjs";
+import { Observable, map } from "rxjs";
 import { CancellationToken } from "../models/CancellationToken";
-import { IFetch } from "./IFetch";
 import { FetchService } from "./FetchService";
+import { SpotListBuilder } from "../models/SpotListBuilder";
 
 @Injectable({
 	providedIn: "root",
@@ -24,23 +23,16 @@ export class PnPClientService {
 		this._fetchSvc = _fetchSvc;
 	}
 
+	//public transformPnPToSpotList(pnpSpots: PnPSpot[]): Spot[] {}
+
 	public async getSpotList(): Promise<Spot[]> {
 		//const data = await this.get<PnPSpot[]>("VK");
-		let data = await this.get<PnPSpot[]>("ALL");
+		const data = await this.get<PnPSpot[]>("ALL");
 
-		data = data
-			.filter(
-				(v) => v.actCallsign.includes("VK") || v.actCallsign.includes("ZL")
-			)
-			.sort((a, b) => {
-				return new Date(a.actTime).getTime() - new Date(b.actTime).getTime();
-			});
-
-		const output: Spot[] = data.map((pnpSpot: PnPSpot) =>
-			new SpotBuilder().addPnpSpot(pnpSpot).build()
-		);
-
-		return output;
+		return new SpotListBuilder()
+			.setCallsignFilter("VK|ZL")
+			.setSorting("DESC")
+			.buildFromPnPSpots(data);
 	}
 
 	/***
@@ -57,21 +49,15 @@ export class PnPClientService {
 
 		cancellationToken = cancellationToken || new CancellationToken();
 
-		const obs = interval(updateInterval * 60 * 1000).pipe(
-			switchMap(() => {
-				return from(this.getSpotList());
-			}),
-			map((spots) => {
-				return this.filterOldSpots(spots);
-			}),
-			takeUntil(cancellationToken.token)
-		);
+		const obs = this._fetchSvc
+			.pollJson<PnPSpot[]>(updateInterval, "ALL", {}, cancellationToken)
+			.pipe(
+				map((spots) => {
+					return this.filterOldSpots(spots);
+				})
+			);
 
 		return obs;
-	}
-
-	public subscribeToSpots2() {
-		return from(["one", "two", "three"]);
 	}
 
 	private async get<T>(suffix: string): Promise<T> {
@@ -82,7 +68,7 @@ export class PnPClientService {
 			},
 		};
 
-		const data = await this._fetchSvc.getJson<T>(
+		const data = await this._fetchSvc.getJsonPromise<T>(
 			this._phpBaseHref + suffix,
 			request
 		);

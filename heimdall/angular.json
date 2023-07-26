@@ -104,7 +104,6 @@
 			}
 		}
 	},
-	"defaultProject": "heimdall",
 	"cli": {
 		"defaultCollection": "@angular-eslint/schematics"
 	}

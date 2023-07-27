@@ -52,8 +52,11 @@ export class PnPClientService {
 		const obs = this._fetchSvc
 			.pollJson<PnPSpot[]>(updateInterval, "ALL", {}, cancellationToken)
 			.pipe(
-				map((spots) => {
-					return this.filterOldSpots(spots);
+				map((pnpSpots) => {
+					return new SpotListBuilder()
+						.setCallsignFilter("VK|ZL")
+						.setSorting("DESC")
+						.buildFromPnPSpots(pnpSpots);
 				})
 			);
 

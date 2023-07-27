@@ -1,27 +1,27 @@
-export enum AwardScheme {
-	BOTA = "BOTA",
-	DXCluster = "DXCluster",
-	HEMA = "HEMA",
-	ILLW = "ILLW",
-	IOTA = "IOTA",
-	JOTA = "JOTA",
-	KRNMPA = "KRNMPA",
-	Other = "OTHER",
-	POTA = "POTA",
-	QRP = "QRP",
-	SANPCPA = "SANPCPA",
-	SiOTA = "SiOTA",
-	VK_Shires = "VK Shires",
+export class AwardScheme {
+	public static BOTA: string = "BOTA";
+	public static DXCluster: string = "DXCluster";
+	public static HEMA: string = "HEMA";
+	public static ILLW: string = "ILLW";
+	public static IOTA: string = "IOTA";
+	public static JOTA: string = "JOTA";
+	public static KRNMPA: string = "KRNMPA";
+	public static Other: string = "OTHER";
+	public static POTA: string = "POTA";
+	public static QRP: string = "QRP";
+	public static SANPCPA: string = "SANPCPA";
+	public static SiOTA: string = "SiOTA";
+	public static VK_Shires: string = "VK Shires";
 
-	ZL_OTA = "ZLOTA",
-	ZLOTA = "ZLOTA",
+	public static ZL_OTA: string = "ZLOTA";
+	public static ZLOTA: string = "ZLOTA";
 
-	VK_WWFF = "WWFF",
-	ZL_WWFF = "WWFF",
-	VKFF = "WWFF",
-	WWFF = "WWFF",
+	public static VK_WWFF: string = "WWFF";
+	public static ZL_WWFF: string = "WWFF";
+	public static VKFF: string = "WWFF";
+	public static WWFF: string = "WWFF";
 
-	SOTA = "SOTA",
-	VK_SOTA = "SOTA",
-	ZL_SOTA = "SOTA",
+	public static SOTA: string = "SOTA";
+	public static VK_SOTA: string = "SOTA";
+	public static ZL_SOTA: string = "SOTA";
 }

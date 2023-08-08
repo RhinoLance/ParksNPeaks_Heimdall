@@ -18,6 +18,9 @@ declare const require: {
 	};
 };
 
+//Dummy to stop lint errors as this is used outside of this file;
+require;
+
 // First, initialize the Angular testing environment.
 getTestBed().initTestEnvironment(
 	BrowserDynamicTestingModule,

@@ -14,6 +14,10 @@ export class Activation {
 
 	private _spotList: Spot[] = [];
 
+	public get spots(): Spot[] {
+		return this._spotList;
+	}
+
 	public get awardCount(): number {
 		return this.awardList.length;
 	}

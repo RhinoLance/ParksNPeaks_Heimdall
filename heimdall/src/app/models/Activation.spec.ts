@@ -98,7 +98,6 @@ describe("Activation", () => {
 			expect(result).toBe(true);
 		});
 
-		/*
 		it("Different site and award, 30 min difference", () => {
 			// Arrange
 			const spot2 = spotTemplate.clone();
@@ -114,7 +113,6 @@ describe("Activation", () => {
 			// Assert
 			expect(result).toBe(false);
 		});
-		*/
 
 		it("Different award and site, different name", () => {
 			// Arrange

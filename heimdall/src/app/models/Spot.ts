@@ -31,13 +31,14 @@ export class Spot {
 	}
 
 	public get shortTime(): string {
-		if (this._shortTime != "") return this._shortTime;
+		if (this._shortTime == "") {
+			this._shortTime =
+				this.time.getHours().toString().padStart(2, "0") +
+				":" +
+				this.time.getMinutes().toString().padStart(2, "0");
+		}
 
-		return (
-			this.time.getHours().toString().padStart(2, "0") +
-			":" +
-			this.time.getMinutes().toString().padStart(2, "0")
-		);
+		return this._shortTime;
 	}
 
 	public clone() {

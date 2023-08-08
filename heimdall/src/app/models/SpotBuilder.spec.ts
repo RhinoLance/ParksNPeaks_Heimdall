@@ -4,7 +4,7 @@ import { SpotBuilder } from "./SpotBuilder";
 
 describe("SpotBuilder", () => {
 	describe("Multiple sites", () => {
-		const pnpSpot: PnPSpot = {
+		const pnpSpotTemplate: PnPSpot = {
 			actTime: "2023-07-04 00:28:00",
 			actID: "2114006",
 			actSiteID: "VK4/SE-114",
@@ -24,17 +24,17 @@ describe("SpotBuilder", () => {
 			// Arrange
 
 			// Act
-			const spot = new SpotBuilder().addPnpSpot(pnpSpot).build();
+			const spot = new SpotBuilder().addPnpSpot(pnpSpotTemplate).build();
 
 			// Assert
-			expect(spot.siteName).toEqual(pnpSpot.altLocation);
+			expect(spot.siteName).toEqual(pnpSpotTemplate.altLocation);
 		});
 
 		it("Gets the correct altAward", () => {
 			// Arrange
 
 			// Act
-			const spot = new SpotBuilder().addPnpSpot(pnpSpot).build();
+			const spot = new SpotBuilder().addPnpSpot(pnpSpotTemplate).build();
 
 			// Assert
 			expect(spot.awardList.getAtIndex(1).award).toEqual(AwardScheme.VKFF);
@@ -44,10 +44,21 @@ describe("SpotBuilder", () => {
 			// Arrange
 
 			// Act
-			const spot = new SpotBuilder().addPnpSpot(pnpSpot).build();
+			const spot = new SpotBuilder().addPnpSpot(pnpSpotTemplate).build();
 
 			// Assert
 			expect(spot.awardList.getAtIndex(1).siteId).toEqual("VKFF-0344");
+		});
+
+		it("non WWFF altClass", () => {
+			// Arrange
+			const pnpSpot = JSON.parse(JSON.stringify(pnpSpotTemplate));
+			pnpSpot.altClass = "POTA";
+			// Act
+			const spot = new SpotBuilder().addPnpSpot(pnpSpot).build();
+
+			// Assert
+			expect(spot.awardList.length).toEqual(1);
 		});
 	});
 

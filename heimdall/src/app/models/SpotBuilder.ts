@@ -38,15 +38,6 @@ export class SpotBuilder {
 		return spot;
 	}
 
-	private getAltSiteId(pnpSpot: PnPSpot, altAward: AwardScheme): string {
-		switch (altAward) {
-			case AwardScheme.VKFF:
-				return pnpSpot.WWFFid;
-			default:
-				return "";
-		}
-	}
-
 	private getAwardSchemes(pnpSpot: PnPSpot): ActivationAward[] {
 		const retVal: ActivationAward[] = [
 			new ActivationAward(
@@ -60,9 +51,20 @@ export class SpotBuilder {
 				AwardScheme[pnpSpot.altClass as keyof typeof AwardScheme];
 			const altSiteId = this.getAltSiteId(pnpSpot, altAward);
 
-			retVal.push(new ActivationAward(altAward, altSiteId));
+			if (altSiteId != "") {
+				retVal.push(new ActivationAward(altAward, altSiteId));
+			}
 		}
 
 		return retVal;
+	}
+
+	private getAltSiteId(pnpSpot: PnPSpot, altAward: AwardScheme): string {
+		switch (altAward) {
+			case AwardScheme.VKFF:
+				return pnpSpot.WWFFid;
+			default:
+				return "";
+		}
 	}
 }

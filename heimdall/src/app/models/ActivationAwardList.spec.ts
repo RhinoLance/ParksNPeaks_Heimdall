@@ -48,5 +48,51 @@ describe("ActivationAwardList", () => {
 			// Assert
 			expect(awards).toBe("WWFFSOTA");
 		});
+
+		describe("ContainsAward", () => {
+			it("finds matching award", () => {
+				// Arrange
+				const list = testList.clone();
+
+				// Act
+				const result = list.containsAward(AwardScheme.WWFF);
+
+				// Assert
+				expect(result).toBe(true);
+			});
+
+			it("finds multiple matching awards", () => {
+				// Arrange
+				const list = testList.clone();
+
+				// Act
+				const result = list.containsAward(AwardScheme.WWFF, AwardScheme.SOTA);
+
+				// Assert
+				expect(result).toBe(true);
+			});
+
+			it("finds matching subsequent matching award in list", () => {
+				// Arrange
+				const list = testList.clone();
+
+				// Act
+				const result = list.containsAward(AwardScheme.HEMA, AwardScheme.SOTA);
+
+				// Assert
+				expect(result).toBe(true);
+			});
+
+			it("does not find missing award", () => {
+				// Arrange
+				const list = testList.clone();
+
+				// Act
+				const result = list.containsAward(AwardScheme.HEMA);
+
+				// Assert
+				expect(result).toBe(false);
+			});
+		});
 	});
 });

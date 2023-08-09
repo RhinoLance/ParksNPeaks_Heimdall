@@ -79,6 +79,7 @@ export class PnPClientService {
 		return data;
 	}
 
+	/*
 	private filterOldSpots(spots: Spot[]): Spot[] {
 		const output = spots.filter((spot) => {
 			return (
@@ -95,4 +96,5 @@ export class PnPClientService {
 
 		return output;
 	}
+	*/
 }

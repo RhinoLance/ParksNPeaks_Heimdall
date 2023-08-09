@@ -24,7 +24,7 @@ describe("TimeUpdator", () => {
 		expect(spot.tPlusMinutes).toBe(5);
 	});
 
-	fit("It should update a spot after interval", () => {
+	it("It should update a spot after interval", () => {
 		// Arrange
 		const date = new TimeUpdatorDate();
 		spyOn(date, "currentTimeStamp").and.returnValues(

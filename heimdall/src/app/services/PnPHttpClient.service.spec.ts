@@ -1,6 +1,8 @@
 import { PnPSpot } from "../models/PnPSpot";
 import { PnPClientService } from "./PnPHttpClient.service";
 import { FetchService } from "./FetchService";
+import { Subject, of } from "rxjs";
+import { Spot } from "../models/Spot";
 
 describe("PnPHttpClientService", () => {
 	/*
@@ -45,6 +47,56 @@ describe("PnPHttpClientService", () => {
 
 		// Assert
 		expect(result.length).not.toBeNull();
+	});
+
+	describe("SubscribeToSpots", () => {
+		it("should get a spot list", (done) => {
+			// Arrange
+			const pnpSpot = clonePnPSpot(templateSpot);
+
+			const fetch = new FetchService();
+			spyOn(fetch, "pollJson").and.returnValues(of([pnpSpot]));
+
+			const svc = new PnPClientService(fetch);
+
+			// Act
+			svc.subscribeToSpots().subscribe((result) => {
+				// Assert
+				expect(result.length).not.toBeNull();
+				done();
+			});
+		});
+
+		it("should get two spot lists", () => {
+			// Arrange
+			const pnpSpot1 = clonePnPSpot(templateSpot);
+			const pnpSpot2 = clonePnPSpot(templateSpot);
+			const pnpSpot3 = clonePnPSpot(templateSpot);
+			pnpSpot2.actMode = "CW";
+			pnpSpot3.actMode = "FM";
+
+			const subject = new Subject<PnPSpot[]>();
+
+			const fetch = new FetchService();
+			spyOn(fetch, "pollJson").and.returnValue(subject);
+
+			const svc = new PnPClientService(fetch);
+			const result: Spot[] = [];
+
+			svc.subscribeToSpots().subscribe({
+				next: (next) => {
+					result.push(...next);
+				},
+			});
+
+			// Act
+			subject.next([pnpSpot1]);
+			subject.next([pnpSpot2, pnpSpot3]);
+			subject.complete();
+
+			// Assert
+			expect(result.length).toBe(3);
+		});
 	});
 
 	/*

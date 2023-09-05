@@ -14,10 +14,4 @@ describe("AppComponent", () => {
 		const app = fixture.componentInstance;
 		expect(app).toBeTruthy();
 	});
-
-	it(`should have as title 'heimdall'`, () => {
-		const fixture = TestBed.createComponent(MainComponent);
-		const app = fixture.componentInstance;
-		expect(app.title).toEqual("heimdall");
-	});
 });

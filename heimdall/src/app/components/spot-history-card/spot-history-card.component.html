@@ -33,7 +33,7 @@
 								>{{ spot.time | timeAgo }}&nbsp;</span
 							>
 							<span *ngIf="spot.type === 1">
-								{{ spot.frequency }}
+								{{ spot.frequency.toFixed(3) }}
 								<pph-mode-badge [mode]="spot.mode"></pph-mode-badge>
 								&nbsp;
 							</span>

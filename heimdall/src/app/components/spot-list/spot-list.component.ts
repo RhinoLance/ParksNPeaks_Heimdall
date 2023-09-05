@@ -24,7 +24,15 @@ export class SpotListComponent implements OnDestroy {
 	public constructor(_pnpClient: PnPClientService) {
 		_pnpClient.subscribeToSpots(1).subscribe((spots) => {
 			this._spotCalatogue.addSpots(spots);
-			this.viewState.activationList = this._spotCalatogue.activations;
+
+			const activationList = this._spotCalatogue.activations;
+			activationList.sort((a, b) => {
+				return (
+					b.getLatestSpot().time.getTime() - a.getLatestSpot().time.getTime()
+				);
+			});
+
+			this.viewState.activationList = activationList;
 
 			this._spotTimeUpdator.start();
 		});

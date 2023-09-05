@@ -1,5 +1,6 @@
 import { Component } from "@angular/core";
 import { RouterOutlet } from "@angular/router";
+import packageJson from "../../../../package.json";
 
 @Component({
 	selector: "pph-root",
@@ -9,5 +10,11 @@ import { RouterOutlet } from "@angular/router";
 	imports: [RouterOutlet],
 })
 export class MainComponent {
-	public title = "heimdall";
+	public viewModel: ViewState = {
+		version: packageJson.version,
+	};
 }
+
+type ViewState = {
+	version: string;
+};

@@ -23,7 +23,7 @@
 						{{ activation.callsign }}
 					</div>
 					<div>
-						<span class="h3">{{ viewState.spot.frequency }}</span>
+						<span class="h3">{{ viewState.spot.frequency.toFixed(3) }}</span>
 						<pph-mode-badge [mode]="viewState.spot.mode"></pph-mode-badge>
 					</div>
 				</div>

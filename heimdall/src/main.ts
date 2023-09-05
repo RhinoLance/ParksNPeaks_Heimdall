@@ -1,13 +1,14 @@
-import { enableProdMode } from "@angular/core";
-import { platformBrowserDynamic } from "@angular/platform-browser-dynamic";
+import { enableProdMode, importProvidersFrom } from "@angular/core";
 
-import { AppModule } from "./app/app.module";
 import { environment } from "./environments/environment";
+import { MainComponent } from "./app/components/main/main.component";
+import { AppRoutingModule } from "./app/app-routing.module";
+import { BrowserModule, bootstrapApplication } from "@angular/platform-browser";
 
 if (environment.production) {
 	enableProdMode();
 }
 
-platformBrowserDynamic()
-	.bootstrapModule(AppModule)
-	.catch((err) => console.error(err)); // eslint-disable-line no-console
+bootstrapApplication(MainComponent, {
+	providers: [importProvidersFrom(BrowserModule, AppRoutingModule)],
+}).catch((err) => console.error(err)); // eslint-disable-line no-console

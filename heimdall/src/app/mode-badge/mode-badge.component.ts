@@ -5,6 +5,7 @@ import { SpotMode } from "../models/SpotMode";
 	selector: "pph-mode-badge",
 	templateUrl: "./mode-badge.component.html",
 	styleUrls: ["./mode-badge.component.scss"],
+	standalone: true,
 })
 export class ModeBadgeComponent implements OnInit {
 	@Input() public mode!: SpotMode;

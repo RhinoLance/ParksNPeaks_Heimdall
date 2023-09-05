@@ -10,7 +10,7 @@ describe("ActivationComponent", () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [ActivationComponent],
+			imports: [ActivationComponent],
 		}).compileComponents();
 	});
 

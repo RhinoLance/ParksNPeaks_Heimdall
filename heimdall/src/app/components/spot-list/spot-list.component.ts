@@ -3,11 +3,15 @@ import { ActivationCatalogue } from "src/app/models/ActivationCatalogue";
 import { TimeUpdator } from "src/app/models/TimeUpdator";
 import { Activation } from "src/app/models/Activation";
 import { PnPClientService } from "src/app/services/PNPHttpClient.service";
+import { ActivationComponent } from "../activation/activation.component";
+import { NgFor } from "@angular/common";
 
 @Component({
 	selector: "pph-spot-list",
 	templateUrl: "./spot-list.component.html",
 	styleUrls: ["./spot-list.component.scss"],
+	standalone: true,
+	imports: [NgFor, ActivationComponent],
 })
 export class SpotListComponent implements OnDestroy {
 	public viewState: ViewState = {

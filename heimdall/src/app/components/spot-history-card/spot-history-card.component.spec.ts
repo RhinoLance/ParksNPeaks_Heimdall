@@ -8,7 +8,7 @@ describe("SpotHistoryCardComponent", () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [SpotHistoryCardComponent],
+			imports: [SpotHistoryCardComponent],
 		}).compileComponents();
 	});
 

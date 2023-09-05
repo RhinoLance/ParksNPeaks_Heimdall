@@ -21,7 +21,7 @@ describe("SpotListComponent", () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [SpotListComponent],
+			imports: [SpotListComponent],
 			providers: [
 				SpotListComponent,
 				{ provide: PnPClientService, useClass: MockPnpClientService },

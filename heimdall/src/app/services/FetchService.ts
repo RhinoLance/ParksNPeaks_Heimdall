@@ -1,20 +1,23 @@
 import { Injectable } from "@angular/core";
-import { IFetch } from "./IFetch";
-import { Observable, interval, mergeMap, takeUntil } from "rxjs";
+import { Observable, timer, mergeMap, takeUntil } from "rxjs";
 import { fromFetch } from "rxjs/fetch";
 import { CancellationToken } from "../models/CancellationToken";
 
 @Injectable({
 	providedIn: "root",
 })
-export class FetchService implements IFetch {
+export class FetchService {
+	public constructor(private _deps: FetchServiceDeps) {}
+
 	public getJsonPromise<T>(url: string, request: RequestInit): Promise<T> {
 		return new Promise((resolve, reject) => {
 			this.getJson<T>(url, request).subscribe({
 				next: (data: T) => {
 					return resolve(data);
 				},
-				error: (err) => reject(err),
+				error: (err) => {
+					return reject("Caught: " + err);
+				},
 			});
 		});
 	}
@@ -25,9 +28,7 @@ export class FetchService implements IFetch {
 		};
 		Object.assign(requestInit, request);
 
-		requestInit.selector = (response: Response) => response.json();
-
-		return fromFetch(url, requestInit);
+		return this._deps.fromFetch(url, requestInit);
 	}
 
 	/// Returns an observable which calls getJson every updateInterval seconds
@@ -40,15 +41,32 @@ export class FetchService implements IFetch {
 		updateInterval: number,
 		url: string,
 		request: RequestInit,
-		cancellationToken: CancellationToken
+		cancellationToken?: CancellationToken
 	): Observable<T> {
-		cancellationToken = cancellationToken || new CancellationToken();
+		cancellationToken = cancellationToken ?? new CancellationToken();
 
-		const obs = interval(updateInterval * 1000).pipe(
+		const obs = this._deps.timer(0, updateInterval * 60 * 1000).pipe(
 			mergeMap(() => this.getJson<T>(url, request)),
 			takeUntil(cancellationToken.token)
 		);
 
 		return obs;
 	}
+}
+
+// eslint-disable-next-line  @typescript-eslint/no-explicit-any
+export type TInit = RequestInit & { selector: (response: any) => unknown };
+// eslint-disable-next-line  @typescript-eslint/no-explicit-any
+export type TFromFetch = (input: string, init: TInit) => Observable<any>;
+export type TTimer = (
+	startAfter: number,
+	repeatPeriod: number
+) => Observable<unknown>;
+
+@Injectable({
+	providedIn: "root",
+})
+export class FetchServiceDeps {
+	public fromFetch: TFromFetch = fromFetch;
+	public timer: TTimer = timer;
 }

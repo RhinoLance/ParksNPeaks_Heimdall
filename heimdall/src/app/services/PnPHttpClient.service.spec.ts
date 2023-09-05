@@ -1,8 +1,8 @@
 import { PnPSpot } from "../models/PnPSpot";
-import { PnPClientService } from "./PnPHttpClient.service";
-import { FetchService } from "./FetchService";
+import { FetchService, FetchServiceDeps } from "./FetchService";
 import { Subject, of } from "rxjs";
 import { Spot } from "../models/Spot";
+import { PnPClientService } from "./PNPHttpClient.service";
 
 describe("PnPHttpClientService", () => {
 	/*
@@ -35,7 +35,7 @@ describe("PnPHttpClientService", () => {
 
 	it("shouild get a spot list", async () => {
 		// Arrange
-		const fetch = new FetchService();
+		const fetch = new FetchService(new FetchServiceDeps());
 		spyOn(fetch, "getJsonPromise").and.returnValues(
 			Promise.resolve([clonePnPSpot(templateSpot)])
 		);
@@ -54,7 +54,7 @@ describe("PnPHttpClientService", () => {
 			// Arrange
 			const pnpSpot = clonePnPSpot(templateSpot);
 
-			const fetch = new FetchService();
+			const fetch = new FetchService(new FetchServiceDeps());
 			spyOn(fetch, "pollJson").and.returnValues(of([pnpSpot]));
 
 			const svc = new PnPClientService(fetch);
@@ -77,7 +77,7 @@ describe("PnPHttpClientService", () => {
 
 			const subject = new Subject<PnPSpot[]>();
 
-			const fetch = new FetchService();
+			const fetch = new FetchService(new FetchServiceDeps());
 			spyOn(fetch, "pollJson").and.returnValue(subject);
 
 			const svc = new PnPClientService(fetch);

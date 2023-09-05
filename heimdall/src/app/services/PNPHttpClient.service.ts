@@ -50,7 +50,12 @@ export class PnPClientService {
 		cancellationToken = cancellationToken || new CancellationToken();
 
 		const obs = this._fetchSvc
-			.pollJson<PnPSpot[]>(updateInterval, "ALL", {}, cancellationToken)
+			.pollJson<PnPSpot[]>(
+				updateInterval,
+				`${this._phpBaseHref}ALL`,
+				{},
+				cancellationToken
+			)
 			.pipe(
 				map((pnpSpots) => {
 					return new SpotListBuilder()
@@ -78,23 +83,4 @@ export class PnPClientService {
 
 		return data;
 	}
-
-	/*
-	private filterOldSpots(spots: Spot[]): Spot[] {
-		const output = spots.filter((spot) => {
-			return (
-				new Date(spot.time).getTime() >
-				this._pnpSubscription.latestSpot.getTime()
-			);
-		});
-
-		if (spots.length > 0) {
-			this._pnpSubscription.latestSpot = spots.reduce((prev, current) =>
-				prev.time > current.time ? prev : current
-			).time;
-		}
-
-		return output;
-	}
-	*/
 }

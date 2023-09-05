@@ -1,8 +1,8 @@
 import { Component, OnDestroy } from "@angular/core";
 import { ActivationCatalogue } from "src/app/models/ActivationCatalogue";
 import { TimeUpdator } from "src/app/models/TimeUpdator";
-import { PnPClientService } from "src/app/services/PnPHttpClient.service";
 import { Activation } from "src/app/models/Activation";
+import { PnPClientService } from "src/app/services/PNPHttpClient.service";
 
 @Component({
 	selector: "pph-spot-list",
@@ -18,7 +18,7 @@ export class SpotListComponent implements OnDestroy {
 	private _spotTimeUpdator: TimeUpdator = new TimeUpdator(this._spotCalatogue);
 
 	public constructor(_pnpClient: PnPClientService) {
-		_pnpClient.getSpotList().then((spots) => {
+		_pnpClient.subscribeToSpots(1).subscribe((spots) => {
 			this._spotCalatogue.addSpots(spots);
 			this.viewState.activationList = this._spotCalatogue.activations;
 

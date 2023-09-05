@@ -13,7 +13,7 @@
 		"prepare": "cd .. && husky install heimdall/.husky",
 		"lint": "ng lint",
 		"lint:fix": "ng lint --fix",
-		"prettier": "prettier --write",
+		"prettier": "prettier . --write",
 		"prettier:staged": "pretty-quick --staged"
 	},
 	"private": true,

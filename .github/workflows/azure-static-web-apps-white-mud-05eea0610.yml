@@ -36,7 +36,11 @@ jobs:
         working-directory: ./heimdall
         run: npm run build:prod
 
-      - name: Build And Deploy
+      - name: copy static assets
+        working-directory: ./heimdall
+        run: cp staticwebapp.config.json dist/heimdall
+
+      - name: Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
         with:

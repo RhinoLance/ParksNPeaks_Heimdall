@@ -19,8 +19,5 @@
   "homepage": "https://github.com/RhinoLance/ParksNPeaks_Heimdall#readme",
   "devDependencies": {
     "husky": "^8.0.0"
-  },
-  "dependencies": {
-    "ngx-pipes": "^3.2.2"
   }
 }

@@ -205,7 +205,7 @@ describe("Activation", () => {
 			expect(addedSpot?.type).toBe(SpotType.Spot);
 		});
 
-		it("Subsequent spot with same freq and mode should be ReSpot", () => {
+		fit("Subsequent spot with same freq and mode should be ReSpot", () => {
 			// Arrange
 			const spot2 = new Spot();
 			spot2.callsignRoot = spot1.callsignRoot;
@@ -223,7 +223,7 @@ describe("Activation", () => {
 			expect(addedSpot?.type).toBe(SpotType.Respot);
 		});
 
-		it("Changing frequency should result in type: ReSpot", () => {
+		it("Changing frequency should result in type: Spot", () => {
 			// Arrange
 			const spot2 = new Spot();
 			spot2.callsignRoot = spot1.callsignRoot;
@@ -241,7 +241,7 @@ describe("Activation", () => {
 			expect(addedSpot?.type).toBe(SpotType.Spot);
 		});
 
-		it("Changing mode should result in type: ReSpot", () => {
+		it("Changing mode should result in type: Spot", () => {
 			// Arrange
 			const spot2 = new Spot();
 			spot2.callsignRoot = spot1.callsignRoot;

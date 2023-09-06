@@ -128,16 +128,19 @@ export class Activation {
 	private setSpotType(spot: Spot): void {
 		const index = this._spotList.findIndex((v) => v.id == spot.id);
 
-		if (index > 0) {
-			const previousSpot = this._spotList[index - 1];
-			spot.type =
-				previousSpot.mode == spot.mode &&
-				previousSpot.frequency == spot.frequency
-					? SpotType.Respot
-					: SpotType.Spot;
-		} else {
+		//The spotList should already be sorted by time, with index 0 having he latest spot.
+
+		//Is it the earliest spot of the activation?
+		if (index == this._spotList.length - 1) {
 			spot.type = SpotType.Spot;
+			return;
 		}
+
+		const previousSpot = this._spotList[index + 1];
+		spot.type =
+			previousSpot.mode == spot.mode && previousSpot.frequency == spot.frequency
+				? SpotType.Respot
+				: SpotType.Spot;
 	}
 
 	private addAwardIfRequired(spot: Spot): void {

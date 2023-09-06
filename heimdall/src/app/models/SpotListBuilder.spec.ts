@@ -33,7 +33,7 @@ describe("SpotListBuilder", () => {
 		expect(spotList).toHaveSize(1);
 	});
 
-	it("Orders ASC by default", async () => {
+	it("Orders DESC by default", async () => {
 		// Arrange
 		const spot1 = clonePnPSpot(templateSpot);
 		spot1.actFreq = "7.000";
@@ -50,7 +50,7 @@ describe("SpotListBuilder", () => {
 		const spotList = slb.buildFromPnPSpots(source);
 
 		// Assert
-		expect(spotList[0].frequency).toBe(7);
+		expect(spotList[0].frequency).toBe(8);
 	});
 
 	it("Orders ASC when set", async () => {

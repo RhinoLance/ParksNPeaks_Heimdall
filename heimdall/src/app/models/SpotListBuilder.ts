@@ -6,7 +6,7 @@ type SortOrder = "ASC" | "DESC";
 
 export class SpotListBuilder {
 	private _callsignFilter: string = "";
-	private _sortOrder: SortOrder = "ASC";
+	private _sortOrder: SortOrder = "DESC";
 
 	public setCallsignFilter(region: string): SpotListBuilder {
 		this._callsignFilter = region;

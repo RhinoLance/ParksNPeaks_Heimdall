@@ -23,7 +23,6 @@ export class SpotBuilder {
 		const spot = new Spot();
 		spot.callsign = pnpSpot.actCallsign;
 		spot.callsignRoot = pnpSpot.actCallsign.split("/P")[0];
-		spot.comment = pnpSpot.actComments;
 		spot.frequency = Number(pnpSpot.actFreq);
 		spot.mode = SpotMode[pnpSpot.actMode as keyof typeof SpotMode];
 		spot.spotter = pnpSpot.actSpoter;
@@ -34,6 +33,8 @@ export class SpotBuilder {
 
 		spot.siteName =
 			pnpSpot.altLocation == "" ? pnpSpot.actLocation : pnpSpot.altLocation;
+
+		spot.comment = this.stripSpotPublisherFromComment(pnpSpot.actComments);
 
 		return spot;
 	}
@@ -66,5 +67,20 @@ export class SpotBuilder {
 			default:
 				return "";
 		}
+	}
+
+	private stripSpotPublisherFromComment(comment: string): string {
+		const publishers = [
+			"VK portalog",
+			"[VK port-a-log]",
+			"*[iPnP]",
+			"SOTA Spotter",
+		];
+
+		for (const publisher of publishers) {
+			comment = comment.replace(publisher, "");
+		}
+
+		return comment.trim();
 	}
 }

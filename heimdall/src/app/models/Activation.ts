@@ -41,7 +41,13 @@ export class Activation {
 	}
 
 	public getLatestSpot(): Spot {
-		return this._spotList[this.spotCount - 1];
+		//return this._spotList[this.spotCount - 1];
+
+		const latest = this._spotList.reduce((a, b) => {
+			return a.time > b.time ? a : b;
+		});
+
+		return latest;
 	}
 
 	public getSupersededSpots() {
@@ -115,7 +121,7 @@ export class Activation {
 
 	private orderSpotsByTime(): void {
 		this._spotList.sort((a, b) => {
-			return a.time.getTime() - b.time.getTime();
+			return b.time.getTime() - a.time.getTime();
 		});
 	}
 

@@ -60,6 +60,19 @@ describe("SpotBuilder", () => {
 			// Assert
 			expect(spot.awardList.length).toEqual(1);
 		});
+
+		it("no altLocation", () => {
+			// Arrange
+			const pnpSpot = JSON.parse(JSON.stringify(pnpSpotTemplate));
+			pnpSpot.altLocation = "";
+			pnpSpot.actLocation = "test";
+
+			// Act
+			const spot = new SpotBuilder().addPnpSpot(pnpSpot).build();
+
+			// Assert
+			expect(spot.siteName).toEqual("test");
+		});
 	});
 
 	describe("Invalid states", () => {

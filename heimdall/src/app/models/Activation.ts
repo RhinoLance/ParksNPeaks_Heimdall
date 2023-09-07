@@ -5,12 +5,15 @@ import { SpotType } from "./SpotType";
 
 import commonSiteNamewords from "../../assets/data/commonSiteNameWords.json";
 import { ActivationAwardList } from "./ActivationAwardList";
+import { Subject } from "rxjs";
 
 export class Activation {
 	public awardList: ActivationAwardList = new ActivationAwardList();
 	public siteName: string = "";
 	public callsign: string = "";
 	public callsignRoot: string = "";
+
+	public onUpdate = new Subject<Spot>();
 
 	private _spotList: Spot[] = [];
 
@@ -34,24 +37,24 @@ export class Activation {
 	}
 
 	public addSpot(spot: Spot): void {
+		if (this.containsDuplicateSpot(spot)) {
+			return;
+		}
+
 		this._spotList.push(spot);
 		this.orderSpotsByTime();
 		this.setSpotType(spot);
 		this.addAwardIfRequired(spot);
+
+		this.onUpdate.next(spot);
 	}
 
 	public getLatestSpot(): Spot {
-		//return this._spotList[this.spotCount - 1];
-
-		const latest = this._spotList.reduce((a, b) => {
-			return a.time > b.time ? a : b;
-		});
-
-		return latest;
+		return this._spotList[0];
 	}
 
 	public getSupersededSpots() {
-		return this._spotList.slice(1, this.spotCount - 1);
+		return this._spotList.slice(1, this.spotCount);
 	}
 
 	public isPartOfThisActivation(spot: Spot): boolean {
@@ -67,7 +70,7 @@ export class Activation {
 			return false;
 		}
 
-		if (this.hasMatchingSite(spot)) {
+		if (this.hasMatchingSiteId(spot)) {
 			return true;
 		}
 
@@ -78,8 +81,19 @@ export class Activation {
 		return false;
 	}
 
-	private hasMatchingSite(spot: Spot): boolean {
-		return this.awardList.containsSite(...spot.awardList.getSiteIds());
+	public containsDuplicateSpot(spot: Spot): boolean {
+		return (
+			this._spotList.filter(
+				(v) =>
+					v.callsign == spot.callsign &&
+					v.time == spot.time &&
+					v.spotter == spot.spotter
+			).length > 0
+		);
+	}
+
+	private hasMatchingSiteId(spot: Spot): boolean {
+		return this.awardList.containsSiteId(...spot.awardList.getSiteIds());
 	}
 
 	private hasMatchingSpot(spot: Spot): boolean {

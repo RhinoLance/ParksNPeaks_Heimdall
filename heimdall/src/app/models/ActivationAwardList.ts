@@ -55,7 +55,7 @@ export class ActivationAwardList implements Iterable<ActivationAward> {
 		return retVal;
 	}
 
-	public containsSite(...siteId: string[]): boolean {
+	public containsSiteId(...siteId: string[]): boolean {
 		let retVal = false;
 
 		for (let cI = 0; cI < siteId.length; cI++) {

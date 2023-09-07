@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { ActivationCatalogue } from "src/app/models/ActivationCatalogue";
 import { TimeUpdator } from "src/app/models/TimeUpdator";
 import { Activation } from "src/app/models/Activation";
@@ -13,28 +13,43 @@ import { NgFor } from "@angular/common";
 	standalone: true,
 	imports: [NgFor, ActivationComponent],
 })
-export class SpotListComponent implements OnDestroy {
+export class SpotListComponent implements OnDestroy, OnInit {
 	public viewState: ViewState = {
 		activationList: [],
 	};
 
-	private _spotCalatogue: ActivationCatalogue = new ActivationCatalogue();
-	private _spotTimeUpdator: TimeUpdator = new TimeUpdator(this._spotCalatogue);
+	private _activationCalatogue: ActivationCatalogue = new ActivationCatalogue();
+	private _spotTimeUpdator: TimeUpdator = new TimeUpdator(
+		this._activationCalatogue
+	);
 
-	public constructor(_pnpClient: PnPClientService) {
-		_pnpClient.subscribeToSpots(1).subscribe((spots) => {
-			this._spotCalatogue.addSpots(spots);
+	private _spotAddedCouner: number = 0;
 
-			const activationList = this._spotCalatogue.activations;
+	public constructor(private _pnpClient: PnPClientService) {}
+
+	public ngOnInit(): void {
+		this._pnpClient.subscribeToSpots(1).subscribe((spots) => {
+			if (this._spotAddedCouner >= spots.length) {
+				return;
+			}
+
+			spots = [spots[spots.length - (this._spotAddedCouner + 1)]];
+
+			this._spotAddedCouner++;
+
+			this._activationCalatogue.addSpots(spots);
+
+			const activationList = this._activationCalatogue.activations;
 			activationList.sort((a, b) => {
 				return (
 					b.getLatestSpot().time.getTime() - a.getLatestSpot().time.getTime()
 				);
 			});
 
+			//this.viewState.activationList.length = 0;
 			this.viewState.activationList = activationList;
 
-			this._spotTimeUpdator.start();
+			//this._spotTimeUpdator.start();
 		});
 	}
 

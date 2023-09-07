@@ -59,3 +59,16 @@ describe("TimeUpdator", () => {
 		expect(spot.tPlusMinutes).toBe(10);
 	});
 });
+
+describe("TimeUpdatorDate", () => {
+	it("It should return current time", () => {
+		// Arrange
+		const date = new TimeUpdatorDate();
+
+		// Act
+		const time = date.currentTimeStamp();
+
+		// Assert
+		expect(time).toBeGreaterThan(0);
+	});
+});

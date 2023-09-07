@@ -18,6 +18,51 @@ describe("Activation", () => {
 		expect(activation.spotCount).toBe(1);
 	});
 
+	it("It should ignore duplicate spots", () => {
+		// Arrange
+		const spot1 = new Spot();
+		const spot2 = new Spot();
+		spot2.time = spot1.time;
+
+		const activation = new Activation(spot1);
+
+		// Act
+		activation.addSpot(spot2);
+
+		// Assert
+		expect(activation.spotCount).toBe(1);
+	});
+
+	it("It gets superseeded spots", () => {
+		// Arrange
+		const spot1 = new Spot();
+		const spot2 = new Spot();
+
+		const activation = new Activation(spot1);
+		activation.addSpot(spot2);
+
+		// Act
+		const superseeded = activation.getSupersededSpots();
+
+		// Assert
+		expect(superseeded[0].time.getTime()).toBe(spot2.time.getTime());
+	});
+
+	it("It gets superseeded spots when added in wrong order", () => {
+		// Arrange
+		const spot1 = new Spot();
+		const spot2 = new Spot();
+
+		const activation = new Activation(spot2);
+		activation.addSpot(spot1);
+
+		// Act
+		const superseeded = activation.getSupersededSpots();
+
+		// Assert
+		expect(superseeded[0].time.getTime()).toBe(spot2.time.getTime());
+	});
+
 	describe("Testing if spots are part of the same activation", () => {
 		const spotTemplate = new Spot();
 		spotTemplate.callsignRoot = "VK1AD";
@@ -56,13 +101,19 @@ describe("Activation", () => {
 
 		it("Different site, same award", () => {
 			// Arrange
+			const spot1 = spotTemplate.clone();
 			const spot2 = spotTemplate.clone();
+
+			spot1.awardList = new ActivationAwardList(
+				new ActivationAward(AwardScheme.SOTA, "VK/AC-999")
+			);
+
 			spot2.awardList = new ActivationAwardList(
-				new ActivationAward(AwardScheme.SOTA, "VK/AC-084")
+				new ActivationAward(AwardScheme.SOTA, "VK/AC-111")
 			);
 
 			// Act
-			const activation = new Activation(spotTemplate);
+			const activation = new Activation(spot1);
 			const result = activation.isPartOfThisActivation(spot2);
 
 			// Assert
@@ -71,12 +122,13 @@ describe("Activation", () => {
 
 		it("Wrong name", () => {
 			// Arrange
+			const spot1 = spotTemplate.clone();
 			const spot2 = spotTemplate.clone();
 			spot2.siteName = "Wrong name";
 			spot2.awardList = new ActivationAwardList();
 
 			// Act
-			const activation = new Activation(spotTemplate);
+			const activation = new Activation(spot1);
 			const result = activation.isPartOfThisActivation(spot2);
 
 			// Assert
@@ -98,16 +150,55 @@ describe("Activation", () => {
 			expect(result).toBe(true);
 		});
 
-		it("Different site and award, 30 min difference", () => {
+		it("Different site and award, 31 min difference", () => {
 			// Arrange
+			const spot1 = spotTemplate.clone();
 			const spot2 = spotTemplate.clone();
+			spot1.awardList = new ActivationAwardList(
+				new ActivationAward(AwardScheme.WWFF, "VKFF-1111")
+			);
 			spot2.awardList = new ActivationAwardList(
-				new ActivationAward(AwardScheme.WWFF, "VKFF-1234")
+				new ActivationAward(AwardScheme.WWFF, "VKFF-8888")
 			);
 			spot2.time = spotTemplate.time.addMinutes(31);
 
 			// Act
+			const activation = new Activation(spot1);
+			const result = activation.isPartOfThisActivation(spot2);
+
+			// Assert
+			expect(result).toBe(false);
+		});
+
+		it("Same site and award, 31 min difference", () => {
+			// Arrange
+			const spot2 = spotTemplate.clone();
+			spot2.time = spotTemplate.time.addMinutes(31);
+
+			// Act
 			const activation = new Activation(spotTemplate);
+			const result = activation.isPartOfThisActivation(spot2);
+
+			// Assert
+			expect(result).toBe(true);
+		});
+
+		it("Same award, different site, greater than 30 mins", () => {
+			// Arrange
+			const spot1 = spotTemplate.clone();
+			const spot2 = spotTemplate.clone();
+
+			spot1.awardList = new ActivationAwardList(
+				new ActivationAward(AwardScheme.WWFF, "VKFF-1111")
+			);
+
+			spot2.awardList = new ActivationAwardList(
+				new ActivationAward(AwardScheme.SOTA, "VKFF-9999")
+			);
+			spot2.time = spot2.time.addMinutes(31);
+
+			// Act
+			const activation = new Activation(spot1);
 			const result = activation.isPartOfThisActivation(spot2);
 
 			// Assert
@@ -133,14 +224,44 @@ describe("Activation", () => {
 
 		it("Different award and site, similar name", () => {
 			// Arrange
+			const spot1 = spotTemplate.clone();
 			const spot2 = spotTemplate.clone();
+
+			spot1.awardList = new ActivationAwardList(
+				new ActivationAward(AwardScheme.WWFF, "VKFF-1111")
+			);
+			spot1.siteName = "Mt Stromlo";
+
+			spot2.awardList = new ActivationAwardList(
+				new ActivationAward(AwardScheme.SOTA, "VKFF-9999")
+			);
+			spot2.siteName = "Stromlo reserve";
+			spot2.time = spot2.time.addMinutes(10);
+
+			// Act
+			const activation = new Activation(spot1);
+			const result = activation.isPartOfThisActivation(spot2);
+
+			// Assert
+			expect(result).toBe(true);
+		});
+
+		it("Same site", () => {
+			// Arrange
+			const spot1 = spotTemplate.clone();
+			const spot2 = spotTemplate.clone();
+
+			spot1.awardList = new ActivationAwardList(
+				new ActivationAward(AwardScheme.WWFF, "VKFF-1234")
+			);
+
 			spot2.awardList = new ActivationAwardList(
 				new ActivationAward(AwardScheme.WWFF, "VKFF-1234")
 			);
 			spot2.siteName = "Stromlo reserve";
 
 			// Act
-			const activation = new Activation(spotTemplate);
+			const activation = new Activation(spot1);
 			const result = activation.isPartOfThisActivation(spot2);
 
 			// Assert
@@ -163,7 +284,7 @@ describe("Activation", () => {
 			spot1.awardList.add(new ActivationAward(AwardScheme.WWFF, "VKFF-1234"));
 
 			// Act
-			const activation = new Activation(spotTemplate);
+			const activation = new Activation(spot1);
 			activation.addSpot(spot1);
 			const awards = activation.awardList;
 
@@ -205,7 +326,7 @@ describe("Activation", () => {
 			expect(addedSpot?.type).toBe(SpotType.Spot);
 		});
 
-		fit("Subsequent spot with same freq and mode should be ReSpot", () => {
+		it("Subsequent spot with same freq and mode should be ReSpot", () => {
 			// Arrange
 			const spot2 = new Spot();
 			spot2.callsignRoot = spot1.callsignRoot;

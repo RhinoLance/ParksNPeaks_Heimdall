@@ -5,7 +5,7 @@ import { SpotType } from "./SpotType";
 
 import commonSiteNamewords from "../../assets/data/commonSiteNameWords.json";
 import { ActivationAwardList } from "./ActivationAwardList";
-import { Subject } from "rxjs";
+import { ReplaySubject, Subject } from "rxjs";
 
 export class Activation {
 	public awardList: ActivationAwardList = new ActivationAwardList();
@@ -13,7 +13,7 @@ export class Activation {
 	public callsign: string = "";
 	public callsignRoot: string = "";
 
-	public onUpdate = new Subject<Spot>();
+	public onUpdate = new ReplaySubject<Spot>();
 
 	private _spotList: Spot[] = [];
 
@@ -86,7 +86,7 @@ export class Activation {
 			this._spotList.filter(
 				(v) =>
 					v.callsign == spot.callsign &&
-					v.time == spot.time &&
+					v.time.getTime() == spot.time.getTime() &&
 					v.spotter == spot.spotter
 			).length > 0
 		);

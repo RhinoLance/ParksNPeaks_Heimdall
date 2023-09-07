@@ -37,6 +37,7 @@ describe("Activation", () => {
 		// Arrange
 		const spot1 = new Spot();
 		const spot2 = new Spot();
+		spot2.time = spot2.time.addMinutes(10);
 
 		const activation = new Activation(spot1);
 		activation.addSpot(spot2);
@@ -45,13 +46,14 @@ describe("Activation", () => {
 		const superseeded = activation.getSupersededSpots();
 
 		// Assert
-		expect(superseeded[0].time.getTime()).toBe(spot2.time.getTime());
+		expect(superseeded[0].time.getTime()).toEqual(spot1.time.getTime());
 	});
 
 	it("It gets superseeded spots when added in wrong order", () => {
 		// Arrange
 		const spot1 = new Spot();
 		const spot2 = new Spot();
+		spot2.time = spot2.time.addMinutes(10);
 
 		const activation = new Activation(spot2);
 		activation.addSpot(spot1);
@@ -60,7 +62,7 @@ describe("Activation", () => {
 		const superseeded = activation.getSupersededSpots();
 
 		// Assert
-		expect(superseeded[0].time.getTime()).toBe(spot2.time.getTime());
+		expect(superseeded[0].time.getTime()).toEqual(spot1.time.getTime());
 	});
 
 	describe("Testing if spots are part of the same activation", () => {

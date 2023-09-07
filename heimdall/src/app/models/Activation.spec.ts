@@ -37,32 +37,38 @@ describe("Activation", () => {
 		// Arrange
 		const spot1 = new Spot();
 		const spot2 = new Spot();
+		const spot3 = new Spot();
 		spot2.time = spot2.time.addMinutes(10);
+		spot3.time = spot3.time.addMinutes(15);
 
 		const activation = new Activation(spot1);
 		activation.addSpot(spot2);
+		activation.addSpot(spot3);
 
 		// Act
 		const superseeded = activation.getSupersededSpots();
 
 		// Assert
-		expect(superseeded[0].time.getTime()).toEqual(spot1.time.getTime());
+		expect(superseeded[0].time.getTime()).toEqual(spot2.time.getTime());
 	});
 
 	it("It gets superseeded spots when added in wrong order", () => {
 		// Arrange
 		const spot1 = new Spot();
 		const spot2 = new Spot();
-		spot2.time = spot2.time.addMinutes(10);
+		const spot3 = new Spot();
+		spot2.time = spot2.time.addMinutes(15);
+		spot3.time = spot3.time.addMinutes(10);
 
-		const activation = new Activation(spot2);
+		const activation = new Activation(spot3);
+		activation.addSpot(spot2);
 		activation.addSpot(spot1);
 
 		// Act
 		const superseeded = activation.getSupersededSpots();
 
 		// Assert
-		expect(superseeded[0].time.getTime()).toEqual(spot1.time.getTime());
+		expect(superseeded[0].time.getTime()).toEqual(spot3.time.getTime());
 	});
 
 	describe("Testing if spots are part of the same activation", () => {
@@ -330,15 +336,18 @@ describe("Activation", () => {
 
 		it("Subsequent spot with same freq and mode should be ReSpot", () => {
 			// Arrange
+			const spot1 = new Spot();
+
 			const spot2 = new Spot();
 			spot2.callsignRoot = spot1.callsignRoot;
 			spot2.siteName = spot1.siteName;
-			spot2.time = spot1.time.addMinutes(1);
+			spot2.time = spot1.time.addMinutes(5);
 			spot2.frequency = spot1.frequency;
 			spot2.mode = spot1.mode;
 
 			// Act
-			const activation = new Activation(spot1);
+			const activation = new Activation(new Spot());
+			activation.addSpot(spot1);
 			activation.addSpot(spot2);
 			const addedSpot = activation.getLatestSpot();
 

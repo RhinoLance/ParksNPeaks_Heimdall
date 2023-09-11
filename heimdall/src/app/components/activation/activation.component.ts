@@ -33,8 +33,10 @@ export class ActivationComponent implements OnInit {
 			this.activation.onUpdate.subscribe((_) => {
 				this.viewState.spot = this.activation.getLatestSpot();
 
-				this.viewState.supersededSpotList =
-					this.activation.getSupersededSpots();
+				this.viewState.supersededSpotList = this.activation
+					.getSupersededSpots()
+					.reverse();
+
 			});
 		}
 	}

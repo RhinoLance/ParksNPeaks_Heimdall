@@ -43,7 +43,7 @@ export class Spot {
 
 	public clone() {
 		const retVal = new Spot();
-		retVal.id = this.id;
+		retVal.id = Guid.create();
 		retVal.type = this.type;
 		retVal.tPlusMinutes = this.tPlusMinutes;
 		retVal.callsign = this.callsign;

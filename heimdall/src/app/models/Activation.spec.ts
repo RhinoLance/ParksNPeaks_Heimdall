@@ -1,3 +1,4 @@
+import { Guid } from "guid-typescript";
 import { Activation } from "./Activation";
 import { ActivationAward } from "./ActivationAward";
 import { ActivationAwardList } from "./ActivationAwardList";
@@ -36,7 +37,10 @@ describe("Activation", () => {
 	it("It gets superseeded spots", () => {
 		// Arrange
 		const spot1 = new Spot();
+		spot1.siteName = "first";
+
 		const spot2 = new Spot();
+		spot2.siteName = "second";
 		spot2.time = spot2.time.addMinutes(10);
 
 		const activation = new Activation(spot1);
@@ -46,13 +50,16 @@ describe("Activation", () => {
 		const superseeded = activation.getSupersededSpots();
 
 		// Assert
-		expect(superseeded[0].time.getTime()).toEqual(spot1.time.getTime());
+		expect(superseeded[0].siteName).toEqual("second");
 	});
 
 	it("It gets superseeded spots when added in wrong order", () => {
 		// Arrange
 		const spot1 = new Spot();
+		spot1.siteName = "first";
+
 		const spot2 = new Spot();
+		spot2.siteName = "second";
 		spot2.time = spot2.time.addMinutes(10);
 
 		const activation = new Activation(spot2);
@@ -62,7 +69,7 @@ describe("Activation", () => {
 		const superseeded = activation.getSupersededSpots();
 
 		// Assert
-		expect(superseeded[0].time.getTime()).toEqual(spot1.time.getTime());
+		expect(superseeded[0].siteName).toEqual("second");
 	});
 
 	describe("Testing if spots are part of the same activation", () => {
@@ -308,14 +315,18 @@ describe("Activation", () => {
 	});
 
 	describe("Set spot type correctly.", () => {
-		const spot1 = new Spot();
-		spot1.callsignRoot = "VK1AD";
-		spot1.siteName = "Mt Stromlo";
-		spot1.time = new Date(2020, 1, 1, 12, 0, 0);
-		spot1.frequency = 7.032;
-		spot1.mode = SpotMode.CW;
+		let spot1: Spot;
 
-		spot1.awardList.add(new ActivationAward(AwardScheme.SOTA, "VK1/AC-042"));
+		beforeEach(() => {
+			spot1 = new Spot();
+			spot1.callsignRoot = "VK1AD";
+			spot1.siteName = "Mt Stromlo";
+			spot1.time = new Date(2020, 1, 1, 12, 0, 0);
+			spot1.frequency = 7.032;
+			spot1.mode = SpotMode.CW;
+
+			spot1.awardList.add(new ActivationAward(AwardScheme.SOTA, "VK1/AC-042"));
+		});
 
 		it("Shoule be type: Spot", () => {
 			// Arrange
@@ -328,14 +339,10 @@ describe("Activation", () => {
 			expect(addedSpot?.type).toBe(SpotType.Spot);
 		});
 
-		it("Subsequent spot with same freq and mode should be ReSpot", () => {
+		it("[same, same]] should be ReSpot", () => {
 			// Arrange
-			const spot2 = new Spot();
-			spot2.callsignRoot = spot1.callsignRoot;
-			spot2.siteName = spot1.siteName;
-			spot2.time = spot1.time.addMinutes(1);
-			spot2.frequency = spot1.frequency;
-			spot2.mode = spot1.mode;
+			const spot2 = spot1.clone();
+			spot2.time = spot2.time.addMinutes(1);
 
 			// Act
 			const activation = new Activation(spot1);
@@ -343,7 +350,210 @@ describe("Activation", () => {
 			const addedSpot = activation.getLatestSpot();
 
 			// Assert
+			expect(addedSpot.type).toBe(SpotType.Respot);
+		});
+
+		it("[diff, same, same] should be ReSpot", () => {
+			// Arrange
+			const spot2 = spot1.clone();
+			spot2.time = spot2.time.addMinutes(1);
+			spot2.frequency = 7.144; //new freq
+
+			const spot3 = spot1.clone();
+			spot3.time = spot3.time.addMinutes(2);
+			spot3.frequency = 7.144; //new freq
+
+			// Act
+			const activation = new Activation(spot1);
+			activation.addSpot(spot2);
+			activation.addSpot(spot3);
+			const addedSpot = activation.getLatestSpot();
+
+			// Assert
 			expect(addedSpot?.type).toBe(SpotType.Respot);
+		});
+
+		it("Check spotType per VK2EG sequence", () => {
+			// Arrange
+			type TestSpot = {
+				id: Guid;
+				frequency: number;
+				mode: SpotMode;
+				spotType: SpotType;
+			};
+
+			//test spots in order of how they were spotted
+			const spotParamList: TestSpot[] = [
+				{
+					id: Guid.create(),
+					frequency: 21.244,
+					mode: SpotMode.SSB,
+					spotType: SpotType.Spot,
+				},
+				{
+					id: Guid.create(),
+					frequency: 14.31,
+					mode: SpotMode.SSB,
+					spotType: SpotType.Spot,
+				},
+				{
+					id: Guid.create(),
+					frequency: 14.31,
+					mode: SpotMode.SSB,
+					spotType: SpotType.Respot,
+				},
+				{
+					id: Guid.create(),
+					frequency: 14.31,
+					mode: SpotMode.DATA,
+					spotType: SpotType.Spot,
+				},
+				{
+					id: Guid.create(),
+					frequency: 14.31,
+					mode: SpotMode.SSB,
+					spotType: SpotType.Spot,
+				},
+				{
+					id: Guid.create(),
+					frequency: 14.31,
+					mode: SpotMode.SSB,
+					spotType: SpotType.Respot,
+				},
+
+				{
+					id: Guid.create(),
+					frequency: 14.31,
+					mode: SpotMode.SSB,
+					spotType: SpotType.Respot,
+				},
+			];
+
+			// Arrange
+			const spotList: Spot[] = [];
+
+			for (let cI = 0; cI < spotParamList.length; cI++) {
+				const spotParams = spotParamList[cI];
+
+				const spot = new Spot();
+				spot.id = spotParams.id;
+				spot.frequency = spotParams.frequency;
+				spot.mode = spotParams.mode;
+				spot.time = new Date().addMinutes(cI);
+
+				spotList.push(spot);
+			}
+
+			// Act
+			const activation = new Activation(spotList[0]);
+			spotList.slice(1).map((v) => activation.addSpot(v));
+
+			// Assert
+			expect(activation.getLatestSpot().type)
+				.withContext("latest Spot")
+				.toBe(spotParamList[spotParamList.length - 1].spotType);
+
+			activation.getSupersededSpots().map((v, i) => {
+				const expectedType = spotParamList.find(
+					(spl) => v.id == spl.id
+				)!.spotType;
+
+				expect(v.type)
+					.withContext(`index: ${i}, freq: ${v.frequency}, mode: ${v.mode}`)
+					.toBe(expectedType);
+			});
+		});
+
+		it("Check spotType per VK2EG sequence out of order", () => {
+			// Arrange
+			type TestSpot = {
+				id: Guid;
+				frequency: number;
+				mode: SpotMode;
+				spotType: SpotType;
+			};
+
+			//test spots in order of how they were spotted
+			const spotParamList: TestSpot[] = [
+				{
+					id: Guid.create(),
+					frequency: 21.244,
+					mode: SpotMode.SSB,
+					spotType: SpotType.Spot,
+				},
+				{
+					id: Guid.create(),
+					frequency: 14.31,
+					mode: SpotMode.SSB,
+					spotType: SpotType.Spot,
+				},
+				{
+					id: Guid.create(),
+					frequency: 14.31,
+					mode: SpotMode.SSB,
+					spotType: SpotType.Respot,
+				},
+				{
+					id: Guid.create(),
+					frequency: 14.31,
+					mode: SpotMode.DATA,
+					spotType: SpotType.Spot,
+				},
+				{
+					id: Guid.create(),
+					frequency: 14.31,
+					mode: SpotMode.SSB,
+					spotType: SpotType.Spot,
+				},
+				{
+					id: Guid.create(),
+					frequency: 14.31,
+					mode: SpotMode.SSB,
+					spotType: SpotType.Respot,
+				},
+
+				{
+					id: Guid.create(),
+					frequency: 14.31,
+					mode: SpotMode.SSB,
+					spotType: SpotType.Respot,
+				},
+			];
+
+			// Arrange
+			const spotList: Spot[] = [];
+
+			for (let cI = 0; cI < spotParamList.length; cI++) {
+				const spotParams = spotParamList[cI];
+
+				const spot = new Spot();
+				spot.id = spotParams.id;
+				spot.frequency = spotParams.frequency;
+				spot.mode = spotParams.mode;
+				spot.time = new Date().addMinutes(cI);
+
+				spotList.push(spot);
+			}
+
+			// Act
+			const order = [1, 3, 2, 6, 4, 5, 6];
+			const activation = new Activation(spotList[order[0]]);
+			order.slice(1).map((v) => activation.addSpot(spotList[v]));
+
+			// Assert
+			expect(activation.getLatestSpot().type)
+				.withContext("latest Spot")
+				.toBe(spotParamList[spotParamList.length - 1].spotType);
+
+			activation.getSupersededSpots().map((v, i) => {
+				const expectedType = spotParamList.find(
+					(spl) => v.id == spl.id
+				)!.spotType;
+
+				expect(v.type)
+					.withContext(`index: ${i}, freq: ${v.frequency}, mode: ${v.mode}`)
+					.toBe(expectedType);
+			});
 		});
 
 		it("Changing frequency should result in type: Spot", () => {

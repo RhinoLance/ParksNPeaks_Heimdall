@@ -5,7 +5,7 @@ import { SpotType } from "./SpotType";
 
 import commonSiteNamewords from "../../assets/data/commonSiteNameWords.json";
 import { ActivationAwardList } from "./ActivationAwardList";
-import { ReplaySubject, Subject } from "rxjs";
+import { ReplaySubject } from "rxjs";
 
 export class Activation {
 	public awardList: ActivationAwardList = new ActivationAwardList();
@@ -15,7 +15,7 @@ export class Activation {
 
 	public onUpdate = new ReplaySubject<Spot>();
 
-	private _spotList: Spot[] = [];
+	private _spotList: Spot[] = []; //Sorted spot list oldest to newest
 
 	public get spots(): Spot[] {
 		return this._spotList;
@@ -43,18 +43,18 @@ export class Activation {
 
 		this._spotList.push(spot);
 		this.orderSpotsByTime();
-		this.setSpotType(spot);
+		this.setSpotTypes();
 		this.addAwardIfRequired(spot);
 
 		this.onUpdate.next(spot);
 	}
 
 	public getLatestSpot(): Spot {
-		return this._spotList[0];
+		return this._spotList[this._spotList.length - 1];
 	}
 
 	public getSupersededSpots() {
-		return this._spotList.slice(1, this.spotCount);
+		return this._spotList.slice(1);
 	}
 
 	public isPartOfThisActivation(spot: Spot): boolean {
@@ -135,22 +135,24 @@ export class Activation {
 
 	private orderSpotsByTime(): void {
 		this._spotList.sort((a, b) => {
-			return b.time.getTime() - a.time.getTime();
+			return a.time.getTime() - b.time.getTime();
 		});
+	}
+
+	private setSpotTypes(): void {
+		this._spotList.map((v) => this.setSpotType(v));
 	}
 
 	private setSpotType(spot: Spot): void {
 		const index = this._spotList.findIndex((v) => v.id == spot.id);
 
-		//The spotList should already be sorted by time, with index 0 having he latest spot.
-
 		//Is it the earliest spot of the activation?
-		if (index == this._spotList.length - 1) {
+		if (index == 0) {
 			spot.type = SpotType.Spot;
 			return;
 		}
 
-		const previousSpot = this._spotList[index + 1];
+		const previousSpot = this._spotList[index - 1];
 		spot.type =
 			previousSpot.mode == spot.mode && previousSpot.frequency == spot.frequency
 				? SpotType.Respot

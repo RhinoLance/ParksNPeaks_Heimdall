@@ -10,6 +10,17 @@ describe("Date extensions", () => {
 		expect(result.getMinutes()).toBe(10);
 	});
 
+	it("should subtractMinutes", () => {
+		// Arrange
+		const date = new Date(2020, 1, 1, 12, 15, 0);
+
+		// Act
+		const result = date.subtractMinutes(10);
+
+		// Assert
+		expect(result.getMinutes()).toBe(5);
+	});
+
 	it("should subtract", () => {
 		// Arrange
 		const date1 = new Date(2020, 1, 1, 12, 0, 0);

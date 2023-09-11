@@ -5,6 +5,7 @@ declare global {
 		subtract(date: Date): number;
 		subtractAbs(date: Date): number;
 		addMinutes(minutes: number): Date;
+		subtractMinutes(minutes: number): Date;
 	}
 }
 
@@ -18,4 +19,8 @@ Date.prototype.subtractAbs = function (date: Date): number {
 
 Date.prototype.addMinutes = function (minutes: number): Date {
 	return new Date(this.getTime() + minutes * 1000 * 60);
+};
+
+Date.prototype.subtractMinutes = function (minutes: number): Date {
+	return new Date(this.getTime() - minutes * 1000 * 60);
 };

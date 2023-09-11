@@ -36,7 +36,6 @@ export class ActivationComponent implements OnInit {
 				this.viewState.supersededSpotList = this.activation
 					.getSupersededSpots()
 					.reverse();
-
 			});
 		}
 	}

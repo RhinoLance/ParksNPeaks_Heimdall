@@ -75,6 +75,7 @@ export class SpotBuilder {
 			"[VK port-a-log]",
 			"*[iPnP]",
 			"SOTA Spotter",
+			"[mParks]",
 		];
 
 		for (const publisher of publishers) {

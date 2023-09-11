@@ -38,6 +38,10 @@
 					{{ viewState.spot.comment }}
 				</div>
 				<div style="margin-top: 5px">
+					<div
+						class="time-elapsed-state"
+						[ngClass]="viewState.elapsedTimeState"
+					></div>
 					<span>{{ viewState.spot.time | timeago : liveTimeAgo }}</span>
 					<span>&nbsp;at {{ viewState.spot.shortTime }} (local)</span>
 				</div>

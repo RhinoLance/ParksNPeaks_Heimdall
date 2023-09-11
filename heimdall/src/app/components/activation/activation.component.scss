@@ -41,6 +41,28 @@ body {
 	}
 }
 
+.time-elapsed-state {
+	display: inline-block;
+	width: 1em;
+	height: 1em;
+	border-radius: 50%;
+	border-width: 1px;
+	margin-right: 0.5em;
+
+	&.active {
+		background: #4f772d;
+		border-color: #283c17;
+	}
+	&.shoulder {
+		background: #fb8b24;
+		border-color: #975316;
+	}
+	&.inactive {
+		background: #9a031e;
+		border-color: #5c0212;
+	}
+}
+
 .avatar-md {
 	height: 5rem;
 	width: 5rem;

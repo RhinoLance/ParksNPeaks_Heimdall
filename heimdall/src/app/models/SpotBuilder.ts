@@ -76,6 +76,7 @@ export class SpotBuilder {
 			"*[iPnP]",
 			"SOTA Spotter",
 			"[mParks]",
+			"(via SMS)",
 		];
 
 		for (const publisher of publishers) {

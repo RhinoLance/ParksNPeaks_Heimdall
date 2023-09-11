@@ -10,6 +10,10 @@
 	font-size: 0.4em;
 	//border: 2px dashed orangered;
 
+	&:hover {
+		cursor: pointer;
+	}
+
 	li {
 		position: relative;
 		list-style-position: inside;

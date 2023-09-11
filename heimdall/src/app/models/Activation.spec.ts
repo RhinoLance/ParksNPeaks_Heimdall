@@ -50,7 +50,7 @@ describe("Activation", () => {
 		const superseeded = activation.getSupersededSpots();
 
 		// Assert
-		expect(superseeded[0].siteName).toEqual("second");
+		expect(superseeded[0].siteName).toEqual("first");
 	});
 
 	it("It gets superseeded spots when added in wrong order", () => {
@@ -69,7 +69,7 @@ describe("Activation", () => {
 		const superseeded = activation.getSupersededSpots();
 
 		// Assert
-		expect(superseeded[0].siteName).toEqual("second");
+		expect(superseeded[0].siteName).toEqual("first");
 	});
 
 	describe("Testing if spots are part of the same activation", () => {

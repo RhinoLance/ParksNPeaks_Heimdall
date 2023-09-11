@@ -54,7 +54,7 @@ export class Activation {
 	}
 
 	public getSupersededSpots() {
-		return this._spotList.slice(1);
+		return this._spotList.slice(0, -1);
 	}
 
 	public isPartOfThisActivation(spot: Spot): boolean {

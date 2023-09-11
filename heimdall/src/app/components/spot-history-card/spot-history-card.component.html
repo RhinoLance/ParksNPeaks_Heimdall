@@ -30,7 +30,7 @@
 					<div>
 						<div class="h6">
 							<span class="float-right text-muted"
-								>{{ spot.time | timeAgo }}&nbsp;</span
+								>{{ spot.time | timeago : liveTimeAgo }}&nbsp;</span
 							>
 							<span *ngIf="spot.type === 1">
 								{{ spot.frequency.toFixed(3) }}

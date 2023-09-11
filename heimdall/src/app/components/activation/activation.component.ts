@@ -4,7 +4,7 @@ import { Spot } from "src/app/models/Spot";
 import { SpotHistoryCardComponent } from "../spot-history-card/spot-history-card.component";
 import { ModeBadgeComponent } from "../../mode-badge/mode-badge.component";
 import { NgIf, NgFor, NgClass } from "@angular/common";
-import { NgPipesModule } from "ngx-pipes";
+import { TimeagoModule } from "ngx-timeago";
 
 @Component({
 	selector: "pph-activation",
@@ -17,7 +17,7 @@ import { NgPipesModule } from "ngx-pipes";
 		NgClass,
 		ModeBadgeComponent,
 		SpotHistoryCardComponent,
-		NgPipesModule,
+		TimeagoModule,
 	],
 })
 export class ActivationComponent implements OnInit {
@@ -27,6 +27,8 @@ export class ActivationComponent implements OnInit {
 		spot: new Spot(),
 		supersededSpotList: [],
 	};
+
+	public readonly liveTimeAgo: boolean = true;
 
 	public ngOnInit(): void {
 		if (this.activation !== undefined) {

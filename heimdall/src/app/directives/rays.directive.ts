@@ -12,13 +12,11 @@ export class RaysDirective implements OnInit {
 	public constructor(private _el: ElementRef, private _renderer: Renderer2) {}
 
 	public ngOnInit() {
-		//this.el.nativeElement.innerHTML += this.GenerateLightElements();
-		this._el.nativeElement.innerHTML += this.GenerateStyles();
-
-		this.AddLights(this._el, this._renderer);
+		this.addLights(this._el, this._renderer);
+		this.addStyles(this._el, this._renderer);
 	}
 
-	private AddLights(el: ElementRef, renderer: Renderer2) {
+	private addLights(el: ElementRef, renderer: Renderer2) {
 		const lightAnimations: LightAnimation[] = [
 			{ duration: 4, scale: 1, left: 50 },
 			{ duration: 7, scale: 0.6, left: 58 },
@@ -62,10 +60,9 @@ export class RaysDirective implements OnInit {
 		});
 	}
 
-	private GenerateStyles() {
-		let output = "<style>";
-
-		output += `
+	private addStyles(el: ElementRef, renderer: Renderer2) {
+		const style = renderer.createElement("style");
+		style.innerHTML = `
 		
 		@keyframes floatDown{
 			0%{bottom: 100vh; opacity: 0;}
@@ -75,9 +72,7 @@ export class RaysDirective implements OnInit {
 			100%{bottom: -100vh; opacity: 0;}
 		}`;
 
-		output += "</style>";
-
-		return output;
+		renderer.appendChild(el.nativeElement, style);
 	}
 }
 

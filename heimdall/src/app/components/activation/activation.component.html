@@ -23,8 +23,13 @@
 						{{ activation.callsign }}
 					</div>
 					<div>
-						<span class="h3">{{ viewState.spot.frequency.toFixed(3) }}</span>
-						<pph-mode-badge [mode]="viewState.spot.mode"></pph-mode-badge>
+						<span class="h3" class="frequency">{{
+							viewState.spot.frequency.toFixed(3)
+						}}</span>
+						<pph-mode-badge
+							class="mode"
+							[mode]="viewState.spot.mode"
+						></pph-mode-badge>
 					</div>
 				</div>
 			</div>
@@ -34,7 +39,7 @@
 					{{ site.award }}
 				</div>
 				<div>{{ activation.siteName }}</div>
-				<div style="margin-top: 5px">
+				<div style="margin-top: 5px" class="comment">
 					{{ viewState.spot.comment }}
 				</div>
 				<div style="margin-top: 5px">

@@ -5,13 +5,15 @@ import { Activation } from "src/app/models/Activation";
 import { PnPClientService } from "src/app/services/PNPHttpClient.service";
 import { ActivationComponent } from "../activation/activation.component";
 import { NgFor, NgIf } from "@angular/common";
+import { NoSpotsComponent } from "../no-spots/no-spots.component";
+import { RaysDirective } from "../../directives/rays.directive";
 
 @Component({
 	selector: "pph-spot-list",
 	templateUrl: "./spot-list.component.html",
 	styleUrls: ["./spot-list.component.scss"],
 	standalone: true,
-	imports: [NgFor, NgIf, ActivationComponent],
+	imports: [NgFor, NgIf, ActivationComponent, NoSpotsComponent, RaysDirective],
 })
 export class SpotListComponent implements OnDestroy, OnInit {
 	public viewState: ViewState = {

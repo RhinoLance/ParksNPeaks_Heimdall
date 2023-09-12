@@ -6,21 +6,26 @@
 />
 <section class="section">
 	<div class="container">
-		<!--<div class="background"></div>-->
-		<div class="row">
-			<div
-				class="col-12 no-activations-found"
-				*ngIf="viewState.activationList.length === 0"
-			>
-				<div>
-					Heimdall is looking for activations... I'm sure it won't be long.
-				</div>
+		<ng-container
+			*ngIf="
+				viewState.activationList.length === 0;
+				then noActivations;
+				else hasActivations
+			"
+		></ng-container>
+
+		<ng-template #noActivations>
+			<pph-no-spots> </pph-no-spots>
+		</ng-template>
+
+		<ng-template #hasActivations>
+			<div class="row">
+				<pph-activation
+					*ngFor="let activation of viewState.activationList; index as cI"
+					[activation]="activation"
+				>
+				</pph-activation>
 			</div>
-			<pph-activation
-				*ngFor="let activation of viewState.activationList; index as cI"
-				[activation]="activation"
-			>
-			</pph-activation>
-		</div>
+		</ng-template>
 	</div>
 </section>

@@ -77,14 +77,14 @@
 </style>
 
 <!-- Toolbar -->
-<div class="toolbar" role="banner">
-	<img width="40" alt="Heimdall Logo" src="assets/images/logo-40.png" />
+<div class="toolbar" role="banner" pphRays>
+	<img width="40" alt="Heimdall Logo" src="assets/images/heimdall/icon.png" />
 	<span>Parks 'n Peaks :: Heimdall</span>
 	<div class="spacer"></div>
 	<div class="version">Version: {{ viewModel.version }}</div>
 </div>
 
-<div class="content" role="main">
+<div *ngIf="!viewModel.splashVisible" class="content" role="main">
 	<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 	<!-- * * * * * * * * * * * The content above * * * * * * * * * * * -->
 	<!-- * * * * * * * * * * is only a placeholder * * * * * * * * * * -->

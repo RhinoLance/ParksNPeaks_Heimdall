@@ -3,21 +3,14 @@
 
 	.background {
 		position: fixed;
-		top: 0;
-		left: 0;
+		top: 61px;
+		left: 61px;
 		height: 100vh;
 		width: 100vw;
 
-		background-image: url(../../../assets/images/logo.svg);
+		background-image: url(../../../assets/images/heimdall/logo.png);
 		background-size: contain; /* <------ */
 		background-repeat: no-repeat;
 		background-position: center center; /* optional, center the image */
-	}
-
-	.no-activations-found {
-		text-align: center;
-		margin-top: 20px;
-		font-size: 2em;
-		color: #aaaaaa;
 	}
 }

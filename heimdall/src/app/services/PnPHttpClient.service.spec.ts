@@ -97,6 +97,77 @@ describe("PnPHttpClientService", () => {
 			// Assert
 			expect(result.length).toBe(3);
 		});
+
+		describe("Filter spots to region", () => {
+			type CsTest = {
+				callsign: string;
+				valid: boolean;
+			};
+
+			const csTests: CsTest[] = [
+				{ callsign: "VK7ZA", valid: true },
+				{ callsign: "ZL7ZA", valid: true },
+				{ callsign: "VL7ZA", valid: true },
+				{ callsign: "VJ7ZA", valid: true },
+				{ callsign: "7ZAVK", valid: false },
+				{ callsign: "7ZAZL", valid: false },
+				{ callsign: "7VKZA", valid: false },
+				{ callsign: "7ZLZA", valid: false },
+			];
+
+			describe("getSpotList", () => {
+				csTests.forEach((test: CsTest) => {
+					it(`should filter ${test.callsign} to region`, async () => {
+						// Arrange
+						const pnpSpot1 = clonePnPSpot(templateSpot);
+						pnpSpot1.actCallsign = test.callsign;
+
+						const fetch = new FetchService(new FetchServiceDeps());
+						spyOn(fetch, "getJsonPromise").and.returnValues(
+							Promise.resolve([pnpSpot1])
+						);
+
+						const svc = new PnPClientService(fetch);
+
+						// Act
+						const spotList = await svc.getSpotList();
+
+						// Assert
+						expect(spotList.length).toBe(test.valid ? 1 : 0);
+					});
+				});
+			});
+
+			describe("subscribeToSpots", () => {
+				csTests.forEach((test: CsTest) => {
+					it(`should filter ${test.callsign} to region`, async () => {
+						// Arrange
+						const pnpSpot1 = clonePnPSpot(templateSpot);
+						pnpSpot1.actCallsign = test.callsign;
+
+						const subject = new Subject<PnPSpot[]>();
+						const fetch = new FetchService(new FetchServiceDeps());
+						spyOn(fetch, "pollJson").and.returnValue(subject);
+
+						const svc = new PnPClientService(fetch);
+						const result: Spot[] = [];
+
+						svc.subscribeToSpots().subscribe({
+							next: (next) => {
+								result.push(...next);
+							},
+						});
+
+						// Act
+						subject.next([pnpSpot1]);
+						subject.complete();
+
+						// Assert
+						expect(result.length).toBe(test.valid ? 1 : 0);
+					});
+				});
+			});
+		});
 	});
 
 	/*

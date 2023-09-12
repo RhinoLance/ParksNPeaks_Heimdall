@@ -19,6 +19,8 @@ export class PnPClientService {
 
 	private _fetchSvc: FetchService;
 
+	private readonly _regionFilter = "^(?:VK|VL|VJ|ZL)";
+
 	public constructor(_fetchSvc: FetchService) {
 		this._fetchSvc = _fetchSvc;
 	}
@@ -30,7 +32,7 @@ export class PnPClientService {
 		const data = await this.get<PnPSpot[]>("ALL");
 
 		return new SpotListBuilder()
-			.setCallsignFilter("VK|ZL")
+			.setCallsignFilter(this._regionFilter)
 			.setSorting("DESC")
 			.buildFromPnPSpots(data);
 	}
@@ -59,7 +61,7 @@ export class PnPClientService {
 			.pipe(
 				map((pnpSpots) => {
 					return new SpotListBuilder()
-						.setCallsignFilter("VK|ZL")
+						.setCallsignFilter(this._regionFilter)
 						.setSorting("DESC")
 						.buildFromPnPSpots(pnpSpots);
 				})

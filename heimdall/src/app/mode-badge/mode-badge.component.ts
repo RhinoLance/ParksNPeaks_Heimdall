@@ -7,16 +7,14 @@ import { SpotMode } from "../models/SpotMode";
 	styleUrls: ["./mode-badge.component.scss"],
 	standalone: true,
 })
-export class ModeBadgeComponent implements OnInit {
-	@Input() public mode!: SpotMode;
+export class ModeBadgeComponent {
+	@Input() set mode(string: SpotMode) {
+		this.viewState.mode = string;
+	}
 
 	public viewState: IViewState = {
 		mode: SpotMode.SSB,
 	};
-
-	public ngOnInit(): void {
-		this.viewState.mode = this.mode;
-	}
 }
 
 interface IViewState {

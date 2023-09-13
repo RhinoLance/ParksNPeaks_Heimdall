@@ -35,7 +35,7 @@ export class ActivationComponent implements OnInit {
 	public ngOnInit(): void {
 		if (this.activation !== undefined) {
 			this.activation.onUpdate.subscribe((_) => {
-				this.viewState.spot = this.activation.getLatestSpot().clone();
+				this.viewState.spot = this.activation.getLatestSpot();
 
 				this.viewState.supersededSpotList = this.activation
 					.getSupersededSpots()

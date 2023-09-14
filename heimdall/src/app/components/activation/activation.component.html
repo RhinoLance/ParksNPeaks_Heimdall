@@ -1,10 +1,11 @@
 <div
-	*ngIf="activation !== null"
+	@hideActivationAnimation
+	*ngIf="activation !== null && viewState.hideState === HideState.Visible"
 	class="activation-list-box bookmark-post card mt-4"
 >
 	<div class="p-4 card-body">
 		<div class="align-items-center row">
-			<div class="col-auto">
+			<div class="col-md-2">
 				<div
 					class="activation-list-images"
 					[style.--award-count]="activation.awardCount"
@@ -17,7 +18,7 @@
 					></div>
 				</div>
 			</div>
-			<div class="col-lg-3">
+			<div class="col-md-2">
 				<div class="activation-list-content mt-3 mt-lg-0">
 					<div class="h5 text-muted">
 						{{ activation.callsign }}
@@ -33,9 +34,10 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-lg-6 text-muted mb-2">
+			<div class="col text-muted">
 				<div *ngFor="let site of activation.awardList; index as cI">
-					<i class="mdi mdi-map-marker"></i> {{ site.siteId }}:
+					<iconify-icon icon="octicon:location-16"></iconify-icon>
+					{{ site.siteId }}:
 					{{ site.award }}
 				</div>
 				<div>{{ activation.siteName }}</div>
@@ -60,6 +62,25 @@
 					[spotList]="viewState.supersededSpotList"
 					[expanded]="false"
 				></pph-spot-history-card>
+			</div>
+		</div>
+		<div class="action-list">
+			<!--
+				<li title="Re-spot"><iconify-icon icon="ph:megaphone"></iconify-icon></li>
+			-->
+			<div
+				class="action-item btn hide-spot"
+				title="Hide until band or mode change"
+				(click)="hideActivation(HideState.Spot)"
+			>
+				<iconify-icon icon="bx:hide"></iconify-icon>
+			</div>
+			<div
+				class="action-item btn hide-activation"
+				title="Don't show this activation"
+				(click)="hideActivation(HideState.Activation)"
+			>
+				<iconify-icon icon="typcn:delete-outline"></iconify-icon>
 			</div>
 		</div>
 	</div>

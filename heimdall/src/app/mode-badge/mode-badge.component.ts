@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, Input } from "@angular/core";
 import { SpotMode } from "../models/SpotMode";
 
 @Component({
@@ -8,7 +8,7 @@ import { SpotMode } from "../models/SpotMode";
 	standalone: true,
 })
 export class ModeBadgeComponent {
-	@Input() set mode(string: SpotMode) {
+	@Input() public set mode(string: SpotMode) {
 		this.viewState.mode = string;
 	}
 

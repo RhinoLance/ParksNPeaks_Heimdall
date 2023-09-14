@@ -4,7 +4,7 @@ import { TimeUpdator } from "src/app/models/TimeUpdator";
 import { Activation } from "src/app/models/Activation";
 import { PnPClientService } from "src/app/services/PNPHttpClient.service";
 import { ActivationComponent } from "../activation/activation.component";
-import { NgFor, NgIf } from "@angular/common";
+import { CommonModule } from "@angular/common";
 import { NoSpotsComponent } from "../no-spots/no-spots.component";
 import { RaysDirective } from "../../directives/rays.directive";
 
@@ -13,11 +13,12 @@ import { RaysDirective } from "../../directives/rays.directive";
 	templateUrl: "./spot-list.component.html",
 	styleUrls: ["./spot-list.component.scss"],
 	standalone: true,
-	imports: [NgFor, NgIf, ActivationComponent, NoSpotsComponent, RaysDirective],
+	imports: [CommonModule, ActivationComponent, NoSpotsComponent, RaysDirective],
 })
 export class SpotListComponent implements OnDestroy, OnInit {
 	public viewState: ViewState = {
 		activationList: [],
+		visibleActivationCount: 0,
 	};
 
 	private _activationCalatogue: ActivationCatalogue = new ActivationCatalogue();
@@ -39,16 +40,23 @@ export class SpotListComponent implements OnDestroy, OnInit {
 			});
 
 			this.viewState.activationList = activationList;
-
-			//this._spotTimeUpdator.start();
 		});
 	}
 
 	public ngOnDestroy(): void {
 		this._spotTimeUpdator.stop();
 	}
+
+	public onActivationShow(): void {
+		this.viewState.visibleActivationCount++;
+	}
+
+	public onActivationHide(): void {
+		this.viewState.visibleActivationCount--;
+	}
 }
 
 interface ViewState {
 	activationList: Activation[];
+	visibleActivationCount: number;
 }

@@ -6,6 +6,7 @@ import { Activation } from "src/app/models/Activation";
 import { TimeagoModule } from "ngx-timeago";
 import { importProvidersFrom } from "@angular/core";
 import { SpotMode } from "src/app/models/SpotMode";
+import { provideAnimations } from "@angular/platform-browser/animations";
 
 describe("ActivationComponent", () => {
 	let component: ActivationComponent;
@@ -14,7 +15,10 @@ describe("ActivationComponent", () => {
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
 			imports: [ActivationComponent],
-			providers: [importProvidersFrom(TimeagoModule.forRoot())],
+			providers: [
+				importProvidersFrom(TimeagoModule.forRoot()),
+				provideAnimations(),
+			],
 		}).compileComponents();
 	});
 

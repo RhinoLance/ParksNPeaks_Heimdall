@@ -1,5 +1,12 @@
 import { Injectable } from "@angular/core";
-import { Observable, timer, mergeMap, takeUntil } from "rxjs";
+import {
+	Observable,
+	timer,
+	mergeMap,
+	takeUntil,
+	catchError,
+	EMPTY,
+} from "rxjs";
 import { fromFetch } from "rxjs/fetch";
 import { CancellationToken } from "../models/CancellationToken";
 
@@ -45,10 +52,13 @@ export class FetchService {
 	): Observable<T> {
 		cancellationToken = cancellationToken ?? new CancellationToken();
 
-		const obs = this._deps.timer(0, updateInterval * 60 * 1000).pipe(
-			mergeMap(() => this.getJson<T>(url, request)),
-			takeUntil(cancellationToken.token)
-		);
+		const safeRequest = mergeMap(() => {
+			return this.getJson<T>(url, request).pipe(catchError((_) => EMPTY));
+		});
+
+		const obs = this._deps
+			.timer(0, updateInterval * 60 * 1000)
+			.pipe(safeRequest, takeUntil(cancellationToken.token));
 
 		return obs;
 	}

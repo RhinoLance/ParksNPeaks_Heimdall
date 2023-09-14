@@ -164,4 +164,43 @@ describe("FetchService", () => {
 		// Assert
 		expect(output).toBe(3);
 	});
+
+	describe("pollJson error handling", () => {
+		it("should surpress an error", () => {
+			// Arrange
+
+			const obsLoop = from([of(1), of(2), of(3)]);
+
+			const fetchDeps = {
+				fromFetch: () => of(0),
+				timer: () => obsLoop,
+			};
+
+			spyOn(fetchDeps, "fromFetch").and.returnValues(
+				of(1),
+				throwError(() => "Whoops!"),
+				of(2)
+			);
+
+			const fetchSvc = new FetchService(fetchDeps);
+
+			let output = 0;
+			let error = false;
+
+			// Act
+			fetchSvc.pollJson<number>(1, "bla", {}).subscribe({
+				error: (_) => {
+					error = true;
+				},
+				next: (value: number) => {
+					output += value;
+				},
+				complete: () => {},
+			});
+
+			// Assert
+			expect(error).toBeFalse();
+			expect(output).toBe(3);
+		});
+	});
 });

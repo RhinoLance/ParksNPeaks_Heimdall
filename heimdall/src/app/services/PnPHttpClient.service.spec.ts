@@ -1,6 +1,6 @@
 import { PnPSpot } from "../models/PnPSpot";
 import { FetchService, FetchServiceDeps } from "./FetchService";
-import { Subject, of } from "rxjs";
+import { Subject, from, of, throwError } from "rxjs";
 import { Spot } from "../models/Spot";
 import { PnPClientService } from "./PNPHttpClient.service";
 
@@ -96,6 +96,46 @@ describe("PnPHttpClientService", () => {
 
 			// Assert
 			expect(result.length).toBe(3);
+		});
+
+		describe("manage network failures", () => {
+			it("should resume on failure", () => {
+				// Arrange
+
+				const spot = clonePnPSpot(templateSpot);
+
+				const obsLoop = from([of(1), of(2), of(3)]);
+
+				const fetchDeps = {
+					fromFetch: () => of([spot]),
+					timer: () => obsLoop,
+				};
+				const fetch = new FetchService(fetchDeps);
+				spyOn(fetchDeps, "fromFetch").and.returnValues(
+					of([spot]),
+					throwError(() => "Test Error!"),
+					of([spot])
+				);
+
+				const svc = new PnPClientService(fetch);
+				const result: Spot[] = [];
+
+				let hadError = false;
+
+				// Act
+				svc.subscribeToSpots().subscribe({
+					error: (_) => {
+						hadError = true;
+					},
+					next: (value) => {
+						result.push(...value);
+					},
+				});
+
+				// Assert
+				expect(hadError).toBeFalse();
+				expect(result.length).toBe(2);
+			});
 		});
 
 		describe("Filter spots to region", () => {

@@ -9,7 +9,9 @@
 		--mode-colour: #16425b;
 	}
 
-	&.DATA {
+	&.DATA,
+	&.FT4,
+	&.FT8 {
 		--mode-icon: "\F035B";
 		--mode-colour: #fb8b24;
 	}

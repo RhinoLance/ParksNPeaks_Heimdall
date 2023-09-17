@@ -1,5 +1,5 @@
 import { Component, Input } from "@angular/core";
-import { SpotMode } from "../models/SpotMode";
+import { SpotMode } from "../../models/SpotMode";
 
 @Component({
 	selector: "pph-mode-badge",

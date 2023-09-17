@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { Spot } from "src/app/models/Spot";
-import { ModeBadgeComponent } from "../../mode-badge/mode-badge.component";
+import { ModeBadgeComponent } from "../mode-badge/mode-badge.component";
 import { NgIf, NgClass, NgStyle, NgFor } from "@angular/common";
 import { TimeagoModule } from "ngx-timeago";
 

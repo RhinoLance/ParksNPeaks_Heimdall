@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 
 import { ModeBadgeComponent } from "./mode-badge.component";
-import { SpotMode } from "../models/SpotMode";
+import { SpotMode } from "../../models/SpotMode";
 import { By } from "@angular/platform-browser";
 
 describe("ModeBadgeComponent", () => {

@@ -70,15 +70,20 @@
 			-->
 			<div
 				class="action-item btn hide-spot"
-				title="Hide until band or mode change"
 				(click)="hideActivation(HideState.Spot)"
+				#tooltip="matTooltip"
+				matTooltip="Hide until band or mode change"
+				matTooltipShowDelay="500"
 			>
 				<iconify-icon icon="bx:hide"></iconify-icon>
 			</div>
+
 			<div
 				class="action-item btn hide-activation"
-				title="Don't show this activation"
 				(click)="hideActivation(HideState.Activation)"
+				#tooltip="matTooltip"
+				matTooltip="Don't show this activation"
+				matTooltipShowDelay="500"
 			>
 				<iconify-icon icon="typcn:delete-outline"></iconify-icon>
 			</div>

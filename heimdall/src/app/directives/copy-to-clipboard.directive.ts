@@ -63,11 +63,12 @@ export class CopyToClipboardDirective implements OnInit {
 		private _animBuilder: AnimationBuilder
 	) {
 		this._iconEl = _renderer.createElement("div");
-		this.initIconEl();
 	}
 
 	public ngOnInit() {
 		this.applyStyles(this._el.nativeElement, this._hostElStyles);
+
+		this.initIconEl();
 
 		this._renderer.listen(this._el.nativeElement, "mouseover", () =>
 			this.addIconEl()

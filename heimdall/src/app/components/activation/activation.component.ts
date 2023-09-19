@@ -12,9 +12,13 @@ import { SpotHistoryCardComponent } from "../spot-history-card/spot-history-card
 import { ModeBadgeComponent } from "../mode-badge/mode-badge.component";
 import { CommonModule } from "@angular/common";
 import { TimeagoModule } from "ngx-timeago";
-import { timer } from "rxjs";
+import { Subscription, timer } from "rxjs";
 import { MatTooltipModule } from "@angular/material/tooltip";
+import { MatDialog, MatDialogModule } from "@angular/material/dialog";
 import { animate, style, transition, trigger } from "@angular/animations";
+//import { CreateSpotComponent } from "../create-spot/create-spot.component";
+import { MatOptionModule } from "@angular/material/core";
+import { CopyToClipboardDirective } from "src/app/directives/copy-to-clipboard.directive";
 
 @Component({
 	selector: "pph-activation",
@@ -27,6 +31,9 @@ import { animate, style, transition, trigger } from "@angular/animations";
 		SpotHistoryCardComponent,
 		TimeagoModule,
 		MatTooltipModule,
+		MatDialogModule,
+		MatOptionModule,
+		CopyToClipboardDirective,
 	],
 	schemas: [CUSTOM_ELEMENTS_SCHEMA],
 	animations: [
@@ -47,6 +54,7 @@ export class ActivationComponent implements OnInit {
 	@Input() public activation!: Activation;
 	@Output() public shown = new EventEmitter<void>();
 	@Output() public hiden = new EventEmitter<void>();
+	//@Output() public reSpot = new EventEmitter<Spot>();
 
 	public HideState = HideState;
 
@@ -58,6 +66,14 @@ export class ActivationComponent implements OnInit {
 	};
 
 	public readonly liveTimeAgo: boolean = true;
+
+	private _clipcoardVal: string = "";
+	private _clipboardTimeout: Subscription | undefined;
+
+	/**
+	 *
+	 */
+	public constructor(private _dialog: MatDialog) {}
 
 	public ngOnInit(): void {
 		if (this.activation !== undefined) {
@@ -100,6 +116,32 @@ export class ActivationComponent implements OnInit {
 	public showActivation(): void {
 		this.viewState.hideState = HideState.Visible;
 		this.shown.emit();
+	}
+
+	public reSpot(): void {
+		/*
+		this._dialog.open(CreateSpotComponent, {
+			isRespot: true,
+			data: {
+				isRespot: true,
+				spot: this.viewState.spot,
+				tree: 1
+			}
+
+		  });
+		  */
+	}
+
+	public onClipboardCopy(value: string): void {
+		this._clipboardTimeout?.unsubscribe();
+		this._clipboardTimeout = timer(5000).subscribe(() => {
+			this._clipcoardVal = "";
+		});
+
+		this._clipcoardVal =
+			this._clipcoardVal.length > 0 ? this._clipcoardVal + " " + value : value;
+
+		navigator.clipboard.writeText(this._clipcoardVal);
 	}
 
 	private setTimeElapsedState(): void {

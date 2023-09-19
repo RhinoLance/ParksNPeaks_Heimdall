@@ -1,4 +1,5 @@
 import { Directive, ElementRef, Input, OnInit, Renderer2 } from "@angular/core";
+import { CssStyle } from "../models/CssStyle";
 
 @Directive({
 	selector: "[pphRays]",
@@ -80,9 +81,4 @@ type LightAnimation = {
 	duration: number;
 	scale: number;
 	left: number;
-};
-
-type CssStyle = {
-	style: string;
-	value: string;
 };

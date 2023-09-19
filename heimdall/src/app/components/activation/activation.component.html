@@ -37,10 +37,19 @@
 			<div class="col text-muted">
 				<div *ngFor="let site of activation.awardList; index as cI">
 					<iconify-icon icon="octicon:location-16"></iconify-icon>
-					{{ site.siteId }}:
-					{{ site.award }}
+					<span
+						[pphCopyToClipboard]="site.siteId"
+						(copied)="onClipboardCopy($event)"
+					>
+						{{ site.siteId }}: {{ site.award }}
+					</span>
 				</div>
-				<div>{{ activation.siteName }}</div>
+				<div
+					[pphCopyToClipboard]="activation.siteName"
+					(copied)="onClipboardCopy($event)"
+				>
+					{{ activation.siteName }}
+				</div>
 				<div style="margin-top: 5px" class="comment">
 					<span>{{ viewState.spot.comment }}</span>
 					[<span class="h6">de&nbsp;{{ viewState.spot.spotter }}</span
@@ -67,9 +76,19 @@
 		<div class="action-list">
 			<!--
 				<li title="Re-spot"><iconify-icon icon="ph:megaphone"></iconify-icon></li>
-			-->
+			
 			<div
-				class="action-item btn hide-spot"
+				class="action-item btn"
+				(click)="reSpot()"
+				#tooltip="matTooltip"
+				matTooltip="Re-spot"
+				matTooltipShowDelay="500"
+			>
+				<iconify-icon icon="ph:megaphone"></iconify-icon>
+			</div>
+-->
+			<div
+				class="action-item btn"
 				(click)="hideActivation(HideState.Spot)"
 				#tooltip="matTooltip"
 				matTooltip="Hide until band or mode change"
@@ -77,9 +96,9 @@
 			>
 				<iconify-icon icon="bx:hide"></iconify-icon>
 			</div>
-
+			<div class="break">|</div>
 			<div
-				class="action-item btn hide-activation"
+				class="action-item btn"
 				(click)="hideActivation(HideState.Activation)"
 				#tooltip="matTooltip"
 				matTooltip="Don't show this activation"

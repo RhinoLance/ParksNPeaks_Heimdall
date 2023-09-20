@@ -16,9 +16,10 @@ import { Subscription, timer } from "rxjs";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { MatDialog, MatDialogModule } from "@angular/material/dialog";
 import { animate, style, transition, trigger } from "@angular/animations";
-//import { CreateSpotComponent } from "../create-spot/create-spot.component";
+import { CreateSpotComponent } from "../create-spot/create-spot.component";
 import { MatOptionModule } from "@angular/material/core";
 import { CopyToClipboardDirective } from "src/app/directives/copy-to-clipboard.directive";
+import { RespotComponent } from "../respot/respot.component";
 
 @Component({
 	selector: "pph-activation",
@@ -34,6 +35,7 @@ import { CopyToClipboardDirective } from "src/app/directives/copy-to-clipboard.d
 		MatDialogModule,
 		MatOptionModule,
 		CopyToClipboardDirective,
+		RespotComponent,
 	],
 	schemas: [CUSTOM_ELEMENTS_SCHEMA],
 	animations: [
@@ -54,7 +56,6 @@ export class ActivationComponent implements OnInit {
 	@Input() public activation!: Activation;
 	@Output() public shown = new EventEmitter<void>();
 	@Output() public hiden = new EventEmitter<void>();
-	//@Output() public reSpot = new EventEmitter<Spot>();
 
 	public HideState = HideState;
 
@@ -119,17 +120,15 @@ export class ActivationComponent implements OnInit {
 	}
 
 	public reSpot(): void {
-		/*
+		const respot = this.viewState.spot.clone();
+		respot.comment = "";
+
 		this._dialog.open(CreateSpotComponent, {
-			isRespot: true,
 			data: {
 				isRespot: true,
 				spot: this.viewState.spot,
-				tree: 1
-			}
-
-		  });
-		  */
+			},
+		});
 	}
 
 	public onClipboardCopy(value: string): void {

@@ -71,12 +71,10 @@
 					[spotList]="viewState.supersededSpotList"
 					[expanded]="false"
 				></pph-spot-history-card>
+				<pph-respot [spot]="viewState.spot"></pph-respot>
 			</div>
 		</div>
 		<div class="action-list">
-			<!--
-				<li title="Re-spot"><iconify-icon icon="ph:megaphone"></iconify-icon></li>
-			
 			<div
 				class="action-item btn"
 				(click)="reSpot()"
@@ -86,7 +84,6 @@
 			>
 				<iconify-icon icon="ph:megaphone"></iconify-icon>
 			</div>
--->
 			<div
 				class="action-item btn"
 				(click)="hideActivation(HideState.Spot)"

@@ -1,0 +1,54 @@
+<div>
+	<div class="add-title">
+		<h2 class="primary">{{ viewModel.isRespot ? "Add Spot" : "Re-Spot" }}</h2>
+	</div>
+	<div>
+		<div *ngIf="!viewModel.isRespot">
+			TODO: Inputs for AwardScheme, SiteId, Callsign
+		</div>
+
+		<div class="mb-3">
+			<label for="modeInput" class="form-label">Mode</label>
+
+			<select
+				class="form-control"
+				id="modeInput"
+				placeholder="Mode"
+				[(ngModel)]="viewModel.spot.mode"
+			>
+				<option *ngFor="let mode of viewModel.modeList" [value]="mode">
+					{{ mode }}
+				</option>
+			</select>
+		</div>
+
+		<div class="mb-3">
+			<label for="freqInput" class="form-label">Frequency</label>
+			<input
+				type="number"
+				class="form-control"
+				id="freqInput"
+				placeholder="Frequency"
+				[(ngModel)]="viewModel.spot.frequency"
+			/>
+		</div>
+
+		<div class="mb-3">
+			<label for="commentInput" class="form-label">Comment</label>
+			<input
+				type="text"
+				class="form-control"
+				id="commentInput"
+				placeholder="Comment"
+				[(ngModel)]="viewModel.spot.comment"
+			/>
+		</div>
+
+		<div class="col-auto">
+			<button (click)="(addSpot)" class="btn btn-primary mb-3">Add Spot</button>
+		</div>
+		<div class="col-auto">
+			<button (click)="(discard)" class="btn btn-primary mb-3">Cancel</button>
+		</div>
+	</div>
+</div>

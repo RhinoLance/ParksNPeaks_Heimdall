@@ -1,8 +1,13 @@
+:host {
+	z-index: 10;
+}
+
 body {
 	background: #e6e6fa;
 }
 
 .card {
+	z-index: 10;
 	box-shadow: 0 10px 17px 0 rgb(0 0 0 / 5%);
 
 	&:hover .action-list {
@@ -78,6 +83,7 @@ body {
 	position: absolute;
 	right: 5px;
 	top: 5px;
+	white-space: nowrap;
 
 	padding: 0;
 
@@ -87,8 +93,8 @@ body {
 
 	transition: 0.2s;
 
-	_visibility: hidden;
-	_opacity: 0;
+	visibility: hidden;
+	opacity: 0;
 	transform: scale(0.8);
 
 	.action-item {
@@ -117,5 +123,24 @@ body {
 		display: inline-block;
 		padding: 0 5px 0 5px;
 		color: rgba(75, 75, 85, 0.3);
+	}
+
+	.respot {
+		display: inline-block;
+		vertical-align: middle;
+
+		overflow: hidden;
+
+		pph-respot {
+			display: inline-block;
+		}
+
+		.btn.send:hover {
+			color: #006797;
+		}
+
+		.btn.cancel:hover {
+			color: #a50101;
+		}
 	}
 }

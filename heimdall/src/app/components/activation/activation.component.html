@@ -71,7 +71,6 @@
 					[spotList]="viewState.supersededSpotList"
 					[expanded]="false"
 				></pph-spot-history-card>
-				<pph-respot [spot]="viewState.spot"></pph-respot>
 			</div>
 		</div>
 		<div class="action-list">
@@ -83,6 +82,30 @@
 				matTooltipShowDelay="500"
 			>
 				<iconify-icon icon="ph:megaphone"></iconify-icon>
+			</div>
+			<div
+				class="respot"
+				[@toggleRespot]="viewState.respotIsVisible ? 'visible' : 'hidden'"
+			>
+				<pph-respot [spot]="viewState.respot"></pph-respot>
+				<div
+					class="btn send"
+					(click)="reSpot()"
+					#tooltip="matTooltip"
+					matTooltip="Send"
+					matTooltipShowDelay="500"
+				>
+					<iconify-icon icon="bi:send-fill"></iconify-icon>
+				</div>
+				<div
+					class="btn cancel"
+					(click)="viewState.respotIsVisible = false"
+					#tooltip="matTooltip"
+					matTooltip="Cancel"
+					matTooltipShowDelay="500"
+				>
+					<iconify-icon icon="ic:round-cancel"></iconify-icon>
+				</div>
 			</div>
 			<div
 				class="action-item btn"

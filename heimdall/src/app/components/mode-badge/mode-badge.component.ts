@@ -8,12 +8,12 @@ import { SpotMode } from "../../models/SpotMode";
 	standalone: true,
 })
 export class ModeBadgeComponent {
-	@Input() public set mode(string: SpotMode) {
-		this.viewState.mode = string;
+	@Input() public set mode(mode: SpotMode) {
+		this.viewState.mode = mode.length > 0 ? mode : SpotMode.Other;
 	}
 
 	public viewState: IViewState = {
-		mode: SpotMode.SSB,
+		mode: SpotMode.Other,
 	};
 }
 

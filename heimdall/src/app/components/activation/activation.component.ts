@@ -15,7 +15,14 @@ import { TimeagoModule } from "ngx-timeago";
 import { Subscription, timer } from "rxjs";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { MatDialog, MatDialogModule } from "@angular/material/dialog";
-import { animate, style, transition, trigger } from "@angular/animations";
+import {
+	AUTO_STYLE,
+	animate,
+	state,
+	style,
+	transition,
+	trigger,
+} from "@angular/animations";
 import { CreateSpotComponent } from "../create-spot/create-spot.component";
 import { MatOptionModule } from "@angular/material/core";
 import { CopyToClipboardDirective } from "src/app/directives/copy-to-clipboard.directive";
@@ -50,6 +57,12 @@ import { RespotComponent } from "../respot/respot.component";
 				),
 			]),
 		]),
+		trigger("toggleRespot", [
+			state("visible", style({ width: AUTO_STYLE, visibility: AUTO_STYLE })),
+			state("hidden", style({ width: "0", visibility: "hidden" })),
+			transition("visible => hidden", animate("250ms ease-in")),
+			transition("hidden => visible", animate("250ms ease-out")),
+		]),
 	],
 })
 export class ActivationComponent implements OnInit {
@@ -61,6 +74,8 @@ export class ActivationComponent implements OnInit {
 
 	public viewState: ViewState = {
 		spot: new Spot(),
+		respot: new Spot(),
+		respotIsVisible: false,
 		supersededSpotList: [],
 		elapsedTimeState: ElapsedTimeState.Active,
 		hideState: HideState.Visible,
@@ -123,12 +138,7 @@ export class ActivationComponent implements OnInit {
 		const respot = this.viewState.spot.clone();
 		respot.comment = "";
 
-		this._dialog.open(CreateSpotComponent, {
-			data: {
-				isRespot: true,
-				spot: this.viewState.spot,
-			},
-		});
+		this.viewState.respotIsVisible = true;
 	}
 
 	public onClipboardCopy(value: string): void {
@@ -170,6 +180,8 @@ export enum HideState {
 
 interface ViewState {
 	spot: Spot;
+	respot: Spot;
+	respotIsVisible: boolean;
 	supersededSpotList: Spot[];
 	elapsedTimeState: ElapsedTimeState;
 	hideState: HideState;

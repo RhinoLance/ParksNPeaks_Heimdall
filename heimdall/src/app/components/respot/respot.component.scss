@@ -1,0 +1,30 @@
+:host {
+	display: flex;
+	flex-wrap: nowrap;
+	gap: 5px;
+}
+
+.field {
+	display: inline-block;
+}
+
+body {
+	position: relative;
+}
+
+.col-auto,
+.col {
+	padding: 0 5px 0 0;
+}
+
+.form-control {
+	padding: 0;
+}
+
+.frequency {
+	width: 7em;
+}
+
+.dropdown-toggle::after {
+	content: none;
+}

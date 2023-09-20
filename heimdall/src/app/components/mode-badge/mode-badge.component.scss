@@ -26,9 +26,10 @@
 		--mode-colour: #e71d36;
 	}
 
-	&.DEFAULT {
+	&.DEFAULT,
+	&.Other {
 		--mode-icon: "\F043B";
-		--mode-colour: #f2e9e4;
+		--mode-colour: #530048;
 	}
 
 	background-color: var(--mode-colour);

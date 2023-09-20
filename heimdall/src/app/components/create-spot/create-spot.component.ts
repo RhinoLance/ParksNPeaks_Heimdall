@@ -1,9 +1,9 @@
 import { CommonModule } from "@angular/common";
 import { Component, Inject } from "@angular/core";
-import { FormsModule } from "@angular/forms";
 import { Spot } from "src/app/models/Spot";
 import { SpotMode, spotModeList } from "src/app/models/SpotMode";
 import { MAT_DIALOG_DATA } from "@angular/material/dialog";
+import { FormsModule } from "@angular/forms";
 
 @Component({
 	selector: "pph-create-spot",

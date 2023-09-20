@@ -46,9 +46,9 @@ export class Spot {
 		retVal.id = Guid.create();
 		retVal.type = this.type;
 		retVal.tPlusMinutes = this.tPlusMinutes;
-		retVal.callsign = this.callsign;
-		retVal.callsignRoot = this.callsignRoot;
-		retVal.comment = this.comment;
+		retVal.callsign = this.callsign.slice();
+		retVal.callsignRoot = this.callsignRoot.slice();
+		retVal.comment = this.comment.slice();
 		retVal.frequency = this.frequency;
 		retVal.mode = this.mode;
 		retVal.siteName = this.siteName;

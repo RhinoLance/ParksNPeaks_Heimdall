@@ -4,19 +4,14 @@ import { FormsModule } from "@angular/forms";
 import { Spot } from "src/app/models/Spot";
 import { SpotMode, spotModeList } from "src/app/models/SpotMode";
 import { ModeBadgeComponent } from "../mode-badge/mode-badge.component";
-//import { NgbDropdownModule } from "@ng-bootstrap/ng-bootstrap";
+import { NgbDropdownModule } from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
 	selector: "pph-respot",
 	templateUrl: "./respot.component.html",
 	styleUrls: ["./respot.component.scss"],
 	standalone: true,
-	imports: [
-		CommonModule,
-		FormsModule,
-		ModeBadgeComponent,
-		//NgbDropdownModule
-	],
+	imports: [CommonModule, FormsModule, ModeBadgeComponent, NgbDropdownModule],
 })
 export class RespotComponent implements OnInit {
 	@Input() public spot!: Spot;
@@ -27,10 +22,16 @@ export class RespotComponent implements OnInit {
 		this.viewModel = {
 			modeList: spotModeList,
 			spot: this.spot ?? new Spot(),
+			newFrequency: 0,
 		};
 	}
 
 	public addSpot() {
+		this.spot.frequency =
+			this.viewModel.newFrequency > 100000
+				? this.viewModel.newFrequency / 1000
+				: this.viewModel.newFrequency;
+
 		//console.log("submit");
 	}
 
@@ -42,4 +43,5 @@ export class RespotComponent implements OnInit {
 type ViewModel = {
 	modeList: SpotMode[];
 	spot: Spot;
+	newFrequency: number;
 };

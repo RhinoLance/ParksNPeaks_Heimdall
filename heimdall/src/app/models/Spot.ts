@@ -43,19 +43,23 @@ export class Spot {
 
 	public clone() {
 		const retVal = new Spot();
-		retVal.id = Guid.create();
-		retVal.type = this.type;
-		retVal.tPlusMinutes = this.tPlusMinutes;
-		retVal.callsign = this.callsign.slice();
-		retVal.callsignRoot = this.callsignRoot.slice();
-		retVal.comment = this.comment.slice();
-		retVal.frequency = this.frequency;
-		retVal.mode = this.mode;
-		retVal.siteName = this.siteName;
-		retVal.spotter = this.spotter;
-		retVal.time = this.time;
-		retVal.awardList = this.awardList.clone();
-		retVal._shortTime = this._shortTime;
+		this.copyTo(retVal);
+
 		return retVal;
+	}
+
+	public copyTo(target: Spot) {
+		target.type = this.type;
+		target.tPlusMinutes = this.tPlusMinutes;
+		target.callsign = this.callsign;
+		target.callsignRoot = this.callsignRoot;
+		target.comment = this.comment;
+		target.frequency = this.frequency;
+		target.mode = this.mode;
+		target.siteName = this.siteName;
+		target.spotter = this.spotter;
+		target.time = this.time;
+		target.awardList = this.awardList.clone();
+		target._shortTime = this._shortTime;
 	}
 }

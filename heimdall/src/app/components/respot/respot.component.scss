@@ -1,25 +1,11 @@
 :host {
 	display: flex;
 	flex-wrap: nowrap;
-	gap: 5px;
+	gap: 10px;
 }
 
 .field {
 	display: inline-block;
-
-	&.dropdown {
-		position: relative;
-		_z-index: 10000;
-	}
-}
-
-body {
-	_position: relative;
-}
-
-.col-auto,
-.col {
-	padding: 0 5px 0 0;
 }
 
 .form-control {
@@ -32,4 +18,9 @@ body {
 
 .dropdown-toggle::after {
 	content: none;
+}
+
+.field,
+.field:not(:last-child) {
+	margin-right: 5px;
 }

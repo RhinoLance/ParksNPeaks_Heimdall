@@ -21,7 +21,7 @@ export class RespotComponent implements OnInit {
 	public ngOnInit(): void {
 		this.viewModel = {
 			modeList: spotModeList,
-			spot: this.spot ?? new Spot(),
+			spot: this.spot,
 			newFrequency: 0,
 		};
 	}

@@ -98,6 +98,7 @@ export class ActivationComponent implements OnInit {
 				const oldSpot = this.viewState.spot;
 
 				this.viewState.spot = this.activation.getLatestSpot();
+				this.viewState.respot.frequency = 888;
 
 				this.viewState.supersededSpotList = this.activation
 					.getSupersededSpots()
@@ -136,8 +137,8 @@ export class ActivationComponent implements OnInit {
 	}
 
 	public reSpot(): void {
-		const respot = this.viewState.spot.clone();
-		respot.comment = "";
+		this.viewState.spot.copyTo(this.viewState.respot);
+		this.viewState.respot.comment = "";
 
 		this.viewState.respotIsVisible = true;
 	}

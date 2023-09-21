@@ -23,10 +23,10 @@ import {
 	transition,
 	trigger,
 } from "@angular/animations";
-import { CreateSpotComponent } from "../create-spot/create-spot.component";
 import { MatOptionModule } from "@angular/material/core";
 import { CopyToClipboardDirective } from "src/app/directives/copy-to-clipboard.directive";
 import { RespotComponent } from "../respot/respot.component";
+import { NgbDropdownModule } from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
 	selector: "pph-activation",
@@ -43,6 +43,7 @@ import { RespotComponent } from "../respot/respot.component";
 		MatOptionModule,
 		CopyToClipboardDirective,
 		RespotComponent,
+		NgbDropdownModule,
 	],
 	schemas: [CUSTOM_ELEMENTS_SCHEMA],
 	animations: [

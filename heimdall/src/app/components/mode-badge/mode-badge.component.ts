@@ -9,6 +9,7 @@ import { SpotMode } from "../../models/SpotMode";
 })
 export class ModeBadgeComponent {
 	@Input() public set mode(mode: SpotMode) {
+		mode = mode ?? SpotMode.Other;
 		this.viewState.mode = mode.length > 0 ? mode : SpotMode.Other;
 	}
 

@@ -6,10 +6,15 @@
 
 .field {
 	display: inline-block;
+
+	&.dropdown {
+		position: relative;
+		_z-index: 10000;
+	}
 }
 
 body {
-	position: relative;
+	_position: relative;
 }
 
 .col-auto,

@@ -73,59 +73,59 @@
 				></pph-spot-history-card>
 			</div>
 		</div>
-		<div class="action-list">
+	</div>
+	<div class="action-list">
+		<div
+			class="action-item btn"
+			(click)="reSpot()"
+			#tooltip="matTooltip"
+			matTooltip="Re-spot"
+			matTooltipShowDelay="500"
+		>
+			<iconify-icon icon="ph:megaphone"></iconify-icon>
+		</div>
+		<div
+			class="respot"
+			[@toggleRespot]="viewState.respotIsVisible ? 'visible' : 'hidden'"
+		>
+			<pph-respot [spot]="viewState.respot"></pph-respot>
 			<div
-				class="action-item btn"
+				class="btn send"
 				(click)="reSpot()"
 				#tooltip="matTooltip"
-				matTooltip="Re-spot"
+				matTooltip="Send"
 				matTooltipShowDelay="500"
 			>
-				<iconify-icon icon="ph:megaphone"></iconify-icon>
+				<iconify-icon icon="bi:send-fill"></iconify-icon>
 			</div>
 			<div
-				class="respot"
-				[@toggleRespot]="viewState.respotIsVisible ? 'visible' : 'hidden'"
-			>
-				<pph-respot [spot]="viewState.respot"></pph-respot>
-				<div
-					class="btn send"
-					(click)="reSpot()"
-					#tooltip="matTooltip"
-					matTooltip="Send"
-					matTooltipShowDelay="500"
-				>
-					<iconify-icon icon="bi:send-fill"></iconify-icon>
-				</div>
-				<div
-					class="btn cancel"
-					(click)="viewState.respotIsVisible = false"
-					#tooltip="matTooltip"
-					matTooltip="Cancel"
-					matTooltipShowDelay="500"
-				>
-					<iconify-icon icon="ic:round-cancel"></iconify-icon>
-				</div>
-			</div>
-			<div
-				class="action-item btn"
-				(click)="hideActivation(HideState.Spot)"
+				class="btn cancel"
+				(click)="viewState.respotIsVisible = false"
 				#tooltip="matTooltip"
-				matTooltip="Hide until band or mode change"
+				matTooltip="Cancel"
 				matTooltipShowDelay="500"
 			>
-				<iconify-icon icon="bx:hide"></iconify-icon>
+				<iconify-icon icon="ic:round-cancel"></iconify-icon>
 			</div>
-			<div class="break">|</div>
-			<div
-				class="action-item btn"
-				(click)="hideActivation(HideState.Activation)"
-				#tooltip="matTooltip"
-				matTooltip="Don't show this activation"
-				matTooltipShowDelay="500"
-			>
-				<iconify-icon icon="typcn:delete-outline"></iconify-icon>
-			</div>
+		</div>
+		<div
+			class="action-item btn"
+			(click)="hideActivation(HideState.Spot)"
+			#tooltip="matTooltip"
+			matTooltip="Hide until band or mode change"
+			matTooltipShowDelay="500"
+		>
+			<iconify-icon icon="bx:hide"></iconify-icon>
+		</div>
+		<div class="break">|</div>
+		<div
+			class="action-item btn"
+			(click)="hideActivation(HideState.Activation)"
+			#tooltip="matTooltip"
+			matTooltip="Don't show this activation"
+			matTooltipShowDelay="500"
+		>
+			<iconify-icon icon="typcn:delete-outline"></iconify-icon>
 		</div>
 	</div>
 </div>

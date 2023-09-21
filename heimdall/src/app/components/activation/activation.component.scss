@@ -8,7 +8,7 @@ body {
 	&:hover .action-list {
 		visibility: visible;
 		transform: scale(1);
-
+		opacity: 1;
 		transition-delay: 0.2s;
 	}
 }
@@ -89,8 +89,8 @@ body {
 
 	transition: 0.2s;
 
-	_visibility: hidden;
-	_opacity: 0;
+	visibility: hidden;
+	opacity: 0;
 	transform: scale(0.8);
 
 	.action-item {

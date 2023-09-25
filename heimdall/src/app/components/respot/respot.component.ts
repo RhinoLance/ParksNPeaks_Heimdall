@@ -5,6 +5,7 @@ import { Spot } from "src/app/models/Spot";
 import { SpotMode, spotModeList } from "src/app/models/SpotMode";
 import { ModeBadgeComponent } from "../mode-badge/mode-badge.component";
 import { NgbDropdownModule } from "@ng-bootstrap/ng-bootstrap";
+import { PnPClientService } from "src/app/services/PNPHttpClient.service";
 
 @Component({
 	selector: "pph-respot",
@@ -17,6 +18,8 @@ export class RespotComponent implements OnInit {
 	@Input() public spot!: Spot;
 
 	public viewModel!: ViewModel;
+
+	public constructor(private _pnpClientSvc: PnPClientService) {}
 
 	public ngOnInit(): void {
 		this.viewModel = {
@@ -32,11 +35,7 @@ export class RespotComponent implements OnInit {
 				? this.viewModel.newFrequency / 1000
 				: this.viewModel.newFrequency;
 
-		//console.log("submit");
-	}
-
-	public discard() {
-		//console.log("discard");
+		this._pnpClientSvc.submitSpot(this.spot).subscribe();
 	}
 }
 

@@ -62,6 +62,16 @@ export class FetchService {
 
 		return obs;
 	}
+
+	public postJson<T>(url: string, body: unknown): Observable<T> {
+		const requestInit = {
+			selector: (response: Response) => response.json(),
+			method: "POST",
+			body: JSON.stringify(body),
+		};
+
+		return this._deps.fromFetch(url, requestInit);
+	}
 }
 
 // eslint-disable-next-line  @typescript-eslint/no-explicit-any

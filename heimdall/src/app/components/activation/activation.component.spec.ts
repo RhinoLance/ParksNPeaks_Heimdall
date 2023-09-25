@@ -7,6 +7,7 @@ import { TimeagoModule } from "ngx-timeago";
 import { importProvidersFrom } from "@angular/core";
 import { SpotMode } from "src/app/models/SpotMode";
 import { provideAnimations } from "@angular/platform-browser/animations";
+import { RespotComponent } from "../respot/respot.component";
 
 describe("ActivationComponent", () => {
 	let component: ActivationComponent;
@@ -14,7 +15,7 @@ describe("ActivationComponent", () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			imports: [ActivationComponent],
+			imports: [ActivationComponent, RespotComponent],
 			providers: [
 				importProvidersFrom(TimeagoModule.forRoot()),
 				provideAnimations(),

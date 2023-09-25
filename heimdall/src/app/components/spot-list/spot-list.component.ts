@@ -13,7 +13,7 @@ import { RaysDirective } from "../../directives/rays.directive";
 	templateUrl: "./spot-list.component.html",
 	styleUrls: ["./spot-list.component.scss"],
 	standalone: true,
-	imports: [CommonModule, ActivationComponent, NoSpotsComponent, RaysDirective],
+	imports: [CommonModule, NoSpotsComponent, RaysDirective, ActivationComponent],
 })
 export class SpotListComponent implements OnDestroy, OnInit {
 	public viewState: ViewState = {
@@ -26,10 +26,10 @@ export class SpotListComponent implements OnDestroy, OnInit {
 		this._activationCalatogue
 	);
 
-	public constructor(private _pnpClient: PnPClientService) {}
+	public constructor(private _pnpClientSvc: PnPClientService) {}
 
 	public ngOnInit(): void {
-		this._pnpClient.subscribeToSpots(1).subscribe((spots) => {
+		this._pnpClientSvc.subscribeToSpots(1).subscribe((spots) => {
 			this._activationCalatogue.addSpots(spots);
 
 			const activationList = this._activationCalatogue.activations;

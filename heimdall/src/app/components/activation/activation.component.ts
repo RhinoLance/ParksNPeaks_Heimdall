@@ -14,7 +14,6 @@ import { CommonModule } from "@angular/common";
 import { TimeagoModule } from "ngx-timeago";
 import { Subscription, timer } from "rxjs";
 import { MatTooltipModule } from "@angular/material/tooltip";
-import { MatDialog, MatDialogModule } from "@angular/material/dialog";
 import {
 	AUTO_STYLE,
 	animate,
@@ -23,7 +22,6 @@ import {
 	transition,
 	trigger,
 } from "@angular/animations";
-import { MatOptionModule } from "@angular/material/core";
 import { CopyToClipboardDirective } from "src/app/directives/copy-to-clipboard.directive";
 import { RespotComponent } from "../respot/respot.component";
 import { NgbDropdownModule } from "@ng-bootstrap/ng-bootstrap";
@@ -39,8 +37,6 @@ import { NgbDropdownModule } from "@ng-bootstrap/ng-bootstrap";
 		SpotHistoryCardComponent,
 		TimeagoModule,
 		MatTooltipModule,
-		MatDialogModule,
-		MatOptionModule,
 		CopyToClipboardDirective,
 		RespotComponent,
 		NgbDropdownModule,
@@ -90,7 +86,7 @@ export class ActivationComponent implements OnInit {
 	/**
 	 *
 	 */
-	public constructor(private _dialog: MatDialog) {}
+	public constructor() {}
 
 	public ngOnInit(): void {
 		if (this.activation !== undefined) {

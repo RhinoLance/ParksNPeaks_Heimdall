@@ -73,6 +73,7 @@ export class CopyToClipboardDirective implements OnInit {
 		this._renderer.listen(this._el.nativeElement, "mouseover", () =>
 			this.addIconEl()
 		);
+
 		this._renderer.listen(this._el.nativeElement, "mouseout", () =>
 			this.removeIconEl()
 		);

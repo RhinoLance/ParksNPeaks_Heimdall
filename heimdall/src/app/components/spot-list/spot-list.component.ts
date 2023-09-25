@@ -1,12 +1,10 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
-import { ActivationCatalogue } from "src/app/models/ActivationCatalogue";
-import { TimeUpdator } from "src/app/models/TimeUpdator";
+import { Component, OnInit } from "@angular/core";
 import { Activation } from "src/app/models/Activation";
-import { PnPClientService } from "src/app/services/PNPHttpClient.service";
 import { ActivationComponent } from "../activation/activation.component";
 import { CommonModule } from "@angular/common";
 import { NoSpotsComponent } from "../no-spots/no-spots.component";
 import { RaysDirective } from "../../directives/rays.directive";
+import { DataService } from "src/app/services/DataService";
 
 @Component({
 	selector: "pph-spot-list",
@@ -15,24 +13,17 @@ import { RaysDirective } from "../../directives/rays.directive";
 	standalone: true,
 	imports: [CommonModule, NoSpotsComponent, RaysDirective, ActivationComponent],
 })
-export class SpotListComponent implements OnDestroy, OnInit {
+export class SpotListComponent implements OnInit {
 	public viewState: ViewState = {
 		activationList: [],
 		visibleActivationCount: 0,
 	};
 
-	private _activationCalatogue: ActivationCatalogue = new ActivationCatalogue();
-	private _spotTimeUpdator: TimeUpdator = new TimeUpdator(
-		this._activationCalatogue
-	);
-
-	public constructor(private _pnpClientSvc: PnPClientService) {}
+	public constructor(private _dataSvc: DataService) {}
 
 	public ngOnInit(): void {
-		this._pnpClientSvc.subscribeToSpots(1).subscribe((spots) => {
-			this._activationCalatogue.addSpots(spots);
-
-			const activationList = this._activationCalatogue.activations;
+		this._dataSvc.activationUpdated.subscribe(() => {
+			const activationList = this._dataSvc.getActivations();
 			activationList.sort((a, b) => {
 				return (
 					b.getLatestSpot().time.getTime() - a.getLatestSpot().time.getTime()
@@ -41,10 +32,6 @@ export class SpotListComponent implements OnDestroy, OnInit {
 
 			this.viewState.activationList = activationList;
 		});
-	}
-
-	public ngOnDestroy(): void {
-		this._spotTimeUpdator.stop();
 	}
 
 	public onActivationShow(): void {

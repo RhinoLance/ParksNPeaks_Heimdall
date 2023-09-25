@@ -36,9 +36,9 @@ export class Activation {
 		this.addSpot(spot);
 	}
 
-	public addSpot(spot: Spot): void {
+	public addSpot(spot: Spot): boolean {
 		if (this.containsDuplicateSpot(spot)) {
-			return;
+			return false;
 		}
 
 		this._spotList.push(spot);
@@ -47,6 +47,8 @@ export class Activation {
 		this.addAwardIfRequired(spot);
 
 		this.onUpdate.next(spot);
+
+		return true;
 	}
 
 	public getLatestSpot(): Spot {

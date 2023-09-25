@@ -28,10 +28,10 @@ describe("Activation", () => {
 		const activation = new Activation(spot1);
 
 		// Act
-		activation.addSpot(spot2);
+		const added = activation.addSpot(spot2);
 
 		// Assert
-		expect(activation.spotCount).toBe(1);
+		expect(added).toBe(false);
 	});
 
 	it("It gets superseeded spots", () => {

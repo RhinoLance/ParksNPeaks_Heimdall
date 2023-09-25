@@ -8,18 +8,27 @@ export class ActivationCatalogue {
 		return this._activationList;
 	}
 
-	public addSpot(spot: Spot): void {
-		const activation = this.findActivation(spot);
+	public addSpot(spot: Spot): Activation | undefined {
+		let activation = this.findActivation(spot);
+		let spotAdded: boolean;
 
 		if (activation) {
-			activation.addSpot(spot);
+			spotAdded = activation.addSpot(spot);
 		} else {
-			this._activationList.push(new Activation(spot));
+			activation = new Activation(spot);
+			this._activationList.push(activation);
+			spotAdded = true;
 		}
+
+		return spotAdded ? activation : undefined;
 	}
 
-	public addSpots(spots: Spot[]): void {
-		spots.map((v) => this.addSpot(v));
+	public addSpots(spots: Spot[]): Activation[] {
+		const activations = spots.map((v) => {
+			return this.addSpot(v);
+		});
+
+		return activations.filter((v) => v != undefined) as Activation[];
 	}
 
 	private findActivation(spot: Spot): Activation | null {

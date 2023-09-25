@@ -40,11 +40,13 @@ describe("Activation", () => {
 		spot1.siteName = "first";
 
 		const spot2 = new Spot();
-		spot2.siteName = "second";
+		const spot3 = new Spot();
 		spot2.time = spot2.time.addMinutes(10);
+		spot3.time = spot3.time.addMinutes(15);
 
 		const activation = new Activation(spot1);
 		activation.addSpot(spot2);
+		activation.addSpot(spot3);
 
 		// Act
 		const superseeded = activation.getSupersededSpots();
@@ -59,10 +61,12 @@ describe("Activation", () => {
 		spot1.siteName = "first";
 
 		const spot2 = new Spot();
-		spot2.siteName = "second";
-		spot2.time = spot2.time.addMinutes(10);
+		const spot3 = new Spot();
+		spot2.time = spot2.time.addMinutes(15);
+		spot3.time = spot3.time.addMinutes(10);
 
-		const activation = new Activation(spot2);
+		const activation = new Activation(spot3);
+		activation.addSpot(spot2);
 		activation.addSpot(spot1);
 
 		// Act

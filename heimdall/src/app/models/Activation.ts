@@ -6,12 +6,16 @@ import { SpotType } from "./SpotType";
 import commonSiteNamewords from "../../assets/data/commonSiteNameWords.json";
 import { ActivationAwardList } from "./ActivationAwardList";
 import { ReplaySubject } from "rxjs";
+import { rotateOutUpRightOnLeaveAnimation } from "angular-animations";
+import { Guid } from "guid-typescript";
 
 export class Activation {
+	public activationId: Guid = Guid.create();
 	public awardList: ActivationAwardList = new ActivationAwardList();
 	public siteName: string = "";
 	public callsign: string = "";
 	public callsignRoot: string = "";
+	public visibleState: HideState = HideState.Visible;
 
 	public onUpdate = new ReplaySubject<Spot>();
 
@@ -40,6 +44,8 @@ export class Activation {
 		if (this.containsDuplicateSpot(spot)) {
 			return false;
 		}
+
+		this.setActivationVilbility(spot, this.getLatestSpot());
 
 		this._spotList.push(spot);
 		this.orderSpotsByTime();
@@ -168,4 +174,25 @@ export class Activation {
 			}
 		});
 	}
+
+	private setActivationVilbility(addedSpot: Spot, previousSpot: Spot): void {
+		if (
+			this.visibleState == HideState.Visible ||
+			this.visibleState == HideState.Activation
+		)
+			return;
+
+		if (
+			addedSpot.mode !== previousSpot.mode ||
+			addedSpot.frequency !== previousSpot.frequency
+		) {
+			this.visibleState = HideState.Visible;
+		}
+	}
+}
+
+export enum HideState {
+	Visible = 0,
+	Spot = 1,
+	Activation = 2,
 }

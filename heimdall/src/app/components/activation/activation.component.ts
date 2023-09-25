@@ -6,7 +6,7 @@ import {
 	Output,
 	EventEmitter,
 } from "@angular/core";
-import { Activation } from "src/app/models/Activation";
+import { Activation, HideState } from "src/app/models/Activation";
 import { Spot } from "src/app/models/Spot";
 import { SpotHistoryCardComponent } from "../spot-history-card/spot-history-card.component";
 import { ModeBadgeComponent } from "../mode-badge/mode-badge.component";
@@ -25,6 +25,7 @@ import {
 import { CopyToClipboardDirective } from "src/app/directives/copy-to-clipboard.directive";
 import { RespotComponent } from "../respot/respot.component";
 import { NgbDropdownModule } from "@ng-bootstrap/ng-bootstrap";
+import { Guid } from "guid-typescript";
 
 @Component({
 	selector: "pph-activation",
@@ -43,17 +44,6 @@ import { NgbDropdownModule } from "@ng-bootstrap/ng-bootstrap";
 	],
 	schemas: [CUSTOM_ELEMENTS_SCHEMA],
 	animations: [
-		trigger("hideActivationAnimation", [
-			transition(":leave", [
-				animate(
-					150,
-					style({
-						opacity: 0,
-						height: 0,
-					})
-				),
-			]),
-		]),
 		trigger("toggleRespot", [
 			state("visible", style({ width: AUTO_STYLE, visibility: AUTO_STYLE })),
 			state("hidden", style({ width: "0", visibility: "hidden" })),
@@ -64,8 +54,8 @@ import { NgbDropdownModule } from "@ng-bootstrap/ng-bootstrap";
 })
 export class ActivationComponent implements OnInit {
 	@Input() public activation!: Activation;
-	@Output() public shown = new EventEmitter<void>();
-	@Output() public hiden = new EventEmitter<void>();
+	@Output() public shown = new EventEmitter<Activation>();
+	@Output() public hiden = new EventEmitter<Activation>();
 
 	public HideState = HideState;
 
@@ -75,7 +65,7 @@ export class ActivationComponent implements OnInit {
 		respotIsVisible: false,
 		supersededSpotList: [],
 		elapsedTimeState: ElapsedTimeState.Active,
-		hideState: HideState.Visible,
+		playHideAnimation: false,
 	};
 
 	public readonly liveTimeAgo: boolean = true;
@@ -100,12 +90,12 @@ export class ActivationComponent implements OnInit {
 					.getSupersededSpots()
 					.reverse();
 
-				if (this.viewState.hideState == HideState.Spot) {
+				if (this.activation.visibleState == HideState.Spot) {
 					if (
 						oldSpot.mode !== this.viewState.spot.mode ||
 						oldSpot.frequency !== this.viewState.spot.frequency
 					) {
-						this.viewState.hideState = HideState.Visible;
+						this.activation.visibleState = HideState.Visible;
 					}
 				}
 			});
@@ -123,13 +113,13 @@ export class ActivationComponent implements OnInit {
 			return;
 		}
 
-		this.viewState.hideState = hideState;
-		this.hiden.emit();
+		this.activation.visibleState = hideState;
+		this.hiden.emit(this.activation);
 	}
 
 	public showActivation(): void {
-		this.viewState.hideState = HideState.Visible;
-		this.shown.emit();
+		this.activation.visibleState = HideState.Visible;
+		this.shown.emit(this.activation);
 	}
 
 	public reSpot(): void {
@@ -170,17 +160,11 @@ export enum ElapsedTimeState {
 	Inactive = "inactive",
 }
 
-export enum HideState {
-	Visible = "visible",
-	Spot = "spot",
-	Activation = "activation",
-}
-
-interface ViewState {
+type ViewState = {
 	spot: Spot;
 	respot: Spot;
 	respotIsVisible: boolean;
 	supersededSpotList: Spot[];
 	elapsedTimeState: ElapsedTimeState;
-	hideState: HideState;
-}
+	playHideAnimation: boolean;
+};

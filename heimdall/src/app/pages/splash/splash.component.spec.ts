@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { NoSpotsComponent } from "./no-spots.component";
+import { SplashComponent } from "./splash.component";
 
-describe("NoSpotsComponent", () => {
-	let component: NoSpotsComponent;
-	let fixture: ComponentFixture<NoSpotsComponent>;
+describe("SplashComponent", () => {
+	let component: SplashComponent;
+	let fixture: ComponentFixture<SplashComponent>;
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			declarations: [],
+			imports: [SplashComponent],
 		});
-		fixture = TestBed.createComponent(NoSpotsComponent);
+		fixture = TestBed.createComponent(SplashComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();
 	});

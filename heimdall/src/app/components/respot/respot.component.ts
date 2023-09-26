@@ -25,22 +25,25 @@ export class RespotComponent implements OnInit {
 		this.viewModel = {
 			modeList: spotModeList,
 			spot: this.spot,
-			newFrequency: 0,
 		};
 	}
 
 	public addSpot() {
-		this.spot.frequency =
-			this.viewModel.newFrequency > 100000
-				? this.viewModel.newFrequency / 1000
-				: this.viewModel.newFrequency;
-
 		this._pnpClientSvc.submitSpot(this.spot).subscribe();
+	}
+
+	public setComment($event: Event) {
+		this.spot.comment = ($event.target as HTMLElement).innerText;
+	}
+
+	public setFrequency($event: Event) {
+		const freq = parseFloat(($event.target as HTMLInputElement).value);
+
+		this.spot.frequency = freq > 100000 ? freq / 1000 : freq;
 	}
 }
 
 type ViewModel = {
 	modeList: SpotMode[];
 	spot: Spot;
-	newFrequency: number;
 };

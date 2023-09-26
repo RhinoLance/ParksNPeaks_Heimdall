@@ -16,8 +16,20 @@
 	width: 7em;
 }
 
-.dropdown-toggle::after {
-	content: none;
+.comment {
+	min-width: 20em;
+
+	#commentInput {
+		width: 100%;
+	}
+}
+
+.dropdown {
+	position: initial;
+
+	.dropdown-toggle::after {
+		content: none;
+	}
 }
 
 .field,

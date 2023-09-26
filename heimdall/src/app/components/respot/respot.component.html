@@ -26,7 +26,7 @@
 		id="freqInput"
 		placeholder="Frequency"
 		[ngModel]="viewModel.spot.frequency | number : '1.3-6'"
-		(ngModelChange)="viewModel.newFrequency = $event"
+		(ngModelChange)="setFrequency($event)"
 	/>
 </div>
 
@@ -35,7 +35,9 @@
 		type="text"
 		class="form-control"
 		id="commentInput"
+		maxlength="120"
 		placeholder="Comment"
 		[(ngModel)]="viewModel.spot.comment"
+		(ngModelChange)="setComment($event)"
 	/>
 </div>

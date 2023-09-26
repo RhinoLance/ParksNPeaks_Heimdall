@@ -4,8 +4,7 @@ import { ActivationComponent } from "../../components/activation/activation.comp
 import { CommonModule } from "@angular/common";
 import { RaysDirective } from "../../directives/rays.directive";
 import { DataService } from "src/app/services/DataService";
-import { Router } from "@angular/router";
-import { RoutePaths } from "src/app/app-routing.module";
+import { AppRouter, RoutePath } from "src/app/services/AppRountingService";
 import { animate, style, transition, trigger } from "@angular/animations";
 
 @Component({
@@ -36,7 +35,10 @@ export class SpotListComponent implements OnInit {
 
 	public HideState = HideState;
 
-	public constructor(private _dataSvc: DataService, private _router: Router) {}
+	public constructor(
+		private _dataSvc: DataService,
+		private _routerSvc: AppRouter
+	) {}
 
 	public ngOnInit(): void {
 		this.retrieveActivationList();
@@ -64,7 +66,7 @@ export class SpotListComponent implements OnInit {
 				(v) => v.visibleState == HideState.Visible
 			).length == 0
 		) {
-			this._router.navigate([RoutePaths.Splash]);
+			this._routerSvc.navigate(RoutePath.Splash);
 		}
 	}
 
@@ -74,7 +76,7 @@ export class SpotListComponent implements OnInit {
 			.filter((v) => v.visibleState == HideState.Visible);
 
 		if (activationList.length == 0) {
-			this._router.navigate([RoutePaths.Splash]);
+			this._routerSvc.navigate(RoutePath.Splash);
 		}
 
 		activationList.sort((a, b) => {

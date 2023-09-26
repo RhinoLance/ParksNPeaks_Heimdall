@@ -25,7 +25,6 @@ import {
 import { CopyToClipboardDirective } from "src/app/directives/copy-to-clipboard.directive";
 import { RespotComponent } from "../respot/respot.component";
 import { NgbDropdownModule } from "@ng-bootstrap/ng-bootstrap";
-import { Guid } from "guid-typescript";
 
 @Component({
 	selector: "pph-activation",

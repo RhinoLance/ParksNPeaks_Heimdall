@@ -6,8 +6,7 @@ import { SpotType } from "./SpotType";
 import commonSiteNamewords from "../../assets/data/commonSiteNameWords.json";
 import { ActivationAwardList } from "./ActivationAwardList";
 import { ReplaySubject } from "rxjs";
-import { rotateOutUpRightOnLeaveAnimation } from "angular-animations";
-import { Guid } from "guid-typescript";
+import { Guid } from "./Guid";
 
 export class Activation {
 	public activationId: Guid = Guid.create();

@@ -1,8 +1,8 @@
-import { Guid } from "guid-typescript";
 import { Activation } from "./Activation";
 import { ActivationAward } from "./ActivationAward";
 import { ActivationAwardList } from "./ActivationAwardList";
 import { AwardScheme } from "./AwardScheme";
+import { Guid } from "./Guid";
 import { Spot } from "./Spot";
 import { SpotMode } from "./SpotMode";
 import { SpotType } from "./SpotType";

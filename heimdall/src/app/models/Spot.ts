@@ -1,8 +1,8 @@
-import { Guid } from "guid-typescript";
 import { SpotType } from "./SpotType";
 import { SpotMode } from "./SpotMode";
 import { AwardScheme } from "./AwardScheme";
 import { ActivationAwardList } from "./ActivationAwardList";
+import { Guid } from "./Guid";
 
 export class Spot {
 	public id: Guid = Guid.create();

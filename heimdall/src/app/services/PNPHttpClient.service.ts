@@ -6,7 +6,7 @@ import { Observable, map } from "rxjs";
 import { CancellationToken } from "../models/CancellationToken";
 import { FetchService } from "./FetchService";
 import { SpotListBuilder } from "../models/SpotListBuilder";
-import { SettingsService } from "./SettingsService";
+import { SettingsKey, SettingsService } from "./SettingsService";
 
 @Injectable({
 	providedIn: "root",
@@ -18,7 +18,7 @@ export class PnPClientService {
 		latestSpot: new Date("1970-01-01T00:00:00.000Z"),
 	};
 
-	private readonly _regionFilter = "^(?:VK|VL|VJ|ZL)";
+	private readonly _regionFilter = "^(?:VK|VL|VJ|ZL|ZZ)";
 
 	public constructor(
 		private _fetchSvc: FetchService,
@@ -70,7 +70,7 @@ export class PnPClientService {
 		return obs;
 	}
 
-	public submitSpot(spot: Spot): Observable<Spot> {
+	public submitSpot(spot: Spot): Observable<void> {
 		const postSpot = {
 			actClass: spot.awardList.getAtIndex(0).award,
 			actSite: spot.awardList.getAtIndex(0).siteId,
@@ -78,11 +78,11 @@ export class PnPClientService {
 			freq: spot.frequency,
 			actCallsign: spot.callsign,
 			comments: spot.comment,
-			userId: this._settingSvc.getUserCallsign(),
-			APIKey: this._settingSvc.getPnPApiKey(),
+			userId: this._settingSvc.get(SettingsKey.CALLSIGN),
+			APIKey: this._settingSvc.get(SettingsKey.PNP_API_KEY),
 		};
 
-		return this._fetchSvc.postJson<Spot>(this._phpBaseHref + "SPOT", postSpot);
+		return this._fetchSvc.postJson<void>(this._phpBaseHref + "SPOT", postSpot);
 	}
 
 	private async get<T>(suffix: string): Promise<T> {

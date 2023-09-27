@@ -1,0 +1,52 @@
+<div class="container">
+	<h1 class="display-6">Settings</h1>
+
+	<div class="container">
+		<h3>Spotting service integrations</h3>
+		<p>Heimdall is able to submit spots to the following sevices.</p>
+		<div class="card">
+			<div class="card-header">
+				<div
+					class="active-state"
+					[ngClass]="viewModel.pnpApiKey.length > 0 ? 'active' : 'inactive'"
+				></div>
+				Parks 'n Peaks
+			</div>
+			<div class="card-body">
+				<div class="mb-3">
+					<label for="pnpKey" class="form-label">API Key</label>
+					<input
+						[(ngModel)]="viewModel.pnpApiKey"
+						class="form-control"
+						id="pnpKey"
+						placeholder=""
+					/>
+				</div>
+
+				<div class="text-body-secondary">
+					You can find your API Key
+					<a href="https://parksnpeaks.org/edit.php" target="_blank"> here</a>.
+				</div>
+			</div>
+		</div>
+		<!-- Disable untill SOTA API is supported
+		<div class="card">
+			<div class="card-header">
+				SOTA
+			</div>
+			<div class="card-body">
+				<p>
+					In order to post SOTA spots or alerts, you must have a  
+					SOTA account and be signed in.
+				</p>
+				
+				<button (click)="sotaLogin()">Login</button>
+
+			</div>
+		</div>
+-->
+	</div>
+	<div class="row footer">
+		<button class="btn btn-primary" (click)="save()">Save</button>
+	</div>
+</div>

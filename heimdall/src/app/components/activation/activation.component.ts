@@ -25,6 +25,7 @@ import {
 import { CopyToClipboardDirective } from "src/app/directives/copy-to-clipboard.directive";
 import { RespotComponent } from "../respot/respot.component";
 import { NgbDropdownModule } from "@ng-bootstrap/ng-bootstrap";
+import { DataService } from "src/app/services/DataService";
 
 @Component({
 	selector: "pph-activation",
@@ -75,7 +76,7 @@ export class ActivationComponent implements OnInit {
 	/**
 	 *
 	 */
-	public constructor() {}
+	public constructor(private _dataSvc: DataService) {}
 
 	public ngOnInit(): void {
 		if (this.activation !== undefined) {
@@ -121,11 +122,17 @@ export class ActivationComponent implements OnInit {
 		this.shown.emit(this.activation);
 	}
 
-	public reSpot(): void {
+	public showReSpot(): void {
 		this.viewState.spot.copyTo(this.viewState.respot);
 		this.viewState.respot.comment = "";
 
 		this.viewState.respotIsVisible = true;
+	}
+
+	public sendReSpot(): void {
+		this._dataSvc.submitSpot(this.viewState.respot).subscribe(() => {
+			this.viewState.respotIsVisible = false;
+		});
 	}
 
 	public onClipboardCopy(value: string): void {

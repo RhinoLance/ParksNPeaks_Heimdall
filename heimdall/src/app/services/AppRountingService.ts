@@ -14,6 +14,7 @@ export class AppRouter {
 
 export enum RoutePath {
 	Root = "",
+	Settings = "settings",
 	Splash = "splash",
 	SpotList = "spotList",
 }

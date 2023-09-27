@@ -45,9 +45,14 @@ p {
 	padding: 0 16px;
 }
 
-.toolbar #twitter-logo {
-	height: 40px;
-	margin: 0 8px;
+.toolbar #settings-icon {
+	font-size: 1.5em;
+	transform: scale 0.2s;
+
+	&:hover {
+		transform: scale(1.2);
+		cursor: pointer;
+	}
 }
 
 .toolbar #youtube-logo {

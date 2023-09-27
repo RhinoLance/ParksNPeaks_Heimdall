@@ -73,7 +73,7 @@
 	<div class="action-list">
 		<div
 			class="action-item btn"
-			(click)="reSpot()"
+			(click)="showReSpot()"
 			#tooltip="matTooltip"
 			matTooltip="Re-spot"
 			matTooltipShowDelay="500"
@@ -87,7 +87,7 @@
 			<pph-respot [spot]="viewState.respot"></pph-respot>
 			<div
 				class="btn send"
-				(click)="reSpot()"
+				(click)="sendReSpot()"
 				#tooltip="matTooltip"
 				matTooltip="Send"
 				matTooltipShowDelay="500"

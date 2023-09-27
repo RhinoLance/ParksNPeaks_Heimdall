@@ -1,8 +1,9 @@
 import { Injectable } from "@angular/core";
 import { ActivationCatalogue } from "../models/ActivationCatalogue";
-import { Subject } from "rxjs";
+import { Observable, Subject } from "rxjs";
 import { Activation } from "../models/Activation";
 import { PnPClientService } from "./PNPHttpClient.service";
+import { Spot } from "../models/Spot";
 
 @Injectable({
 	providedIn: "root",
@@ -18,6 +19,10 @@ export class DataService {
 
 	public getActivations(): Activation[] {
 		return this._activations.activations;
+	}
+
+	public submitSpot(spot: Spot): Observable<void> {
+		return this._pnpApiSvc.submitSpot(spot);
 	}
 
 	private initPnpListener(): void {

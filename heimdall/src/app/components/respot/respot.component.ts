@@ -32,10 +32,6 @@ export class RespotComponent implements OnInit {
 		this._pnpClientSvc.submitSpot(this.spot).subscribe();
 	}
 
-	public setComment($event: Event) {
-		this.spot.comment = ($event.target as HTMLElement).innerText;
-	}
-
 	public setFrequency($event: Event) {
 		const freq = parseFloat(($event.target as HTMLInputElement).value);
 

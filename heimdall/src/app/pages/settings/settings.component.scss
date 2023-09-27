@@ -1,0 +1,25 @@
+h3 {
+	margin-top: 2rem;
+}
+
+.card {
+	margin-bottom: 2em;
+}
+
+.active-state {
+	display: inline-block;
+	width: 1em;
+	height: 1em;
+	border-radius: 50%;
+	border-width: 1px;
+	margin-right: 0.5em;
+
+	&.active {
+		background: #4f772d;
+		border-color: #283c17;
+	}
+	&.inactive {
+		background: #9a031e;
+		border-color: #5c0212;
+	}
+}

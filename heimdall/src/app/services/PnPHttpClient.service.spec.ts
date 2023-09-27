@@ -34,7 +34,20 @@ describe("PnPHttpClientService", () => {
 	const clonePnPSpot = (spot: PnPSpot): PnPSpot =>
 		JSON.parse(JSON.stringify(spot));
 
-	const settingsSvc = new SettingsService();
+	let settingsSvc: SettingsService;
+
+	beforeEach(() => {
+		settingsSvc = {
+			get: (key: string) => {
+				switch (key) {
+					case "pnpApiKey":
+						return "1234567890";
+					default:
+						return "";
+				}
+			},
+		} as SettingsService;
+	});
 
 	it("shouild get a spot list", async () => {
 		// Arrange

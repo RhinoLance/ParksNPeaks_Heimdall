@@ -1,9 +1,10 @@
 {
 	"routes": [
 		{
-			"route": "/spotList",
-			"redirect": "/",
-			"statusCode": 301
+			"navigationFallback": {
+				"rewrite": "/",
+				"exclude": []
+			}
 		}
 	]
 }

@@ -3,7 +3,7 @@ import { FetchService, FetchServiceDeps } from "./FetchService";
 import { Subject, from, of, throwError } from "rxjs";
 import { Spot } from "../models/Spot";
 import { PnPClientService } from "./PNPHttpClient.service";
-import { SettingsService } from "./SettingsService";
+import { SettingsKey, SettingsService } from "./SettingsService";
 
 describe("PnPHttpClientService", () => {
 	/*
@@ -42,10 +42,13 @@ describe("PnPHttpClientService", () => {
 				switch (key) {
 					case "pnpApiKey":
 						return "1234567890";
+					case "pnpUserName":
+						return "meuser";
 					default:
 						return "";
 				}
 			},
+			settingUpdated: new Subject<SettingsKey>(),
 		} as SettingsService;
 	});
 

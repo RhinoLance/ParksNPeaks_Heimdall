@@ -20,6 +20,10 @@ p {
 	margin: 0;
 }
 
+.pointer {
+	cursor: pointer;
+}
+
 .spacer {
 	flex: 3;
 }
@@ -43,6 +47,10 @@ p {
 
 .toolbar .version {
 	padding: 0 16px;
+
+	&:hover {
+		cursor: pointer;
+	}
 }
 
 .toolbar #settings-icon {
@@ -67,4 +75,13 @@ p {
 
 .content {
 	margin: 61px 0;
+}
+
+.ffooter {
+	min-height: 120px;
+	display: flex;
+	align-items: center;
+	background: #003f5c;
+	color: white;
+	font-weight: 600;
 }

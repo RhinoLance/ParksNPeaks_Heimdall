@@ -4,18 +4,20 @@ import packageJson from "../../../../package.json";
 import { NgIf } from "@angular/common";
 import { RaysDirective } from "../../directives/rays.directive";
 import { AppRouter, RoutePath } from "src/app/services/AppRountingService";
+import { NgbDropdownModule } from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
 	selector: "pph-root",
 	templateUrl: "./main.component.html",
 	styleUrls: ["./main.component.scss"],
 	standalone: true,
-	imports: [RouterOutlet, NgIf, RaysDirective],
+	imports: [RouterOutlet, NgIf, RaysDirective, NgbDropdownModule],
 	schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class MainComponent {
-	public viewModel: ViewState = {
+	public viewModel: ViewModel = {
 		version: packageJson.version,
+		buildVersion: packageJson.buildVersion,
 	};
 
 	public constructor(private _appRouter: AppRouter) {}
@@ -23,8 +25,13 @@ export class MainComponent {
 	public settingsClick(): void {
 		this._appRouter.navigate(RoutePath.Settings);
 	}
+
+	public navigateHome() {
+		this._appRouter.navigate(RoutePath.SpotList);
+	}
 }
 
-type ViewState = {
+type ViewModel = {
 	version: string;
+	buildVersion: string;
 };

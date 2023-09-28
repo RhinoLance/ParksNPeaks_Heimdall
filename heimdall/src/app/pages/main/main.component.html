@@ -1,7 +1,9 @@
 <!-- Toolbar -->
 <div class="toolbar" role="banner" pphRays>
-	<img width="40" alt="Heimdall Logo" src="assets/images/heimdall/icon.png" />
-	<span>Parks 'n Peaks :: Heimdall</span>
+	<span class="pointer" (click)="navigateHome()">
+		<img width="40" alt="Heimdall Logo" src="assets/images/heimdall/icon.png" />
+		<span>Parks 'n Peaks :: Heimdall</span>
+	</span>
 	<div class="spacer"></div>
 	<div class="settings" (click)="settingsClick()">
 		<iconify-icon
@@ -9,9 +11,109 @@
 			icon="fluent:settings-20-regular"
 		></iconify-icon>
 	</div>
-	<div class="version">Version: {{ viewModel.version }}</div>
+	<div ngbDropdown class="d-inline-block">
+		<div class="version" id="dropdownBasic1" ngbDropdownToggle>
+			Version: {{ viewModel.version }}
+		</div>
+		<div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+			<div ngbDropdownItem>
+				<div class="text-secondary">
+					To be on the cutting edge, try the
+					<a
+						href="https://white-mud-05eea0610-dev.centralus.3.azurestaticapps.net/spotList"
+						>development version</a
+					>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 
 <div class="content" role="main">
 	<router-outlet></router-outlet>
 </div>
+
+<footer class="bd-footer py-4 py-md-5 mt-5 bg-light">
+	<div class="container py-4 py-md-5 px-4 px-md-3">
+		<div class="row">
+			<div class="col-lg-3 mb-3">
+				<span class="fs-5">Heimdall</span>
+				<ul class="list-unstyled small text-muted">
+					<li class="mb-2">
+						Designed and built with love for the VK and ZL
+						<a href="https://parksnpeaks.org/">Parks 'n Peaks</a> community.
+					</li>
+					<li class="mb-2">
+						Code licensed
+						<a
+							href="https://github.com/twbs/bootstrap/blob/main/LICENSE"
+							target="_blank"
+							rel="license noopener"
+							>MIT</a
+						>, docs
+						<a
+							href="https://creativecommons.org/licenses/by/3.0/"
+							target="_blank"
+							rel="license noopener"
+							>CC BY 3.0</a
+						>.
+					</li>
+					<li class="mb-2">
+						<iconify-icon icon="mdi:github"></iconify-icon> The source code is
+						avialable on
+						<a href="https://github.com/RhinoLance/ParksNPeaks_Heimdall/"
+							>GitHub</a
+						>.
+					</li>
+					<li class="mb-2">Contibutions via pull requests are welcome.</li>
+					<li class="mb-2">
+						Bugs and suggestions may be logged on
+						<a href="https://github.com/RhinoLance/ParksNPeaks_Heimdall/issues"
+							>GitHub Issues</a
+						>
+					</li>
+				</ul>
+			</div>
+			<div class="col-6 col-lg-2 offset-lg-1 mb-3">
+				<span class="fs-5">Links</span>
+				<ul class="list-unstyled small text-muted">
+					<li class="mb-2">
+						<a href="https://parksnpeaks.org/">Parks 'n 'Peaks</a>
+					</li>
+					<li class="mb-2"><a href="https://sotl.as/">SOTLAS</a></li>
+					<li class="mb-2">
+						<a href="https://sotawatch.sota.org.uk/">SOTA Watch</a>
+					</li>
+				</ul>
+			</div>
+			<div class="col-6 col-lg-2 mb-3">
+				<span class="fs-5">Schemes</span>
+				<ul class="list-unstyled small text-muted">
+					<li class="mb-2"><a href="https://www.sota.org.uk/">SOTA</a></li>
+					<li class="mb-2">
+						<a href="/docs/5.2/examples/starter-template/">WWFF</a>
+					</li>
+					<li class="mb-2">
+						<a href="https://www.wwffaustralia.com/">BOTA</a>
+					</li>
+					<li class="mb-2"><a href="https://ontheair.nz/about">OTA.NZ</a></li>
+					<li class="mb-2"><a href="https://pota.app/">POTA</a></li>
+				</ul>
+			</div>
+			<div class="col-6 col-lg-2 mb-3">
+				<span class="fs-5">Community</span>
+				<ul class="list-unstyled small text-muted">
+					<li class="mb-2">
+						<a href="https://reflector.sota.org.uk/">SOTA Reflector</a>
+					</li>
+					<li class="mb-2">
+						<a href="https://groups.io/g/OZSOTA/">OZSOTA Groups.io</a>
+					</li>
+					<li class="mb-2">
+						<a href="https://groups.io/g/wwffaustralia">VKFF Groups.io</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</footer>

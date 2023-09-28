@@ -31,7 +31,7 @@ export class DataService {
 
 		return this._pnpApiSvc
 			.submitSpot(spot)
-			.pipe(tap(() => this._activations.addSpot(spot)));
+			.pipe(tap(() => this._activations.addSpot(spot.clone())));
 	}
 
 	private initPnpListener(): void {

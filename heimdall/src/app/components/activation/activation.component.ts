@@ -21,11 +21,15 @@ import {
 	style,
 	transition,
 	trigger,
+	useAnimation,
 } from "@angular/animations";
 import { CopyToClipboardDirective } from "src/app/directives/copy-to-clipboard.directive";
 import { RespotComponent } from "../respot/respot.component";
 import { NgbDropdownModule } from "@ng-bootstrap/ng-bootstrap";
 import { DataService } from "src/app/services/DataService";
+import { PnPClientService } from "src/app/services/PNPHttpClient.service";
+import { AppRouter, RoutePath } from "src/app/services/AppRountingService";
+import { backOutLeft } from "ng-animate";
 
 @Component({
 	selector: "pph-activation",
@@ -50,6 +54,9 @@ import { DataService } from "src/app/services/DataService";
 			transition("visible => hidden", animate("250ms ease-in")),
 			transition("hidden => visible", animate("250ms ease-out")),
 		]),
+		trigger("respotSuccess", [
+			transition("* => true", useAnimation(backOutLeft)),
+		]),
 	],
 })
 export class ActivationComponent implements OnInit {
@@ -66,6 +73,7 @@ export class ActivationComponent implements OnInit {
 		supersededSpotList: [],
 		elapsedTimeState: ElapsedTimeState.Active,
 		playHideAnimation: false,
+		respotSuccess: undefined,
 	};
 
 	public readonly liveTimeAgo: boolean = true;
@@ -73,10 +81,11 @@ export class ActivationComponent implements OnInit {
 	private _clipcoardVal: string = "";
 	private _clipboardTimeout: Subscription | undefined;
 
-	/**
-	 *
-	 */
-	public constructor(private _dataSvc: DataService) {}
+	public constructor(
+		private _dataSvc: DataService,
+		public pnpClientSvc: PnPClientService,
+		private _router: AppRouter
+	) {}
 
 	public ngOnInit(): void {
 		if (this.activation !== undefined) {
@@ -123,16 +132,28 @@ export class ActivationComponent implements OnInit {
 	}
 
 	public showReSpot(): void {
+		if (!this.pnpClientSvc.hasApiKey) {
+			this._router.navigate(RoutePath.Settings);
+			return;
+		}
+
 		this.viewState.spot.copyTo(this.viewState.respot);
 		this.viewState.respot.comment = "";
 
 		this.viewState.respotIsVisible = true;
 	}
 
-	public sendReSpot(): void {
-		this._dataSvc.submitSpot(this.viewState.respot).subscribe(() => {
-			this.viewState.respotIsVisible = false;
-		});
+	public onRespotSent(success: boolean) {
+		this.viewState.respotSuccess = success;
+		if (success) {
+			timer(2000).subscribe(() => {
+				this.viewState.respotSuccess = undefined;
+			});
+		}
+	}
+
+	public respotSuccessAnimDone() {
+		this.viewState.respotIsVisible = false;
 	}
 
 	public onClipboardCopy(value: string): void {
@@ -145,6 +166,10 @@ export class ActivationComponent implements OnInit {
 			this._clipcoardVal.length > 0 ? this._clipcoardVal + " " + value : value;
 
 		navigator.clipboard.writeText(this._clipcoardVal);
+	}
+
+	public openSettings() {
+		this._router.navigate(RoutePath.Settings);
 	}
 
 	private setTimeElapsedState(): void {
@@ -173,4 +198,5 @@ type ViewState = {
 	supersededSpotList: Spot[];
 	elapsedTimeState: ElapsedTimeState;
 	playHideAnimation: boolean;
+	respotSuccess: boolean | undefined;
 };

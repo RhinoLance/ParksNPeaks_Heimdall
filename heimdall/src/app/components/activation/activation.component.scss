@@ -119,6 +119,10 @@ body {
 		vertical-align: sub;
 	}
 
+	.inactive {
+		opacity: 0.5;
+	}
+
 	.respot {
 		display: inline-block;
 		vertical-align: middle;
@@ -126,10 +130,6 @@ body {
 
 		pph-respot {
 			display: inline-block;
-		}
-
-		.btn.send:hover {
-			color: #006797;
 		}
 
 		.btn.cancel:hover {

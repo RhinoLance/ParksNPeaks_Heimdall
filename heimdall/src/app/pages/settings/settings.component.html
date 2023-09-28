@@ -8,23 +8,38 @@
 			<div class="card-header">
 				<div
 					class="active-state"
-					[ngClass]="viewModel.pnpApiKey.length > 0 ? 'active' : 'inactive'"
+					[ngClass]="
+						viewModel.pnpApiKey.length > 0 && viewModel.pnpUserName.length > 0
+							? 'active'
+							: 'inactive'
+					"
 				></div>
 				Parks 'n Peaks
 			</div>
 			<div class="card-body">
-				<div class="mb-3">
-					<label for="pnpKey" class="form-label">API Key</label>
-					<input
-						[(ngModel)]="viewModel.pnpApiKey"
-						class="form-control"
-						id="pnpKey"
-						placeholder=""
-					/>
+				<div class="mb-3 row">
+					<div class="col">
+						<label for="callsign" class="form-label">Username</label>
+						<input
+							[(ngModel)]="viewModel.pnpUserName"
+							class="form-control"
+							id="pnpUserName"
+							placeholder=""
+						/>
+					</div>
+					<div class="col">
+						<label for="pnpKey" class="form-label">API Key</label>
+						<input
+							[(ngModel)]="viewModel.pnpApiKey"
+							class="form-control"
+							id="pnpKey"
+							placeholder=""
+						/>
+					</div>
 				</div>
 
 				<div class="text-body-secondary">
-					You can find your API Key
+					You can find your Username and API Key
 					<a href="https://parksnpeaks.org/edit.php" target="_blank"> here</a>.
 				</div>
 			</div>

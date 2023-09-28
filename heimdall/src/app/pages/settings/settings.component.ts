@@ -20,11 +20,13 @@ export class SettingsComponent {
 	) {
 		this.viewModel = {
 			pnpApiKey: this._settingsSvc.get(SettingsKey.PNP_API_KEY) || "",
+			pnpUserName: this._settingsSvc.get(SettingsKey.PNP_USERNAME) || "",
 		};
 	}
 
 	public save() {
 		this._settingsSvc.set(SettingsKey.PNP_API_KEY, this.viewModel.pnpApiKey);
+		this._settingsSvc.set(SettingsKey.PNP_USERNAME, this.viewModel.pnpUserName);
 
 		this._router.navigate(RoutePath.SpotList);
 	}
@@ -32,4 +34,5 @@ export class SettingsComponent {
 
 type ViewState = {
 	pnpApiKey: string;
+	pnpUserName: string;
 };

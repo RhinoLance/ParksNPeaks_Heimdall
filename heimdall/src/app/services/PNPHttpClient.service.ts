@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { environment } from "src/environments/environment";
 import { PnPSpot } from "../models/PnPSpot";
 import { Spot } from "../models/Spot";
-import { Observable, map } from "rxjs";
+import { Observable, map, mergeMap, of, throwError } from "rxjs";
 import { CancellationToken } from "../models/CancellationToken";
 import { FetchService } from "./FetchService";
 import { SpotListBuilder } from "../models/SpotListBuilder";
@@ -12,6 +12,16 @@ import { SettingsKey, SettingsService } from "./SettingsService";
 	providedIn: "root",
 })
 export class PnPClientService {
+	private _hasApiKey: boolean = false;
+	public get hasApiKey(): boolean {
+		return this._hasApiKey;
+	}
+
+	private _hasUserId: boolean = false;
+	public get hasUserId(): boolean {
+		return this._hasUserId;
+	}
+
 	private _phpBaseHref: string = environment.pnpBaseHref;
 
 	private _pnpSubscription = {
@@ -23,7 +33,9 @@ export class PnPClientService {
 	public constructor(
 		private _fetchSvc: FetchService,
 		private _settingSvc: SettingsService
-	) {}
+	) {
+		this.monitorApiKeySetting();
+	}
 
 	//public transformPnPToSpotList(pnpSpots: PnPSpot[]): Spot[] {}
 
@@ -70,7 +82,7 @@ export class PnPClientService {
 		return obs;
 	}
 
-	public submitSpot(spot: Spot): Observable<void> {
+	public submitSpot(spot: Spot): Observable<PostResponse> {
 		const postSpot = {
 			actClass: spot.awardList.getAtIndex(0).award,
 			actSite: spot.awardList.getAtIndex(0).siteId,
@@ -78,11 +90,21 @@ export class PnPClientService {
 			freq: spot.frequency,
 			actCallsign: spot.callsign,
 			comments: spot.comment,
-			userId: this._settingSvc.get(SettingsKey.CALLSIGN),
-			APIKey: this._settingSvc.get(SettingsKey.PNP_API_KEY),
+			userID: this._settingSvc.get(SettingsKey.PNP_USERNAME),
+			apiKey: this._settingSvc.get(SettingsKey.PNP_API_KEY),
 		};
 
-		return this._fetchSvc.postJson<void>(this._phpBaseHref + "SPOT", postSpot);
+		return this._fetchSvc
+			.postJson<PostResponse>(this._phpBaseHref + "SPOT", postSpot)
+			.pipe(
+				mergeMap((v) => {
+					if (v.response.toLocaleLowerCase().includes("failure")) {
+						return throwError(() => v);
+					} else {
+						return of(v);
+					}
+				})
+			);
 	}
 
 	private async get<T>(suffix: string): Promise<T> {
@@ -100,4 +122,30 @@ export class PnPClientService {
 
 		return data;
 	}
+
+	private monitorApiKeySetting(): void {
+		this._hasApiKey = this.settingHasKey(SettingsKey.PNP_API_KEY);
+		this._hasUserId = this.settingHasKey(SettingsKey.PNP_USERNAME);
+
+		this._settingSvc.settingUpdated.subscribe((key) => {
+			switch (key) {
+				case SettingsKey.PNP_API_KEY:
+					this._hasApiKey = this.settingHasKey(SettingsKey.PNP_API_KEY);
+					break;
+				case SettingsKey.PNP_USERNAME:
+					this._hasUserId = this.settingHasKey(SettingsKey.PNP_USERNAME);
+					break;
+			}
+		});
+	}
+
+	private settingHasKey(key: SettingsKey): boolean {
+		const value = this._settingSvc.get<string>(key);
+
+		return value !== undefined && value.length > 0;
+	}
 }
+
+export type PostResponse = {
+	response: string;
+};

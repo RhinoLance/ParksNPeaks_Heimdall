@@ -32,7 +32,37 @@
 	}
 }
 
+.btn.send {
+	&:hover {
+		color: #006797;
+	}
+
+	&.error {
+		color: #cc0000;
+	}
+
+	&.sending {
+		cursor: wait;
+		animation: pulse 0.7s infinite;
+		opacity: 0.5;
+	}
+}
+
 .field,
 .field:not(:last-child) {
 	margin-right: 5px;
+}
+
+@keyframes pulse {
+	0% {
+		transform: scale(0.8);
+	}
+
+	50% {
+		transform: scale(1);
+	}
+
+	100% {
+		transform: scale(0.8);
+	}
 }

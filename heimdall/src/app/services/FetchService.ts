@@ -67,6 +67,9 @@ export class FetchService {
 		const requestInit = {
 			selector: (response: Response) => response.json(),
 			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
 			body: JSON.stringify(body),
 		};
 

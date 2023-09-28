@@ -26,7 +26,7 @@
 		id="freqInput"
 		placeholder="Frequency"
 		[ngModel]="viewModel.spot.frequency | number : '1.3-6'"
-		(ngModelChange)="setFrequency($event)"
+		(focusout)="setFrequency($event)"
 	/>
 </div>
 
@@ -39,4 +39,16 @@
 		placeholder="Comment"
 		[(ngModel)]="viewModel.spot.comment"
 	/>
+</div>
+
+<div
+	class="btn send"
+	(click)="sendReSpot()"
+	#tooltip="matTooltip"
+	[matTooltip]="viewState.isSending ? 'Sending ...' : 'Send'"
+	matTooltipShowDelay="500"
+	[class]="viewState.isSending ? 'sending' : ''"
+	[class]="this.viewState.sendError ? 'error' : ''"
+>
+	<iconify-icon icon="bi:send-fill"></iconify-icon>
 </div>

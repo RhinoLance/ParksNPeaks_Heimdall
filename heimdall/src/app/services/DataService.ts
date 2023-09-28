@@ -1,9 +1,10 @@
 import { Injectable } from "@angular/core";
 import { ActivationCatalogue } from "../models/ActivationCatalogue";
-import { Observable, Subject } from "rxjs";
+import { Observable, Subject, tap } from "rxjs";
 import { Activation } from "../models/Activation";
-import { PnPClientService } from "./PNPHttpClient.service";
+import { PnPClientService, PostResponse } from "./PNPHttpClient.service";
 import { Spot } from "../models/Spot";
+import { SettingsKey, SettingsService } from "./SettingsService";
 
 @Injectable({
 	providedIn: "root",
@@ -13,7 +14,10 @@ export class DataService {
 
 	private _activations: ActivationCatalogue = new ActivationCatalogue();
 
-	public constructor(private _pnpApiSvc: PnPClientService) {
+	public constructor(
+		private _pnpApiSvc: PnPClientService,
+		private _settingsSvc: SettingsService
+	) {
 		this.initPnpListener();
 	}
 
@@ -21,8 +25,15 @@ export class DataService {
 		return this._activations.activations;
 	}
 
-	public submitSpot(spot: Spot): Observable<void> {
-		return this._pnpApiSvc.submitSpot(spot);
+	public submitSpot(spot: Spot): Observable<PostResponse> {
+		spot.time = new Date();
+		spot.spotter = this._settingsSvc.get(SettingsKey.PNP_USERNAME) ?? "";
+
+		return this._pnpApiSvc.submitSpot(spot).pipe(
+			tap((v) => {
+				this._activations.addSpot(spot);
+			})
+		);
 	}
 
 	private initPnpListener(): void {

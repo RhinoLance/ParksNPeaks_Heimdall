@@ -17,6 +17,9 @@ import { MatTooltipModule } from "@angular/material/tooltip";
 import {
 	AUTO_STYLE,
 	animate,
+	animateChild,
+	group,
+	query,
 	state,
 	style,
 	transition,
@@ -30,6 +33,7 @@ import { DataService } from "src/app/services/DataService";
 import { PnPClientService } from "src/app/services/PNPHttpClient.service";
 import { AppRouter, RoutePath } from "src/app/services/AppRountingService";
 import { backOutLeft } from "ng-animate";
+import { tada } from "src/app/utilities/animations";
 
 @Component({
 	selector: "pph-activation",
@@ -57,6 +61,12 @@ import { backOutLeft } from "ng-animate";
 		trigger("respotSuccess", [
 			transition("* => true", useAnimation(backOutLeft)),
 		]),
+		trigger("lookAtMeAnimation", [
+			transition(
+				"* => true",
+				group([useAnimation(tada), query("@respotSuccess", [animateChild()])])
+			),
+		]),
 	],
 })
 export class ActivationComponent implements OnInit {
@@ -74,6 +84,7 @@ export class ActivationComponent implements OnInit {
 		elapsedTimeState: ElapsedTimeState.Active,
 		playHideAnimation: false,
 		respotSuccess: undefined,
+		hasUpdates: false,
 	};
 
 	public readonly liveTimeAgo: boolean = true;
@@ -107,6 +118,11 @@ export class ActivationComponent implements OnInit {
 						this.activation.visibleState = HideState.Visible;
 					}
 				}
+
+				this.viewState.hasUpdates = true;
+				timer(1000).subscribe(() => {
+					this.viewState.hasUpdates = false;
+				});
 			});
 		}
 
@@ -132,11 +148,6 @@ export class ActivationComponent implements OnInit {
 	}
 
 	public showReSpot(): void {
-		if (!this.pnpClientSvc.hasApiKey) {
-			this._router.navigate(RoutePath.Settings);
-			return;
-		}
-
 		this.viewState.spot.copyTo(this.viewState.respot);
 		this.viewState.respot.comment = "";
 
@@ -199,4 +210,5 @@ type ViewState = {
 	elapsedTimeState: ElapsedTimeState;
 	playHideAnimation: boolean;
 	respotSuccess: boolean | undefined;
+	hasUpdates: boolean;
 };

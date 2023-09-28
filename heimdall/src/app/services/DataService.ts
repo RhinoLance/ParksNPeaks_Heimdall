@@ -29,11 +29,9 @@ export class DataService {
 		spot.time = new Date();
 		spot.spotter = this._settingsSvc.get(SettingsKey.PNP_USERNAME) ?? "";
 
-		return this._pnpApiSvc.submitSpot(spot).pipe(
-			tap((v) => {
-				this._activations.addSpot(spot);
-			})
-		);
+		return this._pnpApiSvc
+			.submitSpot(spot)
+			.pipe(tap(() => this._activations.addSpot(spot)));
 	}
 
 	private initPnpListener(): void {

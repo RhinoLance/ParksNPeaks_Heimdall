@@ -1,23 +1,19 @@
 {
 	"routes": [
 		{
-			"routes": [
-				{
-					"route": "/settings",
-					"redirect": "/",
-					"statusCode": 301
-				},
-				{
-					"route": "/splash",
-					"redirect": "/",
-					"statusCode": 301
-				},
-				{
-					"route": "/spotList",
-					"redirect": "/",
-					"statusCode": 301
-				}
-			]
+			"route": "/settings",
+			"redirect": "/",
+			"statusCode": 301
+		},
+		{
+			"route": "/splash",
+			"redirect": "/",
+			"statusCode": 301
+		},
+		{
+			"route": "/spotList",
+			"redirect": "/",
+			"statusCode": 301
 		}
 	],
 	"navigationFallback": {

@@ -22,7 +22,8 @@ jobs:
       - name: echo environment variables
         run: |
           echo branch name \=\> _${{ env.BRANCH_NAME }}_
-          echo deployment target \=\> ${{ env.BRANCH_NAME == 'main' && '' || 'dev' }}
+          echo deployment target \=\> ${{ env.BRANCH_NAME != 'main' && env.BRANCH_NAME || '' }}
+          echo github head_ref \=\> _${{ github.head_ref }}_
           echo github ref_name \=\> _${{ github.ref_name }}_
           echo github event_name \=\> _${{ github.event_name }}_
           echo github event_action \=\> _${{ github.event.action }}_
@@ -63,7 +64,8 @@ jobs:
           output_location: "" # Built app content directory - optional
           skip_app_build: true # Skip app build - optional
           #app_build_command: "npm run build:prod"
-          deployment_environment: ${{ env.BRANCH_NAME == 'main' && '' || 'dev' }}
+          deployment_environment: ${{ env.BRANCH_NAME != 'main' && env.BRANCH_NAME || '' }}
+          # => WARNING: having the "if" statement not being truthy (eg. '') will always result in the "else" statement being returned.  Hence doing != here.
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'

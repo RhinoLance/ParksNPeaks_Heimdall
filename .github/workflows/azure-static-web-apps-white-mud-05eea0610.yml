@@ -20,7 +20,6 @@ jobs:
     name: Build and Deploy Job
     steps:
       - name: echo environment variables
-        working-directory: ./heimdall
         run: |
           echo branch name \=\> ${{ env.BRANCH_NAME }} 
           echo github ref_name \=\> ${{ github.ref_name }}

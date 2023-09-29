@@ -148,6 +148,8 @@ export class ActivationComponent implements OnInit {
 	}
 
 	public showReSpot(): void {
+		if (!this.pnpClientSvc.hasApiKey || !this.pnpClientSvc.hasUserId) return;
+
 		this.viewState.spot.copyTo(this.viewState.respot);
 		this.viewState.respot.comment = "";
 

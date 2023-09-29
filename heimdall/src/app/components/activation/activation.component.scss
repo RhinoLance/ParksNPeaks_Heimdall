@@ -36,15 +36,19 @@ body {
 		&.award-POTA {
 			background-image: url("../../../assets/images/classLogo/POTA.jpg");
 		}
+
 		&.award-WWFF {
 			background-image: url("../../../assets/images/classLogo/WWFF.png");
 		}
+
 		&.award-ZLOTA {
 			background-image: url("../../../assets/images/classLogo/ZLOTA.jpg");
 		}
+
 		&.award-SOTA {
 			background-image: url("../../../assets/images/classLogo/SOTA.svg");
 		}
+
 		&.award-BOTA {
 			background-image: url("../../../assets/images/classLogo/BOTA.png");
 		}
@@ -63,10 +67,12 @@ body {
 		background: #4f772d;
 		border-color: #283c17;
 	}
+
 	&.shoulder {
 		background: #fb8b24;
 		border-color: #975316;
 	}
+
 	&.inactive {
 		background: #9a031e;
 		border-color: #5c0212;
@@ -89,9 +95,9 @@ body {
 
 	transition: 0.2s;
 
-	_visibility: hidden;
-	_opacity: 0;
-	_transform: scale(0.8);
+	visibility: hidden;
+	opacity: 0;
+	transform: scale(0.8);
 
 	.action-item {
 		display: inline-block;
@@ -119,8 +125,9 @@ body {
 		vertical-align: sub;
 	}
 
-	.inactive {
+	.open-respot.inactive {
 		opacity: 0.5;
+		cursor: not-allowed;
 	}
 
 	.respot {

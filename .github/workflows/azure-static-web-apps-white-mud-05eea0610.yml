@@ -25,6 +25,7 @@ jobs:
           echo github ref_name \=\> ${{ github.ref_name }}
           echo github event_name \=\> ${{ github.event_name }}
           echo github event_action \=\> ${{ github.event.action }}
+          echo deployment target \=\> ${{ env.BRANCH_NAME == 'main' && '' || 'dev' }}
 
       - name: checkout
         uses: actions/checkout@v3
@@ -62,7 +63,7 @@ jobs:
           output_location: "" # Built app content directory - optional
           skip_app_build: true # Skip app build - optional
           #app_build_command: "npm run build:prod"
-          deployment_environment: ${{ env.BRANCH_NAME == 'main' && '' || 'Dev' }}
+          deployment_environment: ${{ env.BRANCH_NAME == 'main' && '' || 'dev' }}
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'

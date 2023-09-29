@@ -11,7 +11,7 @@ on:
     branches:
       - main
 env:
-  DEPLOY_ENVIRONMENT_NAME: ${{ github.ref_name == 'main' && '' || 'Dev' }}
+  BRANCH_NAME: ${{ github.event.pull_request && github.head_ref || github.ref_name }}
 
 jobs:
   build_and_deploy_job:
@@ -19,6 +19,14 @@ jobs:
     runs-on: ubuntu-latest
     name: Build and Deploy Job
     steps:
+      - name: echo environment variables
+        working-directory: ./heimdall
+        run: |
+          echo branch name \=\> ${{ env.BRANCH_NAME }} 
+          echo github ref_name \=\> ${{ github.ref_name }}
+          echo github event_name \=\> ${{ github.event_name }}
+          echo github event_action \=\> ${{ github.event.action }}
+
       - name: checkout
         uses: actions/checkout@v3
         with:
@@ -55,7 +63,7 @@ jobs:
           output_location: "" # Built app content directory - optional
           skip_app_build: true # Skip app build - optional
           #app_build_command: "npm run build:prod"
-          deployment_environment: ${{ env.DEPLOY_ENVIRONMENT_NAME }}
+          deployment_environment: ${{ env.BRANCH_NAME == 'main' && '' || 'Dev' }}
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'

@@ -59,7 +59,7 @@ export class PnPClientService {
 		updateInterval?: number,
 		cancellationToken?: CancellationToken
 	): Observable<Spot[]> {
-		updateInterval = updateInterval || 3;
+		updateInterval = updateInterval || 1;
 
 		cancellationToken = cancellationToken || new CancellationToken();
 

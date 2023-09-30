@@ -73,7 +73,10 @@
 			</div>
 		</div>
 	</div>
-	<div class="action-list">
+	<div
+		class="action-list"
+		[class]="viewState.respotIsVisible ? 'respot-visible' : ''"
+	>
 		<div
 			class="open-respot action-item btn"
 			[class]="

@@ -137,14 +137,14 @@ body {
 		vertical-align: middle;
 		overflow: hidden;
 
+		transition: max-width 0.25s ease-in-out;
+
 		&.visible {
-			width: auto;
-			visibility: auto;
+			max-width: 600px;
 		}
 
 		&.hidden {
-			width: 0;
-			visibility: hidden;
+			max-width: 0;
 		}
 
 		pph-respot {

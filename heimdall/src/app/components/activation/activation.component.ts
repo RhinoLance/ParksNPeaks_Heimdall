@@ -49,10 +49,6 @@ import { tada } from "src/app/utilities/animations";
 	],
 	schemas: [CUSTOM_ELEMENTS_SCHEMA],
 	animations: [
-		trigger("toggleRespot", [
-			transition("visible => hidden", animate("250ms ease-in")),
-			transition("hidden => visible", animate("250ms ease-out")),
-		]),
 		trigger("respotSuccess", [
 			transition("* => true", useAnimation(backOutLeft)),
 		]),

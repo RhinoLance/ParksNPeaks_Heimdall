@@ -4,8 +4,9 @@
 
 export const environment = {
 	production: false,
-	pnpBaseHref: "/assets/devData/pnp.spots.all.4.json/?suffix=",
-	//pnpBaseHref: 'https://rhinoswtools.azurewebsites.net/api/PnP/Get?suffix=',
+	//pnpBaseHref: "/assets/devData/pnp.spots.all.4.json/?suffix=",
+	pnpBaseHref: "http://localhost:8080/pnp.spots.all.4.json/?suffix=",
+	pnpPollMinutesInterval: 0.12,
 };
 
 /*

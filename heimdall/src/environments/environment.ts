@@ -5,8 +5,16 @@
 export const environment = {
 	production: false,
 	pnpBaseHref: "/assets/devData/pnp.spots.all.4.json/?suffix=",
-	//pnpBaseHref: 'https://rhinoswtools.azurewebsites.net/api/PnP/Get?suffix=',
+	//pnpBaseHref: "http://localhost:8080/pnp.spots.all.4.json/?suffix=",
+	pnpPollMinutesInterval: 0.12,
 };
+
+/*
+ * The second pnpBaseHref with port 8080 is for testing with an external data file.  To use, 
+  1. Copy the current dev data file to a temp location outside of the project root e.g. C:\Temp
+  2. Run the following command to start a simple http server: 
+	npx http-server C:\Temp -p 8080 --cors -c-1
+  3. Edit and save the data file for spots to be received as required.
 
 /*
  * For easier debugging in development mode, you can import the following file

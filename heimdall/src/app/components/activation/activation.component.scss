@@ -137,6 +137,16 @@ body {
 		vertical-align: middle;
 		overflow: hidden;
 
+		&.visible {
+			width: auto;
+			visibility: auto;
+		}
+
+		&.hidden {
+			width: 0;
+			visibility: hidden;
+		}
+
 		pph-respot {
 			display: inline-block;
 		}

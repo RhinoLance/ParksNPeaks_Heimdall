@@ -41,10 +41,11 @@ export class SpotListComponent implements OnInit {
 	) {}
 
 	public ngOnInit(): void {
-		this.retrieveActivationList();
+		const activations = this._dataSvc.getActivations();
+		this.processActivationUpdates(activations);
 
-		this._dataSvc.activationUpdated.subscribe(() => {
-			this.retrieveActivationList();
+		this._dataSvc.activationUpdated.subscribe((v) => {
+			this.processActivationUpdates(v);
 		});
 	}
 
@@ -70,22 +71,43 @@ export class SpotListComponent implements OnInit {
 		}
 	}
 
-	private retrieveActivationList(): void {
-		const activationList = this._dataSvc
-			.getActivations()
-			.filter((v) => v.visibleState == HideState.Visible);
+	private processActivationUpdates(activationList: Activation[]): void {
+		let sortRequired = false;
 
-		if (activationList.length == 0) {
+		activationList.map((activation) => {
+			const index = this.viewState.activationList.findIndex(
+				(v) => v.activationId == activation.activationId
+			);
+
+			if (
+				activation.isDeleted ||
+				activation.visibleState != HideState.Visible
+			) {
+				//It's removed
+				if (index > -1) {
+					this.viewState.activationList.splice(index, 1);
+				}
+			} else if (index == -1) {
+				//It's added
+				this.viewState.activationList.push(activation);
+				sortRequired = true;
+			} else {
+				//It's updated
+				sortRequired = true;
+			}
+		});
+
+		if (this.viewState.activationList.length == 0) {
 			this._routerSvc.navigate(RoutePath.Splash);
 		}
 
-		activationList.sort((a, b) => {
-			return (
-				b.getLatestSpot().time.getTime() - a.getLatestSpot().time.getTime()
-			);
-		});
-
-		this.viewState.activationList = activationList;
+		if (sortRequired) {
+			this.viewState.activationList.sort((a, b) => {
+				return (
+					b.getLatestSpot().time.getTime() - a.getLatestSpot().time.getTime()
+				);
+			});
+		}
 	}
 }
 

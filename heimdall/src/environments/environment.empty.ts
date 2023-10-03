@@ -6,6 +6,7 @@ export const environment = {
 	production: false,
 	pnpBaseHref: "/assets/devData/pnp.spots.empty.json/?suffix=",
 	//pnpBaseHref: 'https://rhinoswtools.azurewebsites.net/api/PnP/Get?suffix=',
+	pnpPollMinutesInterval: 1,
 };
 
 /*

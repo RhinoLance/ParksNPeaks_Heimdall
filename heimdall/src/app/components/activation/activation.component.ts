@@ -15,13 +15,10 @@ import { TimeagoModule } from "ngx-timeago";
 import { Subscription, timer } from "rxjs";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import {
-	AUTO_STYLE,
 	animate,
 	animateChild,
 	group,
 	query,
-	state,
-	style,
 	transition,
 	trigger,
 	useAnimation,
@@ -53,8 +50,6 @@ import { tada } from "src/app/utilities/animations";
 	schemas: [CUSTOM_ELEMENTS_SCHEMA],
 	animations: [
 		trigger("toggleRespot", [
-			state("visible", style({ width: AUTO_STYLE, visibility: AUTO_STYLE })),
-			state("hidden", style({ width: "0", visibility: "hidden" })),
 			transition("visible => hidden", animate("250ms ease-in")),
 			transition("hidden => visible", animate("250ms ease-out")),
 		]),
@@ -154,6 +149,10 @@ export class ActivationComponent implements OnInit {
 		this.viewState.respot.comment = "";
 
 		this.viewState.respotIsVisible = true;
+	}
+
+	public hideRespot(): void {
+		this.viewState.respotIsVisible = false;
 	}
 
 	public onRespotSent(success: boolean) {

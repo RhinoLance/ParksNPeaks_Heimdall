@@ -95,7 +95,7 @@
 		</div>
 		<div
 			class="respot"
-			[@toggleRespot]="viewState.respotIsVisible ? 'visible' : 'hidden'"
+			[class]="viewState.respotIsVisible ? 'visible' : 'hidden'"
 			[@respotSuccess]="viewState.respotSuccess"
 			(@respotSuccess.done)="respotSuccessAnimDone()"
 		>
@@ -106,7 +106,7 @@
 
 			<div
 				class="btn cancel"
-				(click)="viewState.respotIsVisible = false"
+				(click)="hideRespot()"
 				#tooltip="matTooltip"
 				matTooltip="Cancel"
 				matTooltipShowDelay="500"

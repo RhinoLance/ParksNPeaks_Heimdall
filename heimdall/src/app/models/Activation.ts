@@ -15,6 +15,7 @@ export class Activation {
 	public callsign: string = "";
 	public callsignRoot: string = "";
 	public visibleState: HideState = HideState.Visible;
+	public isDeleted: boolean = false;
 
 	public onUpdate = new ReplaySubject<Spot>();
 

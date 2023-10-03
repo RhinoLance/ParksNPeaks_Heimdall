@@ -37,7 +37,10 @@ export class DataService {
 	private initPnpListener(): void {
 		this._pnpApiSvc.subscribeToSpots().subscribe((v) => {
 			const updatedActivations = this._activations.addSpots(v);
-			this.activationUpdated.next(updatedActivations);
+
+			if (updatedActivations.length > 0) {
+				this.activationUpdated.next(updatedActivations);
+			}
 		});
 	}
 }

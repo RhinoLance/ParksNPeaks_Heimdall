@@ -23,7 +23,7 @@ export class SpotBuilder {
 		const spot = new Spot();
 		spot.callsign = pnpSpot.actCallsign;
 		spot.callsignRoot = pnpSpot.actCallsign.split("/P")[0];
-		spot.frequency = Number(pnpSpot.actFreq);
+		spot.frequency = this.parseFrequency(pnpSpot.actFreq);
 		spot.mode = SpotMode[pnpSpot.actMode as keyof typeof SpotMode];
 		spot.spotter = pnpSpot.actSpoter;
 		spot.time = new Date(pnpSpot.actTime + "Z");
@@ -67,6 +67,11 @@ export class SpotBuilder {
 			default:
 				return "";
 		}
+	}
+
+	private parseFrequency(frequency: string): number {
+		const freq = frequency.match(/\d+(?:\.\d+)?/);
+		return freq == null ? 0 : Number(freq[0]);
 	}
 
 	private stripSpotPublisherFromComment(comment: string): string {

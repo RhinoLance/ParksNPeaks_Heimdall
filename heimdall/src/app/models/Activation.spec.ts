@@ -1,4 +1,4 @@
-import { Activation } from "./Activation";
+import { Activation, HideState } from "./Activation";
 import { ActivationAward } from "./ActivationAward";
 import { ActivationAwardList } from "./ActivationAwardList";
 import { AwardScheme } from "./AwardScheme";
@@ -594,6 +594,62 @@ describe("Activation", () => {
 
 			// Assert
 			expect(addedSpot?.type).toBe(SpotType.Spot);
+		});
+	});
+
+	describe("Spot visibility", () => {
+		let spot1: Spot;
+		let spot2: Spot;
+		let activation: Activation;
+
+		beforeEach(() => {
+			spot1 = new Spot();
+			spot2 = new Spot();
+			spot2.time = spot2.time.addMinutes(10);
+			activation = new Activation(spot1);
+		});
+
+		it("it should be visible after band change if spot hidden", () => {
+			// Arrange
+			activation.visibleState = HideState.Spot;
+			spot1.frequency = 3.5;
+			spot2.frequency = 7.144;
+
+			// Act
+			activation.addSpot(spot2);
+
+			// Assert
+			expect<HideState>(activation.visibleState).toBe(HideState.Visible);
+		});
+
+		it("it should be visible after mode change if spot hidden", () => {
+			// Arrange
+			activation.visibleState = HideState.Spot;
+			spot1.mode = SpotMode.SSB;
+			spot2.mode = SpotMode.CW;
+
+			// Act
+			activation.addSpot(spot2);
+
+			// Assert
+			expect<HideState>(activation.visibleState).toBe(HideState.Visible);
+		});
+
+		it("it should be remain hidden after mode or frequency change if activation hidden", () => {
+			// Arrange
+			activation.visibleState = HideState.Activation;
+
+			spot1.frequency = 3.5;
+			spot2.frequency = 7.144;
+
+			spot1.mode = SpotMode.SSB;
+			spot2.mode = SpotMode.CW;
+
+			// Act
+			activation.addSpot(spot2);
+
+			// Assert
+			expect(activation.visibleState).toBe(HideState.Activation);
 		});
 	});
 });

@@ -19,6 +19,18 @@ describe("Activation", () => {
 		expect(activation.spotCount).toBe(1);
 	});
 
+	it("It should return spots", () => {
+		// Arrange
+		const spot = new Spot();
+		const activation = new Activation(spot);
+
+		// Act
+		const spots = activation.spots;
+
+		// Assert
+		expect(spots.length).toBe(1);
+	});
+
 	it("It should ignore duplicate spots", () => {
 		// Arrange
 		const spot1 = new Spot();

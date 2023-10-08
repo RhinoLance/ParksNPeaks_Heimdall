@@ -94,4 +94,31 @@ describe("SpotListBuilder", () => {
 		// Assert
 		expect(spotList[1].frequency).toBe(7);
 	});
+
+	describe("correctly extracts frequency", () => {
+		const testCases = [
+			{ test: "7.090", expected: 7.09 },
+			{ test: "ABC7.090", expected: 7.09 },
+			{ test: "7.090ABC", expected: 7.09 },
+			{ test: "7ABC.090", expected: 7 },
+			{ test: "7.ABC090", expected: 7 },
+			{ test: "7ABC090", expected: 7 },
+			{ test: "ABC", expected: 0 },
+		];
+
+		testCases.forEach((testCase) => {
+			it(`should extract ${testCase.expected} from ${testCase.test}`, () => {
+				// Arrange
+				const spot = clonePnPSpot(templateSpot);
+				spot.actFreq = testCase.test;
+
+				// Act
+				const slb = new SpotListBuilder();
+				const spotList = slb.buildFromPnPSpots([spot]);
+
+				// Assert
+				expect(spotList[0].frequency).toEqual(testCase.expected);
+			});
+		});
+	});
 });

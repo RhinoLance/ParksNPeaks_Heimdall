@@ -15,7 +15,6 @@ import { TimeagoModule } from "ngx-timeago";
 import { Subscription, timer } from "rxjs";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import {
-	animate,
 	animateChild,
 	group,
 	query,

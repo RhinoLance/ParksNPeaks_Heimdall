@@ -16,6 +16,9 @@ import { provideAnimations } from "@angular/platform-browser/animations";
 import { RespotComponent } from "../respot/respot.component";
 import { ReplaySubject } from "rxjs";
 import { PnPClientService } from "src/app/services/PNPHttpClient.service";
+import { AppRouter, RoutePath } from "src/app/services/AppRountingService";
+import { Location } from "@angular/common";
+import { Router } from "@angular/router";
 
 describe("ActivationComponent", () => {
 	let component: ActivationComponent;
@@ -29,6 +32,48 @@ describe("ActivationComponent", () => {
 				provideAnimations(),
 			],
 		}).compileComponents();
+	});
+
+	describe("Routing", () => {
+		const AppRouterMock = {
+			navigate(route: RoutePath): void {},
+		};
+
+		let fixture: ComponentFixture<ActivationComponent>;
+		let component: ActivationComponent;
+
+		beforeEach(async () => {
+			await TestBed.configureTestingModule({
+				imports: [ActivationComponent, RespotComponent],
+				providers: [
+					importProvidersFrom(TimeagoModule.forRoot()),
+					provideAnimations(),
+					{ provide: AppRouter, useValue: AppRouterMock },
+				],
+			}).compileComponents();
+
+			fixture = TestBed.createComponent(ActivationComponent);
+			component = fixture.componentInstance;
+		});
+
+		it("should route to settings", fakeAsync(() => {
+			// Arrange
+			const router = TestBed.inject(Router);
+			const location = TestBed.inject(Location);
+			router.initialNavigation();
+
+			let result: RoutePath = RoutePath.Root;
+			spyOn(AppRouterMock, "navigate").and.callFake((route: RoutePath) => {
+				result = route;
+			});
+
+			// Act
+			component.openSettings();
+			tick();
+
+			// Assert
+			expect(result).toBe(RoutePath.Settings);
+		}));
 	});
 
 	describe("General", () => {

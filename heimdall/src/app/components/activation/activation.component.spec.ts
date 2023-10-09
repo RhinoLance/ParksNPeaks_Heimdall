@@ -17,7 +17,6 @@ import { RespotComponent } from "../respot/respot.component";
 import { ReplaySubject } from "rxjs";
 import { PnPClientService } from "src/app/services/PNPHttpClient.service";
 import { AppRouter, RoutePath } from "src/app/services/AppRountingService";
-import { Location } from "@angular/common";
 import { Router } from "@angular/router";
 
 describe("ActivationComponent", () => {
@@ -36,7 +35,9 @@ describe("ActivationComponent", () => {
 
 	describe("Routing", () => {
 		const AppRouterMock = {
-			navigate(route: RoutePath): void {},
+			navigate(route: RoutePath): void {
+				expect(route).toBeTruthy();
+			},
 		};
 
 		let fixture: ComponentFixture<ActivationComponent>;
@@ -59,7 +60,6 @@ describe("ActivationComponent", () => {
 		it("should route to settings", fakeAsync(() => {
 			// Arrange
 			const router = TestBed.inject(Router);
-			const location = TestBed.inject(Location);
 			router.initialNavigation();
 
 			let result: RoutePath = RoutePath.Root;

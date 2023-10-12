@@ -63,6 +63,14 @@
 					<span>&nbsp;at {{ viewState.spot.shortTime }} (local)</span>
 				</div>
 			</div>
+			<div class="map">
+				<pph-activation-path-map
+					[latLngStart]="viewState.mapStart"
+					[latLngEnd]="viewState.mapEnd"
+					[padding]="15"
+				>
+				</pph-activation-path-map>
+			</div>
 		</div>
 		<div class="align-items-center row">
 			<div class="col-auto">

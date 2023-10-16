@@ -93,6 +93,50 @@ describe("ActivationAwardList", () => {
 				// Assert
 				expect(result).toBe(false);
 			});
+
+			it("finds by award scheme", () => {
+				// Arrange
+				const list = testList.clone();
+
+				// Act
+				const result = list.findByAwardScheme(AwardScheme.BOTA);
+
+				// Assert
+				expect(result?.siteId).toBe("BB-1234");
+			});
+
+			it("invalid scheme returns undefined", () => {
+				// Arrange
+				const list = testList.clone();
+
+				// Act
+				const result = list.findByAwardScheme(AwardScheme.HEMA);
+
+				// Assert
+				expect(result).toBe(undefined);
+			});
+
+			it("finds by sideId", () => {
+				// Arrange
+				const list = testList.clone();
+
+				// Act
+				const result = list.findBySiteId("BB-1234");
+
+				// Assert
+				expect(result?.award).toBe(AwardScheme.BOTA);
+			});
+
+			it("invalid scheme returns undefined", () => {
+				// Arrange
+				const list = testList.clone();
+
+				// Act
+				const result = list.findBySiteId("NOTHING");
+
+				// Assert
+				expect(result).toBe(undefined);
+			});
 		});
 	});
 });

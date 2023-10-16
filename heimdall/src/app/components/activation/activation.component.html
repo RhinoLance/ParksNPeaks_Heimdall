@@ -63,6 +63,15 @@
 					<span>&nbsp;at {{ viewState.spot.shortTime }} (local)</span>
 				</div>
 			</div>
+			<div class="map" *ngIf="viewState.mapStart && viewState.mapEnd">
+				<pph-activation-path-map
+					*ngIf="viewState.siteDetailsRetrieved"
+					[latLngStart]="viewState.mapStart"
+					[latLngEnd]="viewState.mapEnd"
+					[padding]="15"
+				>
+				</pph-activation-path-map>
+			</div>
 		</div>
 		<div class="align-items-center row">
 			<div class="col-auto">

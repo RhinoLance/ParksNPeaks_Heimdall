@@ -30,6 +30,9 @@ import { PnPClientService } from "src/app/services/PNPHttpClient.service";
 import { AppRouter, RoutePath } from "src/app/services/AppRountingService";
 import { backOutLeft } from "ng-animate";
 import { tada } from "src/app/utilities/animations";
+import { ActivationAward } from "src/app/models/ActivationAward";
+import { LatLng } from "src/app/models/LatLng";
+import { ActivationPathMapComponent } from "../activation-path-map/activation-path-map.component";
 
 @Component({
 	selector: "pph-activation",
@@ -45,6 +48,7 @@ import { tada } from "src/app/utilities/animations";
 		CopyToClipboardDirective,
 		RespotComponent,
 		NgbDropdownModule,
+		ActivationPathMapComponent,
 	],
 	schemas: [CUSTOM_ELEMENTS_SCHEMA],
 	animations: [
@@ -75,6 +79,9 @@ export class ActivationComponent implements OnInit {
 		playHideAnimation: false,
 		respotSuccess: undefined,
 		hasUpdates: false,
+		siteDetailsRetrieved: false,
+		mapStart: undefined,
+		mapEnd: undefined,
 	};
 
 	public readonly liveTimeAgo: boolean = true;
@@ -113,6 +120,10 @@ export class ActivationComponent implements OnInit {
 				timer(1000).subscribe(() => {
 					this.viewState.hasUpdates = false;
 				});
+
+				if (!this.viewState.siteDetailsRetrieved) {
+					this.retrieveSiteDetails();
+				}
 			});
 		}
 
@@ -120,7 +131,39 @@ export class ActivationComponent implements OnInit {
 			this.setTimeElapsedState();
 		});
 
+		this.setMapStart();
+
 		this.showActivation();
+	}
+
+	public async retrieveSiteDetails(): Promise<void> {
+		const schemes = ["WWFF", "SOTA"];
+
+		let award: ActivationAward | undefined;
+		while (award == undefined && schemes.length > 0) {
+			award = this.activation.awardList.findByAwardScheme(
+				schemes.pop() as string
+			);
+		}
+
+		if (award == undefined) return;
+
+		const location = await this._dataSvc.getSiteDetails(award);
+		this.viewState.mapEnd = new LatLng(
+			parseFloat(location.Latitude),
+			parseFloat(location.Longitude)
+		);
+
+		this.viewState.siteDetailsRetrieved = true;
+	}
+
+	public setMapStart(): void {
+		navigator.geolocation.getCurrentPosition((position) => {
+			this.viewState.mapStart = new LatLng(
+				position.coords.latitude,
+				position.coords.longitude
+			);
+		});
 	}
 
 	public hideActivation(hideState: HideState): void {
@@ -207,4 +250,7 @@ type ViewState = {
 	playHideAnimation: boolean;
 	respotSuccess: boolean | undefined;
 	hasUpdates: boolean;
+	siteDetailsRetrieved: boolean;
+	mapStart?: LatLng;
+	mapEnd?: LatLng;
 };

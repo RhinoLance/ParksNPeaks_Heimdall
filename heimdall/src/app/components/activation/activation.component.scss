@@ -11,6 +11,14 @@ body {
 		opacity: 1;
 		transition-delay: 0.2s;
 	}
+
+	.map {
+		height: 150px;
+		width: 150px;
+		display: inline-block;
+		border: 1px solid #dddddd;
+		padding: 0;
+	}
 }
 
 .activation-list-images {

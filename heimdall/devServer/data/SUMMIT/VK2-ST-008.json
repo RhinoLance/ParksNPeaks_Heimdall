@@ -1,0 +1,25 @@
+[
+	{
+		"SummitCode": "VK2/ST-008",
+		"AssociationName": "Australia - NSW",
+		"RegionName": "Southern Tablelands",
+		"SummitName": "Baldy Range",
+		"AltM": "1235",
+		"AltFt": "4052",
+		"GridRef1": "148.825200",
+		"GridRef2": "-35.23150000",
+		"Longitude": "148.8252",
+		"Latitude": "-35.2315",
+		"Points": "8",
+		"BonusPoints": "3",
+		"ValidFrom": "01/09/2013",
+		"ValidTo": "31/12/2099",
+		"ActivationCount": "52",
+		"ActivationDate": "2023-09-06",
+		"ActivationCall": "VK2HRX",
+		"spare": "1",
+		"Region": "VK2/ST",
+		"ShireID": "YV2",
+		"Status": "1"
+	}
+]

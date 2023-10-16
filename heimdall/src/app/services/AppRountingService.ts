@@ -17,4 +17,6 @@ export enum RoutePath {
 	Settings = "settings",
 	Splash = "splash",
 	SpotList = "spotList",
+
+	CompoentnTester = "componentTester",
 }

@@ -8,6 +8,7 @@ import { FetchService } from "./FetchService";
 import { SpotListBuilder } from "../models/SpotListBuilder";
 import { SettingsKey, SettingsService } from "./SettingsService";
 import { PnPPark } from "../models/PnPPark";
+import { PnPSummit } from "../models/PnPSummit";
 
 @Injectable({
 	providedIn: "root",
@@ -41,15 +42,15 @@ export class PnPClientService {
 	//public transformPnPToSpotList(pnpSpots: PnPSpot[]): Spot[] {}
 
 	public async getPark(scheme: string, parkId: string): Promise<PnPPark> {
-		const data = await this.get<PnPPark>(`PARK/${scheme}/${parkId}`);
+		const data = await this.get<PnPPark[]>(`PARK/${scheme}/${parkId}`);
 
-		return data;
+		return data[0];
 	}
 
-	public async getSummit(summitId: string): Promise<PnPPark> {
-		const data = await this.get<PnPPark>(`SUMMIT/${summitId}`);
+	public async getSummit(summitId: string): Promise<PnPSummit> {
+		const data = await this.get<PnPSummit[]>(`SUMMIT/${summitId}`);
 
-		return data;
+		return data[0];
 	}
 
 	public async getSpotList(): Promise<Spot[]> {

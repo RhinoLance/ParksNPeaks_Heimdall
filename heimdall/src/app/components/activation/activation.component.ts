@@ -32,6 +32,7 @@ import { backOutLeft } from "ng-animate";
 import { tada } from "src/app/utilities/animations";
 import { ActivationAward } from "src/app/models/ActivationAward";
 import { LatLng } from "src/app/models/LatLng";
+import { ActivationPathMapComponent } from "../activation-path-map/activation-path-map.component";
 
 @Component({
 	selector: "pph-activation",
@@ -47,6 +48,7 @@ import { LatLng } from "src/app/models/LatLng";
 		CopyToClipboardDirective,
 		RespotComponent,
 		NgbDropdownModule,
+		ActivationPathMapComponent,
 	],
 	schemas: [CUSTOM_ELEMENTS_SCHEMA],
 	animations: [
@@ -78,8 +80,8 @@ export class ActivationComponent implements OnInit {
 		respotSuccess: undefined,
 		hasUpdates: false,
 		siteDetailsRetrieved: false,
-		mapStart: new LatLng(0, 0),
-		mapEnd: new LatLng(0, 0),
+		mapStart: undefined,
+		mapEnd: undefined,
 	};
 
 	public readonly liveTimeAgo: boolean = true;
@@ -128,6 +130,8 @@ export class ActivationComponent implements OnInit {
 		timer(0, 1000 * 60).subscribe((_) => {
 			this.setTimeElapsedState();
 		});
+		
+		this.setMapStart();
 
 		this.showActivation();
 	}
@@ -247,6 +251,6 @@ type ViewState = {
 	respotSuccess: boolean | undefined;
 	hasUpdates: boolean;
 	siteDetailsRetrieved: boolean;
-	mapStart: LatLng;
-	mapEnd: LatLng;
+	mapStart?: LatLng;
+	mapEnd?: LatLng;
 };

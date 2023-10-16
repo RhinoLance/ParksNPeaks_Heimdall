@@ -1,0 +1,25 @@
+[
+	{
+		"SummitCode": "VK2\/CT-007",
+		"AssociationName": "Australia - NSW",
+		"RegionName": "Central Tablelands",
+		"SummitName": "Mount Lambie",
+		"AltM": "1290",
+		"AltFt": "4232",
+		"GridRef1": "149.988600",
+		"GridRef2": "-33.47160000",
+		"Longitude": "149.9886",
+		"Latitude": "-33.4716",
+		"Points": "8",
+		"BonusPoints": "3",
+		"ValidFrom": "01\/09\/2013",
+		"ValidTo": "31\/12\/2099",
+		"ActivationCount": "69",
+		"ActivationDate": "2023-09-06",
+		"ActivationCall": "VK2JDL",
+		"spare": "1",
+		"Region": "VK2\/CT",
+		"ShireID": "LW2",
+		"Status": "1"
+	}
+]

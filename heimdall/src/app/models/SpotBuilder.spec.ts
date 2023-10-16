@@ -4,21 +4,25 @@ import { SpotBuilder } from "./SpotBuilder";
 
 describe("SpotBuilder", () => {
 	describe("Multiple sites", () => {
-		const pnpSpotTemplate: PnPSpot = {
-			actTime: "2023-07-04 00:28:00",
-			actID: "2114006",
-			actSiteID: "VK4/SE-114",
-			actCallsign: "VK3WMD/P",
-			actMode: "SSB",
-			actFreq: "7.090",
-			actClass: "SOTA",
-			altClass: "VKFF",
-			actLocation: "VK4/SE-114",
-			altLocation: "VKFF-0344 Mount Coolum National Park",
-			actComments: "Cq @1030 local time  *[iPnP] [VK3WMD]",
-			actSpoter: "VK3WMD",
-			WWFFid: "VKFF-0344",
-		};
+		let pnpSpotTemplate: PnPSpot;
+
+		beforeEach(() => {
+			pnpSpotTemplate = {
+				actTime: "2023-07-04 00:28:00",
+				actID: "2114006",
+				actSiteID: "VK4/SE-114",
+				actCallsign: "VK3WMD/P",
+				actMode: "SSB",
+				actFreq: "7.090",
+				actClass: "SOTA",
+				altClass: "VKFF",
+				actLocation: "VK4/SE-114",
+				altLocation: "VKFF-0344 Mount Coolum National Park",
+				actComments: "Cq @1030 local time  *[iPnP] [VK3WMD]",
+				actSpoter: "VK3WMD",
+				WWFFid: "VKFF-0344",
+			};
+		});
 
 		it("Gets the correct siteName", () => {
 			// Arrange
@@ -91,6 +95,83 @@ describe("SpotBuilder", () => {
 
 			// Assert
 			expect(threwError).toEqual(true);
+		});
+	});
+
+	describe("Frequency transformation", () => {
+		let pnpSpotTemplate: PnPSpot;
+
+		beforeEach(() => {
+			pnpSpotTemplate = {
+				actTime: "2023-07-04 00:28:00",
+				actID: "2114006",
+				actSiteID: "VK4/SE-114",
+				actCallsign: "VK3WMD/P",
+				actMode: "SSB",
+				actFreq: "7.090",
+				actClass: "SOTA",
+				altClass: "VKFF",
+				actLocation: "VK4/SE-114",
+				altLocation: "VKFF-0344 Mount Coolum National Park",
+				actComments: "Cq @1030 local time  *[iPnP] [VK3WMD]",
+				actSpoter: "VK3WMD",
+				WWFFid: "VKFF-0344",
+			};
+		});
+
+		it("should interpret a number", () => {
+			// Arrange
+			pnpSpotTemplate.actFreq = "7.090";
+
+			// Act
+			const builder = new SpotBuilder().addPnpSpot(pnpSpotTemplate);
+
+			// Assert
+			expect(builder.build().frequency).toEqual(7.09);
+		});
+
+		it("should ignore leading text", () => {
+			// Arrange
+			pnpSpotTemplate.actFreq = "ABC 7.090";
+
+			// Act
+			const builder = new SpotBuilder().addPnpSpot(pnpSpotTemplate);
+
+			// Assert
+			expect(builder.build().frequency).toEqual(7.09);
+		});
+
+		it("should ignore trailing text", () => {
+			// Arrange
+			pnpSpotTemplate.actFreq = "7.090ABC";
+
+			// Act
+			const builder = new SpotBuilder().addPnpSpot(pnpSpotTemplate);
+
+			// Assert
+			expect(builder.build().frequency).toEqual(7.09);
+		});
+
+		it("should extract the first number-like sequence", () => {
+			// Arrange
+			pnpSpotTemplate.actFreq = "7.ABC090";
+
+			// Act
+			const builder = new SpotBuilder().addPnpSpot(pnpSpotTemplate);
+
+			// Assert
+			expect(builder.build().frequency).toEqual(7);
+		});
+
+		it("should ignore period outisde of number sequence", () => {
+			// Arrange
+			pnpSpotTemplate.actFreq = ".7.ABC090";
+
+			// Act
+			const builder = new SpotBuilder().addPnpSpot(pnpSpotTemplate);
+
+			// Assert
+			expect(builder.build().frequency).toEqual(7);
 		});
 	});
 });

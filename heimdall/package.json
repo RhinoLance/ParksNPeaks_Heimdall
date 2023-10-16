@@ -6,6 +6,7 @@
 		"ng": "ng",
 		"serve": "ng serve",
 		"serve:prod": "ng serve --configuration production",
+		"serve:devServer": "cd devServer && node ./devServer.js",
 		"serve:localServer": "ng serve --configuration localServer",
 		"build": "ng build",
 		"build:prod": "ng build --configuration production",

@@ -1,4 +1,11 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from "@angular/core";
+import {
+	AfterViewInit,
+	Component,
+	ElementRef,
+	Input,
+	OnInit,
+	ViewChild,
+} from "@angular/core";
 import { LatLng } from "src/app/models/LatLng";
 import Map from "ol/Map";
 import TileLayer from "ol/layer/Tile";
@@ -25,7 +32,7 @@ import Icon from "ol/style/Icon";
 	styleUrls: ["./activation-path-map.component.scss"],
 	standalone: true,
 })
-export class ActivationPathMapComponent implements OnInit {
+export class ActivationPathMapComponent implements OnInit, AfterViewInit {
 	private _latLngStart: LatLng = new LatLng(0, 0);
 	private _latLngEnd: LatLng = new LatLng(0, 0);
 	private _pathLayer?: Layer;
@@ -66,19 +73,19 @@ export class ActivationPathMapComponent implements OnInit {
 			);
 		}
 	}
-	
+
 	public ngAfterViewInit(): void {
 		this._map.setTarget(this.mapEl.nativeElement);
 		this.setPath();
 	}
 
 	private setPath(): void {
-		
 		if (this._latLngStart.lat === 0 || this._latLngStart.lng === 0) return;
 
-		if( this._pathLayer === undefined ) {
+		if (this._pathLayer === undefined) {
 			this._pathLayer = new VectorLayer({
-				style: ((feature: Feature) => this.lineRenderer(feature)) as unknown as StyleLike,
+				style: ((feature: Feature) =>
+					this.lineRenderer(feature)) as unknown as StyleLike,
 				declutter: true,
 			});
 			this._map.addLayer(this._pathLayer);
@@ -89,13 +96,12 @@ export class ActivationPathMapComponent implements OnInit {
 		const dist = distance(start, end, { units: "kilometers" });
 		const distFormatted = Math.floor(dist).toLocaleString();
 
-		const path = greatCircle(start, end, { 
+		const path = greatCircle(start, end, {
 			npoints: 100,
-			properties: { 
-				name: `${distFormatted} km`
+			properties: {
+				name: `${distFormatted} km`,
 			},
 		});
-
 
 		const lineSource = new VectorSource({
 			features: [new GeoJSON().readFeature(path)],
@@ -111,17 +117,19 @@ export class ActivationPathMapComponent implements OnInit {
 		}
 	}
 
-	private lineRenderer(feature: Feature): Style[]{
-
-		var svgCircle = `<svg width="24" height="24" version="1.1" xmlns="http://www.w3.org/2000/svg">
-		<circle cx="12" cy="12" r="10" style="fill: %23ffffff; stroke: ${this.pathColour.replace("#", "%23")}; stroke-width: 2;" />
+	private lineRenderer(feature: Feature): Style[] {
+		const svgCircle = `<svg width="24" height="24" version="1.1" xmlns="http://www.w3.org/2000/svg">
+		<circle cx="12" cy="12" r="10" style="fill: %23ffffff; stroke: ${this.pathColour.replace(
+			"#",
+			"%23"
+		)}; stroke-width: 2;" />
 		</svg>`;
 
 		const label = new Text({
 			text: feature.get("name"),
 			font: "1em sans-serif",
-			fill: new Fill({color: "#444444"}),
-			stroke: new Stroke({color: "#ffffff", width: 1}),
+			fill: new Fill({ color: "#444444" }),
+			stroke: new Stroke({ color: "#ffffff", width: 1 }),
 			placement: "line",
 			overflow: true,
 		});
@@ -133,18 +141,15 @@ export class ActivationPathMapComponent implements OnInit {
 			}),
 			text: label,
 		});
-		
+
 		const styleList = [style];
 
 		const geometry = feature.getGeometry() as LineString;
-		const ends = [
-			geometry.getFirstCoordinate(),
-			geometry.getLastCoordinate(),
-		];
+		const ends = [geometry.getFirstCoordinate(), geometry.getLastCoordinate()];
 
-		ends.map(v=> {
+		ends.map((v) => {
 			const style = new Style({
-				geometry: new Point(v), 
+				geometry: new Point(v),
 				image: new Icon({
 					src: "data:image/svg+xml;utf8," + svgCircle,
 					scale: 0.5,
@@ -154,12 +159,10 @@ export class ActivationPathMapComponent implements OnInit {
 			styleList.push(style);
 		});
 
-		
 		return styleList;
 	}
 
 	private buildMap(): Map {
-		
 		const map = new Map({
 			controls: [],
 			layers: [

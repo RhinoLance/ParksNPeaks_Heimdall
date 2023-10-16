@@ -130,7 +130,7 @@ export class ActivationComponent implements OnInit {
 		timer(0, 1000 * 60).subscribe((_) => {
 			this.setTimeElapsedState();
 		});
-		
+
 		this.setMapStart();
 
 		this.showActivation();

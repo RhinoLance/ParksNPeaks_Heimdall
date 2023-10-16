@@ -63,10 +63,7 @@
 					<span>&nbsp;at {{ viewState.spot.shortTime }} (local)</span>
 				</div>
 			</div>
-			<div 
-				class="map"
-				*ngIf="viewState.mapStart && viewState.mapEnd"
-			>
+			<div class="map" *ngIf="viewState.mapStart && viewState.mapEnd">
 				<pph-activation-path-map
 					*ngIf="viewState.siteDetailsRetrieved"
 					[latLngStart]="viewState.mapStart"

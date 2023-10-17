@@ -12,6 +12,15 @@ body {
 		transition-delay: 0.2s;
 	}
 
+	a.activator-callsign {
+		text-decoration: none;
+		color: inherit;
+
+		&:hover {
+			color: darkslategray;
+		}
+	}
+
 	.map {
 		height: 150px;
 		width: 150px;

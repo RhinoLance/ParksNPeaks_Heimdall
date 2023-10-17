@@ -20,7 +20,14 @@
 			<div class="col-md-2">
 				<div class="activation-list-content mt-3 mt-lg-0">
 					<div class="h5 text-muted">
-						{{ activation.callsign }}
+						<a
+							[href]="'https://qrz.com/db/' + activation.callsignRoot"
+							target="_blank"
+							class="activator-callsign"
+							title="View QRZ.com profile"
+						>
+							{{ activation.callsign }}
+						</a>
 					</div>
 					<div>
 						<span class="h3" class="frequency">{{

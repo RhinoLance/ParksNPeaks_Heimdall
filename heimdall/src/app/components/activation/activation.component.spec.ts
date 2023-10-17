@@ -161,6 +161,29 @@ describe("ActivationComponent", () => {
 			);
 		});
 
+		describe("callsign link", () => {
+			it("callsign should link to QRZ page of callsign root.", () => {
+				// Arrange
+				const spot1 = new Spot();
+				spot1.mode = SpotMode.SSB;
+				spot1.frequency = 7.144;
+				spot1.comment = "first";
+				spot1.time = new Date("2021-01-01T12:00:00Z");
+				spot1.callsign = "VK7ABC/P";
+				spot1.callsignRoot = "VK7ABC";
+
+				component.activation = new Activation(spot1);
+
+				// Act
+				fixture.detectChanges();
+
+				// Assert
+				const compiled = fixture.nativeElement;
+				const element = compiled.querySelector(".activator-callsign");
+				expect(element.getAttribute("href")).toBe("https://qrz.com/db/VK7ABC");
+			});
+		});
+
 		describe("ngOnInit", () => {
 			describe("respond to onUpdate events", () => {
 				let activation: Activation;

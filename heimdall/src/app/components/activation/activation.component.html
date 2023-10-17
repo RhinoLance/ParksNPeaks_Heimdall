@@ -5,10 +5,10 @@
 	<div class="card-body no-padding">
 		<div class="row">
 			<div class="col details">
-				<div class="align-items-center row">
-					<div class="col col-md-3 col-sm-6">
+				<div class="row">
+					<div class="col-auto">
 						<div
-							class="activation-list-images"
+							class="activation-list-images align-top"
 							[style.--award-count]="activation.awardCount"
 						>
 							<div
@@ -18,11 +18,16 @@
 								class="award-icon"
 							></div>
 						</div>
-					</div>
-					<div class="col col-md-3 col-sm-6">
-						<div class="activation-list-content mt-3 mt-lg-0">
+						<div class="activation-primary-details">
 							<div class="h5 text-muted">
-								{{ activation.callsign }}
+								<a
+									[href]="'https://qrz.com/db/' + activation.callsignRoot"
+									target="_blank"
+									class="activator-callsign"
+									title="View QRZ.com profile"
+								>
+									{{ activation.callsign }}
+								</a>
 							</div>
 							<div>
 								<span class="h3" class="frequency">{{
@@ -35,38 +40,51 @@
 							</div>
 						</div>
 					</div>
-					<div class="col col-sm-12 col-md-6 text-muted sub-detail">
-						<div *ngFor="let site of activation.awardList; index as cI">
-							<iconify-icon icon="octicon:location-16"></iconify-icon>
-							<span
-								[pphCopyToClipboard]="site.siteId"
+					<div class="col text-muted sub-detail">
+						<ul class="sub-detail-list">
+							<li
+								[pphCopyToClipboard]="activation.siteName"
 								(copied)="onClipboardCopy($event)"
+								class="site-name"
 							>
-								{{ site.siteId }}: {{ site.award }}
-							</span>
-						</div>
-						<div
-							[pphCopyToClipboard]="activation.siteName"
-							(copied)="onClipboardCopy($event)"
-						>
-							{{ activation.siteName }}
-						</div>
-						<div style="margin-top: 5px" class="comment">
-							<span>{{ viewState.spot.comment }}</span>
-							[<span class="h6">de&nbsp;{{ viewState.spot.spotter }}</span
-							>]
-						</div>
-						<div style="margin-top: 5px">
-							<div
-								class="time-elapsed-state"
+								{{ activation.siteName }}
+							</li>
+							<li
+								*ngFor="let site of activation.awardList; index as cI"
+								class="site-id"
+							>
+								<!--<iconify-icon icon="octicon:location-16"></iconify-icon>-->
+								<span
+									[pphCopyToClipboard]="site.siteId"
+									(copied)="onClipboardCopy($event)"
+								>
+									{{ site.award }}: {{ site.siteId }}
+								</span>
+							</li>
+							<li
+								style="margin-top: 5px"
+								class="time-ago"
 								[ngClass]="viewState.elapsedTimeState"
-							></div>
-							<span>{{ viewState.spot.time | timeago : liveTimeAgo }}</span>
-							<span>&nbsp;at {{ viewState.spot.shortTime }} (local)</span>
-						</div>
+							>
+								<span>{{ viewState.spot.time | timeago : liveTimeAgo }}</span>
+								<span>&nbsp;at {{ viewState.spot.shortTime }} (local)</span>
+							</li>
+						</ul>
 					</div>
 				</div>
-				<div class="align-items-center row">
+				<div class="row">
+					<div style="margin-top: 5px" class="text-muted latest-comment">
+						<ul>
+							<li>
+								<span>{{ viewState.spot.comment }}</span>
+								[<span class="text-muted"
+									>de&nbsp;{{ viewState.spot.spotter }}</span
+								>]
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div class="row">
 					<div class="col-auto">
 						<pph-spot-history-card
 							[spotList]="viewState.supersededSpotList"

@@ -2,6 +2,10 @@ body {
 	background: #e6e6fa;
 }
 
+.no-padding {
+	padding: 0;
+}
+
 .card {
 	box-shadow: 0 10px 17px 0 rgb(0 0 0 / 5%);
 
@@ -12,12 +16,37 @@ body {
 		transition-delay: 0.2s;
 	}
 
+	.details {
+		padding: 0.5em 1em 0.5em 1em;
+	}
+
 	.map {
-		height: 150px;
-		width: 150px;
+		_position: absolute;
+		_top: 0;
+		_right: 0;
+		_bottom: 0;
+		width: 200px;
+		height: 100%;
+		min-height: 150px;
 		display: inline-block;
-		border: 1px solid #dddddd;
+		border-left: 1px solid #dddddd;
 		padding: 0;
+	}
+
+	@media only screen and (max-width: 767px) {
+		.details {
+			.sub-detail {
+				padding: 1em inherit 1em inherit;
+			}
+		}
+	}
+
+	@media only screen and (max-width: 767px) {
+		.map {
+			width: 100%;
+			border-left: none;
+			border-top: 1px solid #dddddd;
+		}
 	}
 }
 

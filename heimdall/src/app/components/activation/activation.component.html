@@ -2,146 +2,153 @@
 	class="activation-list-box bookmark-post card mt-4"
 	[@lookAtMeAnimation]="viewState.hasUpdates"
 >
-	<div class="p-4 card-body">
-		<div class="align-items-center row">
-			<div class="col-md-2">
-				<div
-					class="activation-list-images"
-					[style.--award-count]="activation.awardCount"
-				>
-					<div
-						*ngFor="let award of activation.awardList; index as cI"
-						href="#"
-						[ngClass]="'award-' + award.award"
-						class="award-icon"
-					></div>
+	<div class="card-body no-padding">
+		<div class="row">
+			<div class="col details">
+				<div class="align-items-center row">
+					<div class="col col-md-3 col-sm-6">
+						<div
+							class="activation-list-images"
+							[style.--award-count]="activation.awardCount"
+						>
+							<div
+								*ngFor="let award of activation.awardList; index as cI"
+								href="#"
+								[ngClass]="'award-' + award.award"
+								class="award-icon"
+							></div>
+						</div>
+					</div>
+					<div class="col col-md-3 col-sm-6">
+						<div class="activation-list-content mt-3 mt-lg-0">
+							<div class="h5 text-muted">
+								{{ activation.callsign }}
+							</div>
+							<div>
+								<span class="h3" class="frequency">{{
+									viewState.spot.frequency.toFixed(3)
+								}}</span>
+								<pph-mode-badge
+									class="mode"
+									[mode]="viewState.spot.mode"
+								></pph-mode-badge>
+							</div>
+						</div>
+					</div>
+					<div class="col col-sm-12 col-md-6 text-muted sub-detail">
+						<div *ngFor="let site of activation.awardList; index as cI">
+							<iconify-icon icon="octicon:location-16"></iconify-icon>
+							<span
+								[pphCopyToClipboard]="site.siteId"
+								(copied)="onClipboardCopy($event)"
+							>
+								{{ site.siteId }}: {{ site.award }}
+							</span>
+						</div>
+						<div
+							[pphCopyToClipboard]="activation.siteName"
+							(copied)="onClipboardCopy($event)"
+						>
+							{{ activation.siteName }}
+						</div>
+						<div style="margin-top: 5px" class="comment">
+							<span>{{ viewState.spot.comment }}</span>
+							[<span class="h6">de&nbsp;{{ viewState.spot.spotter }}</span
+							>]
+						</div>
+						<div style="margin-top: 5px">
+							<div
+								class="time-elapsed-state"
+								[ngClass]="viewState.elapsedTimeState"
+							></div>
+							<span>{{ viewState.spot.time | timeago : liveTimeAgo }}</span>
+							<span>&nbsp;at {{ viewState.spot.shortTime }} (local)</span>
+						</div>
+					</div>
+				</div>
+				<div class="align-items-center row">
+					<div class="col-auto">
+						<pph-spot-history-card
+							[spotList]="viewState.supersededSpotList"
+							[expanded]="false"
+						></pph-spot-history-card>
+					</div>
 				</div>
 			</div>
-			<div class="col-md-2">
-				<div class="activation-list-content mt-3 mt-lg-0">
-					<div class="h5 text-muted">
-						{{ activation.callsign }}
-					</div>
-					<div>
-						<span class="h3" class="frequency">{{
-							viewState.spot.frequency.toFixed(3)
-						}}</span>
-						<pph-mode-badge
-							class="mode"
-							[mode]="viewState.spot.mode"
-						></pph-mode-badge>
-					</div>
-				</div>
-			</div>
-			<div class="col text-muted">
-				<div *ngFor="let site of activation.awardList; index as cI">
-					<iconify-icon icon="octicon:location-16"></iconify-icon>
-					<span
-						[pphCopyToClipboard]="site.siteId"
-						(copied)="onClipboardCopy($event)"
+			<div class="col-sm-12 col-md-auto">
+				<div class="map" *ngIf="viewState.mapStart && viewState.mapEnd">
+					<pph-activation-path-map
+						*ngIf="viewState.siteDetailsRetrieved"
+						[latLngStart]="viewState.mapStart"
+						[latLngEnd]="viewState.mapEnd"
+						[padding]="15"
 					>
-						{{ site.siteId }}: {{ site.award }}
-					</span>
-				</div>
-				<div
-					[pphCopyToClipboard]="activation.siteName"
-					(copied)="onClipboardCopy($event)"
-				>
-					{{ activation.siteName }}
-				</div>
-				<div style="margin-top: 5px" class="comment">
-					<span>{{ viewState.spot.comment }}</span>
-					[<span class="h6">de&nbsp;{{ viewState.spot.spotter }}</span
-					>]
-				</div>
-				<div style="margin-top: 5px">
-					<div
-						class="time-elapsed-state"
-						[ngClass]="viewState.elapsedTimeState"
-					></div>
-					<span>{{ viewState.spot.time | timeago : liveTimeAgo }}</span>
-					<span>&nbsp;at {{ viewState.spot.shortTime }} (local)</span>
+					</pph-activation-path-map>
 				</div>
 			</div>
-			<div class="map" *ngIf="viewState.mapStart && viewState.mapEnd">
-				<pph-activation-path-map
-					*ngIf="viewState.siteDetailsRetrieved"
-					[latLngStart]="viewState.mapStart"
-					[latLngEnd]="viewState.mapEnd"
-					[padding]="15"
-				>
-				</pph-activation-path-map>
-			</div>
 		</div>
-		<div class="align-items-center row">
-			<div class="col-auto">
-				<pph-spot-history-card
-					[spotList]="viewState.supersededSpotList"
-					[expanded]="false"
-				></pph-spot-history-card>
-			</div>
-		</div>
-	</div>
-	<div
-		class="action-list"
-		[class]="viewState.respotIsVisible ? 'respot-visible' : ''"
-	>
-		<div
-			class="open-respot action-item btn"
-			[class]="
-				pnpClientSvc.hasApiKey && pnpClientSvc.hasUserId ? '' : 'inactive'
-			"
-			(click)="showReSpot()"
-			#tooltip="matTooltip"
-			[matTooltip]="
-				pnpClientSvc.hasApiKey && pnpClientSvc.hasUserId
-					? 'Re-spot'
-					: 'To respot, you must first set your Parks \'n Peaks details in settings.'
-			"
-			matTooltipShowDelay="500"
-		>
-			<iconify-icon icon="ph:megaphone"></iconify-icon>
-		</div>
-		<div
-			class="respot"
-			[class]="viewState.respotIsVisible ? 'visible' : 'hidden'"
-			[@respotSuccess]="viewState.respotSuccess"
-			(@respotSuccess.done)="respotSuccessAnimDone()"
-		>
-			<pph-respot
-				[spot]="viewState.respot"
-				(respotSent)="onRespotSent($event)"
-			></pph-respot>
 
+		<div
+			class="action-list"
+			[class]="viewState.respotIsVisible ? 'respot-visible' : ''"
+		>
 			<div
-				class="btn cancel"
-				(click)="hideRespot()"
+				class="open-respot action-item btn"
+				[class]="
+					pnpClientSvc.hasApiKey && pnpClientSvc.hasUserId ? '' : 'inactive'
+				"
+				(click)="showReSpot()"
 				#tooltip="matTooltip"
-				matTooltip="Cancel"
+				[matTooltip]="
+					pnpClientSvc.hasApiKey && pnpClientSvc.hasUserId
+						? 'Re-spot'
+						: 'To respot, you must first set your Parks \'n Peaks details in settings.'
+				"
 				matTooltipShowDelay="500"
 			>
-				<iconify-icon icon="ic:round-cancel"></iconify-icon>
+				<iconify-icon icon="ph:megaphone"></iconify-icon>
+			</div>
+			<div
+				class="respot"
+				[class]="viewState.respotIsVisible ? 'visible' : 'hidden'"
+				[@respotSuccess]="viewState.respotSuccess"
+				(@respotSuccess.done)="respotSuccessAnimDone()"
+			>
+				<pph-respot
+					[spot]="viewState.respot"
+					(respotSent)="onRespotSent($event)"
+				></pph-respot>
+
+				<div
+					class="btn cancel"
+					(click)="hideRespot()"
+					#tooltip="matTooltip"
+					matTooltip="Cancel"
+					matTooltipShowDelay="500"
+				>
+					<iconify-icon icon="ic:round-cancel"></iconify-icon>
+				</div>
+				<div class="vr"></div>
+			</div>
+			<div
+				class="action-item btn"
+				(click)="hideActivation(HideState.Spot)"
+				#tooltip="matTooltip"
+				matTooltip="Hide until band or mode change"
+				matTooltipShowDelay="500"
+			>
+				<iconify-icon icon="bx:hide"></iconify-icon>
 			</div>
 			<div class="vr"></div>
-		</div>
-		<div
-			class="action-item btn"
-			(click)="hideActivation(HideState.Spot)"
-			#tooltip="matTooltip"
-			matTooltip="Hide until band or mode change"
-			matTooltipShowDelay="500"
-		>
-			<iconify-icon icon="bx:hide"></iconify-icon>
-		</div>
-		<div class="vr"></div>
-		<div
-			class="action-item btn"
-			(click)="hideActivation(HideState.Activation)"
-			#tooltip="matTooltip"
-			matTooltip="Don't show this activation"
-			matTooltipShowDelay="500"
-		>
-			<iconify-icon icon="typcn:delete-outline"></iconify-icon>
+			<div
+				class="action-item btn"
+				(click)="hideActivation(HideState.Activation)"
+				#tooltip="matTooltip"
+				matTooltip="Don't show this activation"
+				matTooltipShowDelay="500"
+			>
+				<iconify-icon icon="typcn:delete-outline"></iconify-icon>
+			</div>
 		</div>
 	</div>
 </div>

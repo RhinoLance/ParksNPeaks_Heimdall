@@ -1,0 +1,28 @@
+export type PotaPark = {
+	parkId: number;
+	reference: string;
+	name: string;
+	latitude: number;
+	longitude: number;
+	grid4: string;
+	grid6: string;
+	parktypeId: number;
+	active: number;
+	parkComments: string;
+	accessibility: string;
+	sensitivity: string;
+	accessMethods: string;
+	activationMethods: string;
+	agencies: string;
+	agencyURLs: string;
+	parkURLs: string;
+	website: string;
+	createdByAdmin: string;
+	parktypeDesc: string;
+	locationDesc: string;
+	locationName: string;
+	entityId: number;
+	entityName: string;
+	referencePrefix: string;
+	entityDeleted: number;
+};

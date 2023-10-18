@@ -4,6 +4,7 @@
 
 export const environment = {
 	production: false,
+	potaBaseHref: "https://api.pota.app/",
 	pnpBaseHref: "/assets/devData/pnp.spots.empty.json/?suffix=",
 	//pnpBaseHref: 'https://rhinoswtools.azurewebsites.net/api/PnP/Get?suffix=',
 	pnpPollMinutesInterval: 1,

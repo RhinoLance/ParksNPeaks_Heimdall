@@ -4,6 +4,7 @@
 
 export const environment = {
 	production: false,
+	potaBaseHref: "https://api.pota.app/",
 	pnpBaseHref: "http://localhost:9000/?suffix=",
 	//pnpBaseHref: "http://localhost:8080/pnp.spots.all.4.json/?suffix=",
 	pnpPollMinutesInterval: 0.5,

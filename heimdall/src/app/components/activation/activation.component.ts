@@ -137,7 +137,7 @@ export class ActivationComponent implements OnInit {
 	}
 
 	public async retrieveSiteDetails(): Promise<void> {
-		const schemes = ["WWFF", "SOTA"];
+		const schemes = ["WWFF", "SOTA", "POTA"];
 
 		let award: ActivationAward | undefined;
 		while (award == undefined && schemes.length > 0) {
@@ -148,11 +148,8 @@ export class ActivationComponent implements OnInit {
 
 		if (award == undefined) return;
 
-		const location = await this._dataSvc.getSiteDetails(award);
-		this.viewState.mapEnd = new LatLng(
-			parseFloat(location.Latitude),
-			parseFloat(location.Longitude)
-		);
+		const site = await this._dataSvc.getSiteDetails(award);
+		this.viewState.mapEnd = new LatLng(site.latitude, site.longitude);
 
 		this.viewState.siteDetailsRetrieved = true;
 	}

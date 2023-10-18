@@ -26,7 +26,7 @@ export class SpotBuilder {
 		spot.frequency = this.parseFrequency(pnpSpot.actFreq);
 		spot.mode = SpotMode[pnpSpot.actMode as keyof typeof SpotMode];
 		spot.spotter = pnpSpot.actSpoter;
-		spot.time = new Date(pnpSpot.actTime + "Z");
+		spot.time = new Date(pnpSpot.actTime.replace(" ", "T") + "Z");
 		spot.type = SpotType.NotSet;
 
 		spot.awardList.add(...this.getAwardSchemes(pnpSpot));

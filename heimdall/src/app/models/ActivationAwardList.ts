@@ -55,6 +55,16 @@ export class ActivationAwardList implements Iterable<ActivationAward> {
 		return retVal;
 	}
 
+	public findByAwardScheme(
+		awardScheme: AwardScheme
+	): ActivationAward | undefined {
+		return this._awardList.find((aa) => aa.award == awardScheme);
+	}
+
+	public findBySiteId(siteId: string): ActivationAward | undefined {
+		return this._awardList.find((aa) => aa.siteId == siteId);
+	}
+
 	public containsSiteId(...siteId: string[]): boolean {
 		let retVal = false;
 

@@ -8,13 +8,11 @@ export class Guid {
 	private static EMPTY = "00000000-0000-0000-0000-000000000000";
 
 	public constructor(guid: string) {
-		if (!guid) throw new TypeError("Invalid argument; `value` has no value.");
-
-		this._value = Guid.EMPTY;
-
-		if (guid) {
-			this._value = guid.toString();
+		if (!Guid._validator.test(guid)) {
+			throw new Error("Invalid Guid");
 		}
+
+		this._value = guid.toString();
 	}
 
 	public equals(other: string) {

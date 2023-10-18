@@ -54,7 +54,7 @@ export class RespotComponent implements OnInit {
 	public setFrequency($event: Event) {
 		const freq = parseFloat(($event.target as HTMLInputElement).value);
 
-		this.spot.frequency = freq > 100000 ? freq / 1000 : freq;
+		this.spot.frequency = Math.floor(freq) === freq ? freq / 1000 : freq;
 	}
 
 	public sendReSpot(): void {

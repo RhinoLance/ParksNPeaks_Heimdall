@@ -2,6 +2,10 @@ body {
 	background: #e6e6fa;
 }
 
+.no-padding {
+	padding: 0;
+}
+
 .card {
 	box-shadow: 0 10px 17px 0 rgb(0 0 0 / 5%);
 
@@ -11,11 +15,106 @@ body {
 		opacity: 1;
 		transition-delay: 0.2s;
 	}
+
+	.details {
+		padding: 1em 1em 1em 1em;
+
+		a.activator-callsign {
+			text-decoration: none;
+			color: inherit;
+
+			&:hover {
+				color: darkslategray;
+			}
+		}
+
+		.sub-detail-list {
+			li::marker {
+				font-size: 1.1em;
+			}
+
+			.site-name {
+				list-style-type: none;
+				margin-left: -1.7em;
+			}
+
+			.site-id {
+				list-style-image: url('data:image/svg+xml,%3Csvg xmlns="http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg" viewBox="0 0 8 8"%3E%3Cpath fill="currentColor" d="M4 0C2.34 0 1 1.34 1 3c0 2 3 5 3 5s3-3 3-5c0-1.66-1.34-3-3-3zm0 1a2 2 0 0 1 2 2c0 1.11-.89 2-2 2a2 2 0 1 1 0-4z"%2F%3E%3C%2Fsvg%3E');
+
+				&::marker {
+					font-size: 1.7em;
+				}
+			}
+
+			.time-ago {
+				&::marker {
+					content: "⬤  ";
+				}
+
+				&.active::marker {
+					color: #4f772d;
+				}
+
+				&.shoulder::marker {
+					color: #fb8b24;
+				}
+
+				&.inactive::marker {
+					color: #9a031e;
+				}
+			}
+		}
+
+		.latest-comment {
+			li {
+				list-style-image: url('data:image/svg+xml,%3Csvg xmlns="http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg" viewBox="0 0 24 24"%3E%3Cpath fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 4H5a2 2 0 0 0-2 2v15l3.467-2.6a2 2 0 0 1 1.2-.4H19a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"%2F%3E%3C%2Fsvg%3E');
+
+				&::marker {
+					font-size: 2em;
+				}
+			}
+		}
+	}
+
+	.map {
+		_position: absolute;
+		_top: 0;
+		_right: 0;
+		_bottom: 0;
+		width: 200px;
+		height: 100%;
+		min-height: 150px;
+		display: inline-block;
+		border-left: 1px solid #dddddd;
+		padding: 0;
+	}
+
+	@media only screen and (max-width: 992px) {
+		.details {
+			.sub-detail {
+				font-size: 0.9em;
+			}
+		}
+	}
+
+	@media only screen and (max-width: 767px) {
+		.map {
+			width: 100%;
+			border-left: none;
+			border-top: 1px solid #dddddd;
+		}
+	}
+}
+
+.activation-primary-details {
+	display: inline-block;
+	padding: 0 1em 0 2em;
 }
 
 .activation-list-images {
 	max-height: 108px;
 	max-width: 108px;
+	display: inline-block;
 
 	.award-icon {
 		border-radius: 50%;

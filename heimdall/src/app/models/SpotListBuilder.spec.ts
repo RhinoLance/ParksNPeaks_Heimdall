@@ -121,4 +121,32 @@ describe("SpotListBuilder", () => {
 			});
 		});
 	});
+
+	describe("strips sender from comments", () => {
+		const testCases = [
+			{ test: "this test [VK7ZA]", expected: "this test" },
+			{ test: "this test [VK7ZA] [iPnP]", expected: "this test" },
+			{ test: "this [VK7ZA] test", expected: "this test" },
+			{ test: "this test VK portalog", expected: "this test" },
+			{ test: "this test *[iPnP]", expected: "this test" },
+			{ test: "this test SOTA Spotter", expected: "this test" },
+			{ test: "this test [mParks]", expected: "this test" },
+			{ test: "this test (via SMS)", expected: "this test" },
+		];
+
+		testCases.forEach((testCase) => {
+			it(`should extract "${testCase.expected}" from "${testCase.test}"`, () => {
+				// Arrange
+				const spot = clonePnPSpot(templateSpot);
+				spot.actComments = testCase.test;
+
+				// Act
+				const slb = new SpotListBuilder();
+				const spotList = slb.buildFromPnPSpots([spot]);
+
+				// Assert
+				expect(spotList[0].comment).toEqual(testCase.expected);
+			});
+		});
+	});
 });

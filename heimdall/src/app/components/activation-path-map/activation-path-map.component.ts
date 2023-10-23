@@ -11,7 +11,7 @@ import Map from "ol/Map";
 import TileLayer from "ol/layer/Tile";
 import XYZ from "ol/source/XYZ";
 import View from "ol/View";
-import { greatCircle, distance } from "@turf/turf";
+import { greatCircle, distance, getCoord, along } from "@turf/turf";
 import VectorLayer from "ol/layer/Vector";
 import GeoJSON from "ol/format/GeoJSON";
 import VectorSource from "ol/source/Vector";
@@ -84,8 +84,8 @@ export class ActivationPathMapComponent implements OnInit, AfterViewInit {
 
 		if (this._pathLayer === undefined) {
 			this._pathLayer = new VectorLayer({
-				style: ((feature: Feature) =>
-					this.lineRenderer(feature)) as unknown as StyleLike,
+				style: ((feature: Feature, resolution: number) =>
+					this.lineRenderer(feature, resolution)) as unknown as StyleLike,
 				declutter: true,
 			});
 			this._map.addLayer(this._pathLayer);
@@ -99,7 +99,8 @@ export class ActivationPathMapComponent implements OnInit, AfterViewInit {
 		const path = greatCircle(start, end, {
 			npoints: 100,
 			properties: {
-				name: `${distFormatted} km`,
+				label: `${distFormatted} km`,
+				length: dist,
 			},
 		});
 
@@ -117,7 +118,7 @@ export class ActivationPathMapComponent implements OnInit, AfterViewInit {
 		}
 	}
 
-	private lineRenderer(feature: Feature): Style[] {
+	private lineRenderer(feature: Feature, resolution: number): Style[] {
 		const svgCircle = `<svg width="24" height="24" version="1.1" xmlns="http://www.w3.org/2000/svg">
 		<circle cx="12" cy="12" r="10" style="fill: %23ffffff; stroke: ${this.pathColour.replace(
 			"#",
@@ -126,7 +127,7 @@ export class ActivationPathMapComponent implements OnInit, AfterViewInit {
 		</svg>`;
 
 		const label = new Text({
-			text: feature.get("name"),
+			text: feature.get("label"),
 			font: "1em sans-serif",
 			fill: new Fill({ color: "#444444" }),
 			stroke: new Stroke({ color: "#ffffff", width: 1 }),
@@ -134,18 +135,22 @@ export class ActivationPathMapComponent implements OnInit, AfterViewInit {
 			overflow: true,
 		});
 
-		const style = new Style({
+		const lineStyle = new Style({
 			stroke: new Stroke({
 				color: this.pathColour,
 				width: this.pathWidth,
 			}),
-			text: label,
 		});
-
-		const styleList = [style];
 
 		const geometry = feature.getGeometry() as LineString;
 		const ends = [geometry.getFirstCoordinate(), geometry.getLastCoordinate()];
+
+		const labelStyle = new Style({
+			text: label,
+			geometry: this.getLabelGeometry(feature, resolution),
+		});
+
+		const styleList = [lineStyle, labelStyle];
 
 		ends.map((v) => {
 			const style = new Style({
@@ -160,6 +165,34 @@ export class ActivationPathMapComponent implements OnInit, AfterViewInit {
 		});
 
 		return styleList;
+	}
+
+	/*
+	 * OpenLayers has issues with labels that follow curved lines.  This function
+	 * creates a straight line between two points on the curved line against which
+	 * the label can be rendered.
+	 */
+	private getLabelGeometry(feature: Feature, resolution: number): LineString {
+		const length = parseFloat(feature.get("length"));
+		const geometry = feature.getGeometry() as LineString;
+		const geoJsonGeometry = {
+			coordinates: geometry.getCoordinates(),
+		} as GeoJSON.LineString;
+
+		const lineLenPixels = (length * 1000) / resolution;
+		const textLenPixels = 60;
+		const nDiv = Math.trunc(lineLenPixels / textLenPixels / 2) * 2 + 1;
+		const nDiv1 = (nDiv - 1) / 2;
+		const nDiv2 = nDiv1 + 1;
+
+		const pointCoord1 = getCoord(
+			along(geoJsonGeometry, (length / nDiv) * nDiv1)
+		);
+		const pointCoord2 = getCoord(
+			along(geoJsonGeometry, (length / nDiv) * nDiv2)
+		);
+
+		return new LineString([pointCoord1, pointCoord2]);
 	}
 
 	private buildMap(): Map {

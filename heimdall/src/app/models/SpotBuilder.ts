@@ -75,13 +75,14 @@ export class SpotBuilder {
 	}
 
 	private stripSpotPublisherFromComment(comment: string): string {
-		const publishers = [
+		const publishers: (string | RegExp)[] = [
 			"VK portalog",
 			"[VK port-a-log]",
 			"*[iPnP]",
 			"SOTA Spotter",
 			"[mParks]",
 			"(via SMS)",
+			/\[.+\]\s*/g,
 		];
 
 		for (const publisher of publishers) {

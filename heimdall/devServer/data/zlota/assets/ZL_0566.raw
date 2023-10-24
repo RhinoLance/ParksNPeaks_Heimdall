@@ -1,0 +1,350 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <script src="/assets/ol.js"></script>
+    <script src="/handsontable/handsontable.full.min.js"></script>
+    <link rel="stylesheet" href="/assets/ol.css" type="text/css">
+    <link rel="stylesheet" href="/handsontable/handsontable.full.css" type="text/css">
+<script>
+if( /Android|webOS|iPhone|iPod|iPad|BlackBerry/i.test(navigator.userAgent))
+{
+ var ismobile=true;
+} else {
+ var ismobile=false;
+}
+</script>
+
+    <script>
+      
+      
+      
+    </script>
+
+    <title>... On The Air</title>
+    <link data-turbolinks-track="true" href="/assets/application-814206f789f6b27dae02e37f24b88a7d.css" media="all" rel="stylesheet" />
+    <link href="/assets/application-814206f789f6b27dae02e37f24b88a7d.css" jquery-ui.mi="true" media="all" rel="stylesheet" />
+
+    <script data-turbolinks-track="true" src="/assets/application-83bdb5c7091b315671cb2a243ed9ebb2.js"></script>
+    <meta content="authenticity_token" name="csrf-param" />
+<meta content="TS7+nxFTIOM6jfR51tzWZ0l1/e9n2qcwyl5kN+wIlIY=" name="csrf-token" />
+    <!--[if lt IE 9]>
+<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+ 
+    <meta name="google-site-verification" content="KIylIchG3986annyXGfxBNJ-qMOJCDG2tdcuUMFPoO0" />
+    <script src="/styles.js"></script>
+
+</head>
+ <body onload='site_init()' style="cursor: auto;"> 
+  <form accept-charset="UTF-8" action="/redisplay" data-remote="true" id="thelink" method="post" name="selectform"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /></div>
+    <div class="row">
+     <input type="hidden" name="select"/>
+     <input type="hidden" name="signed_in" value="false"/>
+     <input type="hidden" name="selectname"/>
+     <input type="hidden" name="selectx"/>
+     <input type="hidden" name="selecty"/>
+     <input type="hidden" name="selecttype"/>
+     <input type="hidden" name="currentx"/>
+     <input type="hidden" name="currenty"/>
+     <input type="hidden" name="currentzoom"/>
+    </div>
+  </form>
+
+       <header class="navbar navbar-fixed-top navbar-inverse">
+      <div class="navbar-inner" style="font-size:0.8em">
+<!--        <div class="container"> -->
+        <div id="our_logo">
+          <div id="rg-image">
+            <img src='/assets/antenna32.png'>
+          </div>
+          <div id="rg-text">
+            <a data-remote="true" href="/" id="logo" onclick="linkHandler(&#39;logo&#39;)">... On The Air</a>
+          </div>
+        </div>
+          <nav>
+            <ul class="nav pull-right" id="menus">
+                <li><a data-remote="true" href="/" id="home_link" onclick="linkHandler(&#39;home_link&#39;)">...OnTheAir</a></li>
+                <li id="fat-menu" class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                     Info <b class="caret"></b>
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li><a data-remote="true" href="/about" id="about_link" onclick="linkHandler(&#39;about_link&#39;)">About</a></li>
+                    <li class="divider"></li>
+                      <li><a data-remote="true" href="/topics/1" id="about_link" onclick="linkHandler(&#39;about_link&#39;)">Alerts - Going Portable</a></li>
+                      <li><a data-remote="true" href="/topics/42" id="about_link" onclick="linkHandler(&#39;about_link&#39;)">Awards</a></li>
+                      <li><a data-remote="true" href="/topics/3" id="about_link" onclick="linkHandler(&#39;about_link&#39;)">Chat forums</a></li>
+                      <li><a data-remote="true" href="/topics/32" id="about_link" onclick="linkHandler(&#39;about_link&#39;)">Just Testing</a></li>
+                      <li><a data-remote="true" href="/topics/41" id="about_link" onclick="linkHandler(&#39;about_link&#39;)">Photos</a></li>
+                      <li><a data-remote="true" href="/topics/35" id="about_link" onclick="linkHandler(&#39;about_link&#39;)">Spots - Spotted Portable</a></li>
+                      <li><a data-remote="true" href="/topics/44" id="about_link" onclick="linkHandler(&#39;about_link&#39;)">Test ALERTs</a></li>
+                      <li><a data-remote="true" href="/topics/43" id="about_link" onclick="linkHandler(&#39;about_link&#39;)">Test SPOTs</a></li>
+                      <li><a data-remote="true" href="/topics/40" id="about_link" onclick="linkHandler(&#39;about_link&#39;)">ZLOTA - FAQ</a></li>
+                      <li><a data-remote="true" href="/topics/39" id="about_link" onclick="linkHandler(&#39;about_link&#39;)">ZLOTA - Help</a></li>
+                      <li><a data-remote="true" href="/topics/4" id="about_link" onclick="linkHandler(&#39;about_link&#39;)">ZLOTA - What&#39;s New</a></li>
+                  </ul>
+                </li>
+
+
+
+                <li id="fat-menu" class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                     Places <b class="caret"></b>
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li><a data-remote="true" href="/assets" id="places_link" onclick="linkHandler(&#39;places_link&#39;)">Places</a></li>
+                    <li><a data-remote="true" href="/districts" id="district_link" onclick="linkHandler(&#39;district_link&#39;)">Districts</a></li>
+                    <li><a data-remote="true" href="/regions" id="region_link" onclick="linkHandler(&#39;region_link&#39;)">Regions</a></li>
+                    <li class="divider"></li>                  
+                    <li><a data-remote="true" href="/vkassets" id="vk" onclick="linkHandler(&#39;vk&#39;)">VK Places</a></li>
+                  </ul>
+                </li>
+
+                <li id="fat-menu" class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                     Results <b class="caret"></b>
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li><a data-remote="true" href="/recent" id="recent_link" onclick="linkHandler(&#39;recent_link&#39;)">Recent</a></li>
+                    <li><a data-remote="true" href="/results" id="results_link" onclick="linkHandler(&#39;results_link&#39;)">Results</a></li>
+                    <li><a data-remote="true" href="/awards" id="awards_link" onclick="linkHandler(&#39;awards_link&#39;)">Awards</a></li>
+                  </ul>
+                </li>
+                <li><a data-remote="true" href="/spots" id="spots_link" onclick="linkHandler(&#39;spots_link&#39;)">Spots</a></li>
+                <li><a data-remote="true" href="/alerts" id="alerts_link" onclick="linkHandler(&#39;alerts_link&#39;)">Alerts</a></li>
+
+                <li><a data-remote="true" href="/signin">Sign in</a></li>
+                <li><a data-remote="true" href="/signup">Sign up</a></li>
+
+            </ul>
+          </nav>
+<!--        </div>-->
+      </div>
+    </header>
+
+
+   <div class="row-fluid">
+   <div id="main_page" class="container-fluid"> 
+   <div id="actionbar-full" class="span12"> </div>
+    <div id="left_panel" class="span5"> 
+      <div id="map_map">
+   <div id="page_status" style="z-index:9999;position:absolute;right:10px;"></div> 
+   <div id="tooltip"></div>
+</div>
+
+    </div> 
+    <div id="right_panel" class="span7"> 
+
+      <script> 
+   document.getElementById("page_status").innerHTML = '';
+   document.body.classList.remove('loading');
+   document.title = 'ZL On the Air'
+   document.getElementById('logo').innerHTML='ZL On The Air'
+
+</script>
+<div id="actionbar" class="span7">
+   <div id="crumbs">
+     <a data-remote="true" href="/" id="home" onclick="linkHandler(&#39;home&#39;)">Home</a>
+     &nbsp;--&gt;&nbsp;
+     <a data-remote="true" href="/assets" id="assets" onclick="linkHandler(&#39;assets&#39;)">Places:</a>
+     &nbsp;--&gt;&nbsp;
+     <b>Lake Oturi</b>
+     </div>
+   <div id="controls">
+       <a class="btn btn-small btn-primary" data-remote="true" href="/assets" id="index" onclick="linkHandler(&#39;index&#39;)">Index</a>
+             <span id="larger_map"><a class="btn btn-small btn-primary" href="#" onclick="site_bigger_map(); return false;">Larger Map</a></span>
+      <span id="smaller_map"><a class="btn btn-small btn-primary" href="#" onclick="site_smaller_map(); return false;">Smaller Map</a></span>
+      <span id="Back"><a class="btn btn-small btn-primary" data-remote="true" href="/assets/ZLL_0902?back=true" onclick="linkHandler(&#39;back&#39;)">Back</a></span>
+
+   </div>
+</div>
+<div id="right_scroll">
+   
+      <!-- clear flash as if we use partials it won't clear itself -->
+
+
+   <div class="erow" id="email">
+      <div class="rowtitle">Id:</div>
+        <div class="rowtext">ZLL/0566</div>
+   </div>
+   <div class="erow" id="name">
+      <div class="rowtitle">Name</div>
+      <div class="rowtext"> 
+        <a data-remote="true" href="/assets/ZLL_0566" id="asset" onclick="linkHandler(&#39;asset&#39;)">Lake Oturi</a>
+      </div>
+   </div>
+   <div class="erow" id="name">
+      <div class="rowtitle">Class</div>
+      <div class="rowtext"> 
+        Lake
+      </div>
+   </div>
+   <div class="erow" id="name">
+      <div class="rowtitle">Description</div>
+      <div class="rowtext"> 
+        Feature shown on: NZMS260 Q22 Edition 1 1985
+      </div>
+   </div>
+
+     <div class="erow" id="publicaccess" style="color:#00bb00">
+        <div class="rowtitle" style="color:#00bb00">Public access to AZ</div>
+        <div class="rowtext">
+           Yes
+        </div>
+     </div>
+         <div class="erow" id="roadids">
+           <div class="rowtitle"></div>
+           <div class="rowtext" style="color:#00bb00"> 
+           Via public road(s): <span style="color:#333">
+             Ihupuku Road; Stewart Road; Waverley Beach Road; 1 unnamed road(s)
+           </span>
+         </div>
+       </div>
+
+
+       <div class="erow" id="parkids">
+         <div class="rowtitle"></div>
+         <div class="rowtext" style="color:#00bb00"> 
+           Via park(s): <span style="color:#333">
+             Ihupuku Swamp Wildlife Management Reserve
+           </span>
+         </div>
+       </div>
+
+     <div class="erow" id="name">
+        <div class="rowtitle">Distance from nearest road</div>
+        <div class="rowtext"> 
+          0.172km
+        </div>
+     </div>
+     
+     <div class="erow" id="name">
+        <div class="rowtitle">Info Origin</div>
+        <div class="rowtext"></div>
+     </div>
+   <div class="erow" id="name">
+      <div class="rowtitle">Lies within</div>
+      <div class="rowtext"> 
+          <ul style="list-style-type:none;padding:0;margin:0;"></ul>
+      </div>
+   </div>
+     <div class="erow" id="district">
+        <div class="rowtitle">Region</div>
+        <div class="rowtext"> 
+          <a data-remote="true" href="/regions/TN" id="region" onclick="linkHandler(&#39;region&#39;)">Taranaki </a>
+        </div>
+     </div>
+     <div class="erow" id="district2">
+        <div class="rowtitle">District</div>
+        <div class="rowtext"> 
+          <a data-remote="true" href="/districts/SD3" id="district" onclick="linkHandler(&#39;district&#39;)">South Taranaki District</a>
+        </div>
+     </div>
+   <div class="erow" id="location">
+      <div class="rowtitle">Location</div>
+        <div class="rowtext"> NZTM2000: 1738839, 5595554 </div>
+   </div>
+   <div class="erow" id="maidenhead">
+      <div class="rowtitle">Maidenhead</div>
+        <div class="rowtext"> RF70hf </div>
+   </div>
+   <div class="erow" id="area">
+      <div class="rowtitle">Area</div>
+      <div class="textext">11.34 ha</div>
+   </div>
+   <div class="erow" id="email" >
+      <div class="rowtitle" >Active?</div>
+      <div class="textext">Yes</div>
+   </div>
+
+
+     <div class="erow" id="doc">
+       <div class="rowtitle">Valid From</div>
+       <div class="textext">1900-01-01</div>
+     </div>
+
+
+
+
+   <div class="erow">
+      <div class="hrline">
+         <hr noshade size="4">
+      </div>
+   </div>
+
+   <div class="erow"><div class="sectiontitle_bold">Links:</div>&nbsp;        
+   </div>
+  <div id="showlinks">
+  </div>
+  <div class="erow">
+      <div class="hrline">
+         <hr noshade size="4">
+      </div>
+  </div>
+
+   <div class="sectiontitle_bold">Chased by:</div>
+   <div class="erow">
+        <i>No-one has chased this place yet. Be the first!</i></br>
+
+   </div> 
+
+   <div class="sectiontitle_bold">Activated by:</div>
+   <div class="erow">
+        <i>No-one has activated this place yet. Be the first!</i></br>
+
+   </div> 
+   <div class="sectiontitle_bold">Logged here:</div>
+   <div class="erow">
+   </div>
+
+   <div class="erow">
+     <div class="hrline">
+       <hr noshade size="4">
+     </div>
+   </div>
+
+
+   <div class="erow">
+     <div class="sectiontitle_bold" style="margin-bottom: 4px">Photos of this place</div>
+   </div>
+
+   <div class="erow">
+       <p><i>No photos have been uploaded. </i><p>
+     <div class="photo-bar">
+       <div style="width:1000%">
+       </div>
+     </div>
+     <div class="erow">
+     </div>
+   </div>
+ </div>
+
+
+<script>
+    document.getElementById('actionbar-full').innerHTML=document.getElementById('actionbar').innerHTML;
+    place_init('POINT (174.621256 -39.778643)',  0, site_purple_star);
+      place_init('MULTIPOLYGON(((174.620150858008 -39.776743820265,174.620484695714 -39.7765483337438,174.620921684758 -39.7763112317074,174.621103851861 -39.7763086867194,174.621184750881 -39.7764280772081,174.621206716492 -39.776809419453,174.621619045376 -39.7771853066367,174.622078240771 -39.7773395823967,174.622436878115 -39.7776459134112,174.622791980686 -39.7778016417896,174.622992353399 -39.778019793876,174.622945729843 -39.7782514441091,174.622733922088 -39.7783078421043,174.622468519838 -39.7784388991921,174.622279701376 -39.7787127110116,174.622692755265 -39.7791187141992,174.623075306536 -39.7793343180956,174.623235939315 -39.7795228954007,174.623278752076 -39.7796829907127,174.62316753742 -39.7799356314008,174.622805071505 -39.7800210486958,174.622299937215 -39.7801285465318,174.622174382431 -39.7802202189108,174.622074197614 -39.7804932647315,174.621764485479 -39.7806080714505,174.621596498408 -39.7806606363256,174.621133930452 -39.780918185076,174.620693379759 -39.7810046867849,174.620438776464 -39.7812492842907,174.62053363558 -39.7814086537087,174.620563901641 -39.7815890120284,174.620397795618 -39.7817218960375,174.61991631605 -39.7817286192844,174.619801553992 -39.7818306554129,174.619918844784 -39.7823914478011,174.619799309952 -39.7828450692228,174.619385713236 -39.7829713632842,174.619040544511 -39.7826849220194,174.618719899664 -39.7819855945749,174.618854411541 -39.7814065739072,174.619175449893 -39.7811067882009,174.619269486873 -39.780919854946,174.619706024455 -39.7804159602635,174.620120443673 -39.7803679877762,174.620435091096 -39.7802623460666,174.620616577504 -39.7800741903731,174.62059951107 -39.7798128719958,174.620485111629 -39.7793403923852,174.620449429682 -39.7789291115132,174.620151207003 -39.7778686760378,174.619947311827 -39.777499917181,174.619832620151 -39.7770495654435,174.620150858008 -39.776743820265)))',  1,site_highlight_polygon);
+    function editlinks() {
+      if (document.getElementById('showlinks').style.display=="none") {
+        document.getElementById('showlinks').style.display="block";
+        document.getElementById('editlinks').style.display="none";
+      } else {
+        document.getElementById('showlinks').style.display="none";
+        document.getElementById('editlinks').style.display="block";
+      }
+    }
+</script>
+
+
+
+
+    </div> 
+    <div class="clear"></div> 
+  </div>
+  </div>
+<div class="spinner_modal"></div>
+</body>
+</html>

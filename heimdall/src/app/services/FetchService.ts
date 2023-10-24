@@ -16,13 +16,17 @@ import { CancellationToken } from "../models/CancellationToken";
 export class FetchService {
 	public constructor(private _deps: FetchServiceDeps) {}
 
+	public fetch<T>(url: string, request: TInit): Observable<T> {
+		return this._deps.fromFetch(url, request);
+	}
+
 	public getJsonPromise<T>(url: string, request: RequestInit): Promise<T> {
 		return new Promise((resolve, reject) => {
 			this.getJson<T>(url, request).subscribe({
 				next: (data: T) => {
 					return resolve(data);
 				},
-				error: (err) => {
+				error: (err: unknown) => {
 					return reject("Caught: " + err);
 				},
 			});

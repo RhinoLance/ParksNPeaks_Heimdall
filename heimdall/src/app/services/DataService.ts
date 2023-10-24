@@ -10,6 +10,7 @@ import { AwardScheme } from "../models/AwardScheme";
 import { Site } from "../models/Site";
 import { SiteFactory } from "../models/SiteFactory";
 import { PotaClientService } from "./PotaHttpClient.service";
+import { ZLotaClientService } from "./ZLotaHttpClient";
 
 @Injectable({
 	providedIn: "root",
@@ -24,7 +25,8 @@ export class DataService {
 	public constructor(
 		private _pnpApiSvc: PnPClientService,
 		private _potaApiSvc: PotaClientService,
-		private _settingsSvc: SettingsService
+		private _settingsSvc: SettingsService,
+		private _zlotaApiSvc: ZLotaClientService
 	) {
 		this.initPnpListener();
 	}
@@ -64,6 +66,11 @@ export class DataService {
 				locationPromise = this._potaApiSvc
 					.getPark(award.siteId)
 					.then((v) => SiteFactory.fromPotaPark(v));
+				break;
+			case AwardScheme.ZLOTA:
+				locationPromise = this._zlotaApiSvc
+					.getSite(award.siteId)
+					.then((v) => SiteFactory.fromZlotaSite(v));
 				break;
 			default:
 				throw new Error("Unknown award type");

@@ -33,6 +33,7 @@ import { tada } from "src/app/utilities/animations";
 import { ActivationAward } from "src/app/models/ActivationAward";
 import { LatLng } from "src/app/models/LatLng";
 import { ActivationPathMapComponent } from "../activation-path-map/activation-path-map.component";
+import { AwardScheme } from "src/app/models/AwardScheme";
 
 @Component({
 	selector: "pph-activation",
@@ -137,7 +138,12 @@ export class ActivationComponent implements OnInit {
 	}
 
 	public async retrieveSiteDetails(): Promise<void> {
-		const schemes = ["WWFF", "SOTA", "POTA"];
+		const schemes = [
+			AwardScheme.WWFF,
+			AwardScheme.SOTA,
+			AwardScheme.POTA,
+			AwardScheme.ZLOTA,
+		];
 
 		let award: ActivationAward | undefined;
 		while (award == undefined && schemes.length > 0) {

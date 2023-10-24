@@ -1,18 +1,18 @@
 [
 	{
-		"actTime": "2023-09-06 04:53:40",
-		"actID": "2153759",
-		"actSiteID": "",
-		"actCallsign": "ZZ00ZZ",
-		"actMode": "FM",
-		"actFreq": "1.8",
-		"actClass": "OTHER",
+		"actTime": "2023-10-23 22:05:52",
+		"actID": "2184839",
+		"actSiteID": "ZLL/0566",
+		"actCallsign": "ZL3RIK",
+		"actMode": "SSB",
+		"actFreq": "7.085",
+		"actClass": "ZLOTA",
 		"altClass": "",
-		"actLocation": "Dummy to respot",
-		"altLocation": "",
-		"actComments": "Last calls 10m then QRT *[iPnP]",
-		"actSpoter": "VK2EG",
-		"WWFFid": "VKFF-0490"
+		"actLocation": "ZLL/0566",
+		"altLocation": "Lake Oturi",
+		"actComments": "Rick calling cq now (Good morning all)",
+		"actSpoter": "ZLOTA",
+		"WWFFid": ""
 	},
 	{
 		"actTime": "2023-09-06 04:53:40",

@@ -44,6 +44,8 @@ const server = http.createServer((req, res) => {
 				responseData = getData("./data/SUMMIT/VK2-CT-007.json");
 			else if (/zlota/.test(path))
 				responseData = getData("./data/zlota/assets/ZL_0566.raw");
+			else if (/CALLSIGN/.test(path))
+				responseData = getData("./data/CALLSIGN/VK2JDL.json");
 			else {
 				res.writeHead(404);
 				const error = {

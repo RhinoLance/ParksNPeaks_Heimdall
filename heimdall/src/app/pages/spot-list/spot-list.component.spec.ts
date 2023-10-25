@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 
 import { SpotListComponent } from "./spot-list.component";
-import { PnPClientService } from "src/app/services/PNPHttpClient.service";
+import { PnPClientService } from "src/app/services/PnPHttpClient.service";
 import { Observable, Subject } from "rxjs";
 import { Spot } from "src/app/models/Spot";
 

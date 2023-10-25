@@ -2,7 +2,7 @@ import { PnPSpot } from "../models/PnPSpot";
 import { FetchService, FetchServiceDeps } from "./FetchService";
 import { Subject, from, of, throwError } from "rxjs";
 import { Spot } from "../models/Spot";
-import { PnPClientService } from "./PNPHttpClient.service";
+import { PnPClientService } from "./PnPHttpClient.service";
 import { SettingsKey, SettingsService } from "./SettingsService";
 import { PnPPark } from "../models/PnPPark";
 

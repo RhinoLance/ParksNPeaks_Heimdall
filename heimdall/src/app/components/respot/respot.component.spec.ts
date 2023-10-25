@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 
 import { RespotComponent } from "./respot.component";
-import { PnPClientService } from "src/app/services/PNPHttpClient.service";
+import { PnPClientService } from "src/app/services/PnPHttpClient.service";
 import { Spot } from "src/app/models/Spot";
 import { Observable, of, throwError } from "rxjs";
 import { DataService } from "src/app/services/DataService";

@@ -26,7 +26,7 @@ import { CopyToClipboardDirective } from "src/app/directives/copy-to-clipboard.d
 import { RespotComponent } from "../respot/respot.component";
 import { NgbDropdownModule } from "@ng-bootstrap/ng-bootstrap";
 import { DataService } from "src/app/services/DataService";
-import { PnPClientService } from "src/app/services/PNPHttpClient.service";
+import { PnPClientService } from "src/app/services/PnPHttpClient.service";
 import { AppRouter, RoutePath } from "src/app/services/AppRountingService";
 import { backOutLeft } from "ng-animate";
 import { tada } from "src/app/utilities/animations";
@@ -34,6 +34,7 @@ import { ActivationAward } from "src/app/models/ActivationAward";
 import { LatLng } from "src/app/models/LatLng";
 import { ActivationPathMapComponent } from "../activation-path-map/activation-path-map.component";
 import { AwardScheme } from "src/app/models/AwardScheme";
+import { CallsignDetails } from "src/app/models/CallsignDetails";
 
 @Component({
 	selector: "pph-activation",
@@ -83,6 +84,7 @@ export class ActivationComponent implements OnInit {
 		siteDetailsRetrieved: false,
 		mapStart: undefined,
 		mapEnd: undefined,
+		callsignDetails: undefined,
 	};
 
 	public readonly liveTimeAgo: boolean = true;
@@ -133,6 +135,7 @@ export class ActivationComponent implements OnInit {
 		});
 
 		this.setMapStart();
+		this.retrieveCallsignDetails();
 
 		this.showActivation();
 	}
@@ -236,6 +239,12 @@ export class ActivationComponent implements OnInit {
 				? ElapsedTimeState.Shoulder
 				: ElapsedTimeState.Inactive;
 	}
+
+	private retrieveCallsignDetails(): void {
+		this._dataSvc.getUserDetails(this.viewState.spot.spotter).subscribe((v) => {
+			this.viewState.callsignDetails = v;
+		});
+	}
 }
 
 export enum ElapsedTimeState {
@@ -256,4 +265,5 @@ type ViewState = {
 	siteDetailsRetrieved: boolean;
 	mapStart?: LatLng;
 	mapEnd?: LatLng;
+	callsignDetails?: CallsignDetails;
 };

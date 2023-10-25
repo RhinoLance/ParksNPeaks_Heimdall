@@ -19,7 +19,7 @@
 							></div>
 						</div>
 						<div class="activation-primary-details">
-							<div class="h5 text-muted">
+							<div class="h5 text-muted callsign">
 								<a
 									[href]="'https://qrz.com/db/' + activation.callsignRoot"
 									target="_blank"
@@ -28,6 +28,9 @@
 								>
 									{{ activation.callsign }}
 								</a>
+							</div>
+							<div class="text-muted name">
+								{{ viewState.callsignDetails?.name ?? "" }}
 							</div>
 							<div>
 								<span class="h3" class="frequency">{{

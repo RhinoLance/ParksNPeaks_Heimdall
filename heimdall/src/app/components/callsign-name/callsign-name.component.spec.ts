@@ -8,7 +8,7 @@ describe("CallsignNameComponent", () => {
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			declarations: [CallsignNameComponent],
+			imports: [CallsignNameComponent],
 		});
 		fixture = TestBed.createComponent(CallsignNameComponent);
 		component = fixture.componentInstance;

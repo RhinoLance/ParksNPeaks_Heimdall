@@ -30,7 +30,9 @@
 								</a>
 							</div>
 							<div class="text-muted name">
-								{{ viewState.callsignDetails?.name ?? "" }}
+								<pph-callsign-name
+									callsign="activation.callsign"
+								></pph-callsign-name>
 							</div>
 							<div>
 								<span class="h3" class="frequency">{{

@@ -35,6 +35,7 @@ import { LatLng } from "src/app/models/LatLng";
 import { ActivationPathMapComponent } from "../activation-path-map/activation-path-map.component";
 import { AwardScheme } from "src/app/models/AwardScheme";
 import { CallsignDetails } from "src/app/models/CallsignDetails";
+import { CallsignNameComponent } from "../callsign-name/callsign-name.component";
 
 @Component({
 	selector: "pph-activation",
@@ -51,6 +52,7 @@ import { CallsignDetails } from "src/app/models/CallsignDetails";
 		RespotComponent,
 		NgbDropdownModule,
 		ActivationPathMapComponent,
+		CallsignNameComponent,
 	],
 	schemas: [CUSTOM_ELEMENTS_SCHEMA],
 	animations: [
@@ -135,7 +137,6 @@ export class ActivationComponent implements OnInit {
 		});
 
 		this.setMapStart();
-		this.retrieveCallsignDetails();
 
 		this.showActivation();
 	}
@@ -187,7 +188,7 @@ export class ActivationComponent implements OnInit {
 	}
 
 	public showReSpot(): void {
-		if (!this.pnpClientSvc.hasApiKey || !this.pnpClientSvc.hasUserId) return;
+		if (!this._dataSvc.canSpot) return;
 
 		this.viewState.spot.copyTo(this.viewState.respot);
 		this.viewState.respot.comment = "";
@@ -238,12 +239,6 @@ export class ActivationComponent implements OnInit {
 				: diffMinutes < 60
 				? ElapsedTimeState.Shoulder
 				: ElapsedTimeState.Inactive;
-	}
-
-	private retrieveCallsignDetails(): void {
-		this._dataSvc.getUserDetails(this.viewState.spot.spotter).subscribe((v) => {
-			this.viewState.callsignDetails = v;
-		});
 	}
 }
 

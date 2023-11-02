@@ -34,6 +34,9 @@ const server = http.createServer((req, res) => {
 		case "/?suffix=SUMMIT/VK2/ST-008":
 			responseData = getData("./data/SUMMIT/VK2-ST-008.json");
 			break;
+		case "/?suffix=CALLSIGN/ZL3RIK":
+			responseData = getData("./data/CALLSIGN/missing.json");
+			break;
 
 		//defaults
 
@@ -44,6 +47,10 @@ const server = http.createServer((req, res) => {
 				responseData = getData("./data/SUMMIT/VK2-CT-007.json");
 			else if (/zlota/.test(path))
 				responseData = getData("./data/zlota/assets/ZL_0566.raw");
+			else if (/CALLSIGN\/ADD/.test(path))
+				responseData = getData("./data/CALLSIGN/empty.txt");
+			else if (/CALLSIGN\/EDIT/.test(path))
+				responseData = getData("./data/CALLSIGN/empty.txt");
 			else if (/CALLSIGN/.test(path))
 				responseData = getData("./data/CALLSIGN/VK2JDL.json");
 			else {

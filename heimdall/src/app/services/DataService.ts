@@ -23,6 +23,13 @@ export class DataService {
 
 	private _siteCache = new Map<string, Promise<Site>>();
 
+	public get canSpot(): boolean {
+		return this._pnpApiSvc.hasApiKey && this._pnpApiSvc.hasUserId;
+	}
+	public get canUpdateCallsignDetails(): boolean {
+		return this._pnpApiSvc.hasApiKey && this._pnpApiSvc.hasUserId;
+	}
+
 	public constructor(
 		private _pnpApiSvc: PnPClientService,
 		private _potaApiSvc: PotaClientService,

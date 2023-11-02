@@ -16,8 +16,8 @@ export class CallsignDetailsConvertor {
 			callSign: callsign.callsign,
 			name: callsign.name,
 			alsoKnownAs: callsign.alsoKnownAs,
-			lastDate: callsign.lastUpdatesd.toISOString(),
-			lastUpdateDate: callsign.lastUpdatesd.toISOString(),
+			lastDate: callsign.lastUpdated.toISOString(),
+			lastUpdateDate: callsign.lastUpdated.toISOString(),
 		};
 	}
 }

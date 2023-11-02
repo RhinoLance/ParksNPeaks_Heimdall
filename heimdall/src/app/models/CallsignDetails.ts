@@ -3,6 +3,6 @@ export class CallsignDetails {
 		public callsign: string,
 		public name: string,
 		public alsoKnownAs: string,
-		public lastUpdatesd: Date
+		public lastUpdated: Date
 	) {}
 }

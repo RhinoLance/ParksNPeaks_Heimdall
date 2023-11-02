@@ -1,0 +1,25 @@
+<div #editBlock [hidden]="!viewState.showEdit">
+	<!--
+	<span #nameInput 
+		class="input"
+		contenteditable="true" 
+		[textContent]="viewState.newName"
+		(blur)="updateName()"
+		(keydown)="keyPress($event)"
+		>
+	</span>
+	-->
+	<input
+		#nameInput
+		class="input"
+		[(ngModel)]="viewState.newName"
+		(keydown)="keyPress($event)"
+		(blur)="updateName(viewState.newName)"
+	/>
+</div>
+
+<div #viewBlock [hidden]="viewState.showEdit">
+	<div class="editable" (click)="showEdit()">
+		{{ viewState.callsignDetails.name || "Name Unknown" }}
+	</div>
+</div>

@@ -21,7 +21,7 @@ import { DataService } from "src/app/services/DataService";
 	imports: [CommonModule, FormsModule],
 })
 export class CallsignNameComponent implements OnInit {
-	@Input() public callsign: string = "Name Unknown";
+	@Input() public callsign: string = "";
 
 	@ViewChild("nameInput") public input: ElementRef | undefined;
 
@@ -96,9 +96,8 @@ export class CallsignNameComponent implements OnInit {
 
 	private retrieveCallsignDetails(): void {
 		this._dataSvc.getUserDetails(this.callsign).subscribe((v) => {
-			if (v == undefined) return;
-
-			this.viewState.callsignDetails.name = v.name;
+			this.viewState.callsignDetails.name =
+				v == undefined ? "Unknown name" : v.name;
 		});
 	}
 }

@@ -148,7 +148,7 @@ export class PnPClientService {
 				const urlSuffix = v == undefined ? `CALLSIGN/ADD` : `CALLSIGN/EDIT`;
 
 				const postData = {
-					callsign: callsignDetails.callsign,
+					callSign: callsignDetails.callsign,
 					name: callsignDetails.name,
 					alsoKnownAs: callsignDetails.alsoKnownAs,
 					userID: this._settingSvc.get(SettingsKey.PNP_USERNAME),

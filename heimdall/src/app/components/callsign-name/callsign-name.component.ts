@@ -97,7 +97,7 @@ export class CallsignNameComponent implements OnInit {
 	private retrieveCallsignDetails(): void {
 		this._dataSvc.getUserDetails(this.callsign).subscribe((v) => {
 			this.viewState.callsignDetails.name =
-				v == undefined ? "Unknown name" : v.name;
+				v == undefined || v.name == "" ? "Unknown" : v.name;
 		});
 	}
 }

@@ -400,7 +400,7 @@ describe("ActivationComponent", () => {
 		];
 
 		userCreds.forEach((creds) => {
-			fit("should handle user creds: " + JSON.stringify(creds), () => {
+			it("should handle user creds: " + JSON.stringify(creds), () => {
 				// Arrange
 				const MockDataService = {
 					canSpot: creds.canSpot,

@@ -15,9 +15,9 @@ import { SpotMode } from "src/app/models/SpotMode";
 import { provideAnimations } from "@angular/platform-browser/animations";
 import { RespotComponent } from "../respot/respot.component";
 import { ReplaySubject } from "rxjs";
-import { PnPClientService } from "src/app/services/PNPHttpClient.service";
 import { AppRouter, RoutePath } from "src/app/services/AppRountingService";
 import { Router } from "@angular/router";
+import { DataService } from "src/app/services/DataService";
 
 describe("ActivationComponent", () => {
 	let component: ActivationComponent;
@@ -394,29 +394,20 @@ describe("ActivationComponent", () => {
 
 	describe("showReSpot", () => {
 		const userCreds = [
-			{ hasApiKey: false, hasUserId: false, result: false },
-			{ hasApiKey: true, hasUserId: false, result: false },
-			{ hasApiKey: false, hasUserId: true, result: false },
-			{ hasApiKey: true, hasUserId: true, result: true },
+			{ canSpot: false, result: false },
+			{ canSpot: true, result: true },
 		];
 
 		userCreds.forEach((creds) => {
 			it("should handle user creds: " + JSON.stringify(creds), () => {
 				// Arrange
-				class PnPClientServiceMock extends PnPClientService {
-					public override get hasApiKey(): boolean {
-						return creds.hasApiKey;
-					}
-					public override get hasUserId(): boolean {
-						return creds.hasUserId;
-					}
-				}
+				const MockDataService = {
+					canSpot: creds.canSpot,
+				};
 
 				TestBed.overrideComponent(ActivationComponent, {
 					set: {
-						providers: [
-							{ provide: PnPClientService, useClass: PnPClientServiceMock },
-						],
+						providers: [{ provide: DataService, useValue: MockDataService }],
 					},
 				});
 

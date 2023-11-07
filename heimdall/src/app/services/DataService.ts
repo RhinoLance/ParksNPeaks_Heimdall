@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { ActivationCatalogue } from "../models/ActivationCatalogue";
 import { Observable, Subject, tap } from "rxjs";
 import { Activation } from "../models/Activation";
-import { PnPClientService, PostResponse } from "./PNPHttpClient.service";
+import { PnPClientService, PostResponse } from "./PnPHttpClient.service";
 import { Spot } from "../models/Spot";
 import { SettingsKey, SettingsService } from "./SettingsService";
 import { ActivationAward } from "../models/ActivationAward";
@@ -11,6 +11,7 @@ import { Site } from "../models/Site";
 import { SiteFactory } from "../models/SiteFactory";
 import { PotaClientService } from "./PotaHttpClient.service";
 import { ZLotaClientService } from "./ZLotaHttpClient";
+import { CallsignDetails } from "../models/CallsignDetails";
 
 @Injectable({
 	providedIn: "root",
@@ -21,6 +22,13 @@ export class DataService {
 	private _activations: ActivationCatalogue = new ActivationCatalogue();
 
 	private _siteCache = new Map<string, Promise<Site>>();
+
+	public get canSpot(): boolean {
+		return this._pnpApiSvc.hasApiKey && this._pnpApiSvc.hasUserId;
+	}
+	public get canUpdateCallsignDetails(): boolean {
+		return this._pnpApiSvc.hasApiKey && this._pnpApiSvc.hasUserId;
+	}
 
 	public constructor(
 		private _pnpApiSvc: PnPClientService,
@@ -78,6 +86,14 @@ export class DataService {
 
 		this._siteCache.set(award.siteId, locationPromise);
 		return await locationPromise;
+	}
+
+	public getUserDetails(callsign: string) {
+		return this._pnpApiSvc.getCallsignDetails(callsign);
+	}
+
+	public updateUserDetails(callsignDetails: CallsignDetails) {
+		return this._pnpApiSvc.updateCallsignDetails(callsignDetails);
 	}
 
 	private initPnpListener(): void {

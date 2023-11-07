@@ -26,7 +26,7 @@ import { CopyToClipboardDirective } from "src/app/directives/copy-to-clipboard.d
 import { RespotComponent } from "../respot/respot.component";
 import { NgbDropdownModule } from "@ng-bootstrap/ng-bootstrap";
 import { DataService } from "src/app/services/DataService";
-import { PnPClientService } from "src/app/services/PNPHttpClient.service";
+import { PnPClientService } from "src/app/services/PnPHttpClient.service";
 import { AppRouter, RoutePath } from "src/app/services/AppRountingService";
 import { backOutLeft } from "ng-animate";
 import { tada } from "src/app/utilities/animations";
@@ -34,6 +34,8 @@ import { ActivationAward } from "src/app/models/ActivationAward";
 import { LatLng } from "src/app/models/LatLng";
 import { ActivationPathMapComponent } from "../activation-path-map/activation-path-map.component";
 import { AwardScheme } from "src/app/models/AwardScheme";
+import { CallsignDetails } from "src/app/models/CallsignDetails";
+import { CallsignNameComponent } from "../callsign-name/callsign-name.component";
 
 @Component({
 	selector: "pph-activation",
@@ -50,6 +52,7 @@ import { AwardScheme } from "src/app/models/AwardScheme";
 		RespotComponent,
 		NgbDropdownModule,
 		ActivationPathMapComponent,
+		CallsignNameComponent,
 	],
 	schemas: [CUSTOM_ELEMENTS_SCHEMA],
 	animations: [
@@ -83,6 +86,7 @@ export class ActivationComponent implements OnInit {
 		siteDetailsRetrieved: false,
 		mapStart: undefined,
 		mapEnd: undefined,
+		callsignDetails: undefined,
 	};
 
 	public readonly liveTimeAgo: boolean = true;
@@ -184,7 +188,7 @@ export class ActivationComponent implements OnInit {
 	}
 
 	public showReSpot(): void {
-		if (!this.pnpClientSvc.hasApiKey || !this.pnpClientSvc.hasUserId) return;
+		if (!this._dataSvc.canSpot) return;
 
 		this.viewState.spot.copyTo(this.viewState.respot);
 		this.viewState.respot.comment = "";
@@ -256,4 +260,5 @@ type ViewState = {
 	siteDetailsRetrieved: boolean;
 	mapStart?: LatLng;
 	mapEnd?: LatLng;
+	callsignDetails?: CallsignDetails;
 };

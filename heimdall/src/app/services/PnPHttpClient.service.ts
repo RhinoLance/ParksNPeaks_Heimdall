@@ -4,11 +4,18 @@ import { PnPSpot } from "../models/PnPSpot";
 import { Spot } from "../models/Spot";
 import { Observable, map, mergeMap, of, throwError } from "rxjs";
 import { CancellationToken } from "../models/CancellationToken";
-import { FetchService } from "./FetchService";
+import { FetchService, TInit } from "./FetchService";
 import { SpotListBuilder } from "../models/SpotListBuilder";
 import { SettingsKey, SettingsService } from "./SettingsService";
 import { PnPPark } from "../models/PnPPark";
 import { PnPSummit } from "../models/PnPSummit";
+import { CallsignDetails } from "../models/CallsignDetails";
+import { PnPCallsign } from "../models/PnPCallsign";
+import { CallsignDetailsConvertor } from "../models/CallsignDetailsConvertor";
+import {
+	pnpResponseToJSON,
+	throwOnPnpResponseError,
+} from "./PnPHttpClientOperators";
 
 @Injectable({
 	providedIn: "root",
@@ -121,6 +128,45 @@ export class PnPClientService {
 			);
 	}
 
+	public getCallsignDetails(
+		callsign: string
+	): Observable<CallsignDetails | undefined> {
+		return this.getJson<(PnPCallsign | boolean)[]>(`CALLSIGN/${callsign}`).pipe(
+			map((v) => {
+				return v[0] == false
+					? undefined
+					: CallsignDetailsConvertor.fromPnPCallsign(v[0] as PnPCallsign);
+			})
+		);
+	}
+
+	public updateCallsignDetails(
+		callsignDetails: CallsignDetails
+	): Observable<boolean> {
+		return this.getCallsignDetails(callsignDetails.callsign).pipe(
+			mergeMap((v) => {
+				const urlSuffix = v == undefined ? `CALLSIGN/ADD` : `CALLSIGN/EDIT`;
+
+				const postData = {
+					callSign: callsignDetails.callsign,
+					name: callsignDetails.name,
+					alsoKnownAs: callsignDetails.alsoKnownAs,
+					userID: this._settingSvc.get(SettingsKey.PNP_USERNAME),
+					APIKey: this._settingSvc.get(SettingsKey.PNP_API_KEY),
+				};
+
+				return this._fetchSvc.postJson<PostResponse>(
+					this._phpBaseHref + urlSuffix,
+					postData
+				);
+			}),
+			throwOnPnpResponseError(),
+			map(() => {
+				return true;
+			})
+		);
+	}
+
 	private async get<T>(suffix: string): Promise<T> {
 		const request: RequestInit = {
 			method: "GET",
@@ -135,6 +181,31 @@ export class PnPClientService {
 		);
 
 		return data;
+	}
+
+	private getJson<T>(urlSuffix: string): Observable<T> {
+		const request: TInit = {
+			method: "GET",
+			headers: {
+				"Content-Type": "text/html; charset=UTF-8",
+			},
+			selector: (response: Response) => response.text(),
+		};
+
+		return this._fetchSvc
+			.fetch<string>(this._phpBaseHref + urlSuffix, request)
+			.pipe(pnpResponseToJSON<T>());
+	}
+
+	private getAsObs<T>(suffix: string): Observable<T> {
+		const request: RequestInit = {
+			method: "GET",
+			headers: {
+				"Content-Type": "text/html; charset=UTF-8",
+			},
+		};
+
+		return this._fetchSvc.getJson<T>(this._phpBaseHref + suffix, request);
 	}
 
 	private monitorApiKeySetting(): void {

@@ -19,13 +19,21 @@ body {
 	.details {
 		padding: 1em 1em 1em 1em;
 
-		a.activator-callsign {
-			text-decoration: none;
-			color: inherit;
+		.callsign {
+			margin-bottom: 0;
 
-			&:hover {
-				color: darkslategray;
+			a.activator-callsign {
+				text-decoration: none;
+				color: inherit;
+
+				&:hover {
+					color: darkslategray;
+				}
 			}
+		}
+
+		.name {
+			padding-bottom: 0.5em;
 		}
 
 		.sub-detail-list {

@@ -15,7 +15,6 @@ import { SpotMode } from "src/app/models/SpotMode";
 import { provideAnimations } from "@angular/platform-browser/animations";
 import { RespotComponent } from "../respot/respot.component";
 import { ReplaySubject } from "rxjs";
-import { PnPClientService } from "src/app/services/PnPHttpClient.service";
 import { AppRouter, RoutePath } from "src/app/services/AppRountingService";
 import { Router } from "@angular/router";
 import { DataService } from "src/app/services/DataService";

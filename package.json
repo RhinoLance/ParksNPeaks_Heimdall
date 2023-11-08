@@ -19,5 +19,9 @@
   "homepage": "https://github.com/RhinoLance/ParksNPeaks_Heimdall#readme",
   "devDependencies": {
     "husky": "^8.0.0"
+  },
+  "dependencies": {
+    "@microsoft/signalr": "^7.0.12",
+    "@types/signalr": "^2.4.2"
   }
 }

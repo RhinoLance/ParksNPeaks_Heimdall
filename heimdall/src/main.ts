@@ -32,7 +32,7 @@ bootstrapApplication(MainComponent, {
 		{
 			provide: APP_INITIALIZER,
 			useFactory: (signalrService: HeimdallSignalrService) => () =>
-				signalrService.initiateSignalrConnection(),
+				signalrService.connect(),
 			deps: [HeimdallSignalrService],
 			multi: true,
 		},

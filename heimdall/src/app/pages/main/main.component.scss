@@ -39,6 +39,11 @@ p {
 	background: #003f5c;
 	color: white;
 	font-weight: 600;
+
+	.connection-status {
+		font-weight: normal;
+		margin-right: 2em;
+	}
 }
 
 .toolbar img {
@@ -56,21 +61,12 @@ p {
 .toolbar #settings-icon {
 	font-size: 1.5em;
 	transform: scale 0.2s;
+	margin-right: 1em;
 
 	&:hover {
 		transform: scale(1.2);
 		cursor: pointer;
 	}
-}
-
-.toolbar #youtube-logo {
-	height: 40px;
-	margin: 0 16px;
-}
-
-.toolbar #twitter-logo:hover,
-.toolbar #youtube-logo:hover {
-	opacity: 0.8;
 }
 
 .content {
@@ -91,5 +87,11 @@ footer {
 		&:hover {
 			color: #ccc;
 		}
+	}
+}
+
+.settings-ddl {
+	.dropdown-toggle::after {
+		display: none;
 	}
 }

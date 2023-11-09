@@ -1,0 +1,33 @@
+ul {
+	margin-bottom: 0;
+
+	li {
+		&::marker {
+			font-size: 1.1em;
+			content: "⬤  ";
+		}
+
+		&.online::marker {
+			color: #4f772d;
+		}
+
+		&.offline::marker {
+			color: #9a031e;
+		}
+
+		.status-text.offline {
+			font-size: 0.7em;
+		}
+	}
+}
+
+.count {
+	display: inline-block;
+	font-size: 0.7em;
+	color: var(--muted-text-color);
+	cursor: default;
+
+	&.offline {
+		display: none;
+	}
+}

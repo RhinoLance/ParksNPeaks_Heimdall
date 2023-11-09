@@ -35,6 +35,7 @@ export class HeimdallSignalrService {
 		this.hubUrl = environment.heimdallHubUrl;
 
 		this.connection = this.initiateSignalrConnection();
+		this.registerSignalrClientMethods();
 
 		this._window.addEventListener("online", () => {
 			if (!this.isConnected) {
@@ -67,7 +68,6 @@ export class HeimdallSignalrService {
 					shouldRetry: () => this._navigator.onLine,
 					maxRetries: 5,
 				}),
-				map(() => this.setSignalrClientMethods()),
 				finalize(() => (this.isConnecting = false))
 			)
 			.subscribe({
@@ -80,7 +80,7 @@ export class HeimdallSignalrService {
 			});
 	}
 
-	private setSignalrClientMethods(): void {
+	private registerSignalrClientMethods(): void {
 		this.connection.on("ClientCount", (count: number) => {
 			this.currentClientCount.next(count);
 		});

@@ -5,13 +5,20 @@ import { NgIf } from "@angular/common";
 import { RaysDirective } from "../../directives/rays.directive";
 import { AppRouter, RoutePath } from "src/app/services/AppRountingService";
 import { NgbDropdownModule } from "@ng-bootstrap/ng-bootstrap";
+import { ConnectionStatusComponent } from "src/app/components/connection-status/connection-status.component";
 
 @Component({
 	selector: "pph-root",
 	templateUrl: "./main.component.html",
 	styleUrls: ["./main.component.scss"],
 	standalone: true,
-	imports: [RouterOutlet, NgIf, RaysDirective, NgbDropdownModule],
+	imports: [
+		RouterOutlet,
+		NgIf,
+		RaysDirective,
+		NgbDropdownModule,
+		ConnectionStatusComponent,
+	],
 	schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class MainComponent {

@@ -5,30 +5,38 @@
 		<span>Parks 'n Peaks :: Heimdall</span>
 	</span>
 	<div class="spacer"></div>
-	<div class="settings" (click)="settingsClick()">
-		<iconify-icon
-			id="settings-icon"
-			icon="fluent:settings-20-regular"
-		></iconify-icon>
+	<div class="connection-status">
+		<pph-connection-status></pph-connection-status>
 	</div>
-	<div ngbDropdown class="d-inline-block">
-		<div class="version" id="dropdownBasic1" ngbDropdownToggle>
-			Version: {{ viewModel.version }}
+	<div ngbDropdown class="d-inline-block" dropdownClass="settings-ddl">
+		<div class="ddl-toggle" id="dropdownBasic1" ngbDropdownToggle>
+			<iconify-icon
+				id="settings-icon"
+				icon="fluent:settings-20-regular"
+			></iconify-icon>
 		</div>
-		<div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-			<div ngbDropdownItem>
-				<div class="text-secondary fs-6 text">
-					<small>
-						To be on the cutting edge, try the
-						<a
-							href="https://white-mud-05eea0610-develop.centralus.3.azurestaticapps.net/spotList"
-							target="_"
-							>development version</a
-						>
-					</small>
-				</div>
-			</div>
-		</div>
+		<ul ngbDropdownMenu aria-labelledby="dropdownBasic1">
+			<li
+				ngbDropdownItem
+				class="text-secondary fs-6 text pointer"
+				(click)="settingsClick()"
+			>
+				Settings
+			</li>
+			<li ngbDropdownItem class="text-secondary fs-6 text">
+				Version {{ viewModel.version }}
+			</li>
+			<li ngbDropdownItem class="text-secondary fs-6 text">
+				<small>
+					Try the
+					<a
+						href="https://white-mud-05eea0610-develop.centralus.3.azurestaticapps.net/spotList"
+						target="_"
+						>development version</a
+					>
+				</small>
+			</li>
+		</ul>
 	</div>
 </div>
 
@@ -62,7 +70,7 @@
 						>.
 					</li>
 					<li class="mb-2">
-						<iconify-icon icon="mdi:github"></iconify-icon> The source code is
+						<iconify-icon icon="mdi:github"></iconify-icon> Source code
 						avialable on
 						<a href="https://github.com/RhinoLance/ParksNPeaks_Heimdall/"
 							>GitHub</a

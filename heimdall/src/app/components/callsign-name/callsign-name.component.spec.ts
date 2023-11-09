@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { TestBed } from "@angular/core/testing";
 
 import { CallsignNameComponent } from "./callsign-name.component";
 import { CallsignDetails } from "src/app/models/CallsignDetails";
@@ -6,9 +6,6 @@ import { of } from "rxjs";
 import { DataService } from "src/app/services/DataService";
 
 describe("CallsignNameComponent", () => {
-	let component: CallsignNameComponent;
-	let fixture: ComponentFixture<CallsignNameComponent>;
-
 	beforeEach(() => {
 		TestBed.configureTestingModule({
 			imports: [CallsignNameComponent],

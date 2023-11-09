@@ -7,6 +7,7 @@ export const environment = {
 	potaBaseHref: "https://api.pota.app/",
 	pnpBaseHref: "http://localhost:9000/?suffix=",
 	zlotaBaseHref: "http://localhost:9000/zlota/?suffix=",
+	heimdallHubUrl: "http://heimdall.conryclan.com/heimdallHub",
 	//pnpBaseHref: "http://localhost:8080/pnp.spots.all.4.json/?suffix=",
 	pnpPollMinutesInterval: 0.5,
 };

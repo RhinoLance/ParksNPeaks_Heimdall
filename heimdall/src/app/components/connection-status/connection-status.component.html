@@ -1,0 +1,20 @@
+<ul>
+	<li
+		style="margin-top: 5px"
+		[ngClass]="viewState.isOnline ? 'online' : 'offline'"
+	>
+		<div
+			class="status-text"
+			[ngClass]="viewState.isOnline ? 'online' : 'offline'"
+		>
+			{{ viewState.statusText }}
+			<div
+				class="count"
+				[ngClass]="viewState.isOnline ? 'online' : 'offline'"
+				title="Number of online users"
+			>
+				({{ viewState.count }})
+			</div>
+		</div>
+	</li>
+</ul>

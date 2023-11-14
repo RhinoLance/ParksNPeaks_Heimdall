@@ -37,7 +37,7 @@ export class PnPClientService {
 		latestSpot: new Date("1970-01-01T00:00:00.000Z"),
 	};
 
-	private readonly _regionFilter = "^(?:VK|VL|VJ|ZL|ZZ)";
+	private readonly _regionFilter = "^(?:VK|VL|VJ|VI|ZL|ZZ)";
 
 	public constructor(
 		private _fetchSvc: FetchService,

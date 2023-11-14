@@ -37,7 +37,7 @@ export class PnPClientService {
 		latestSpot: new Date("1970-01-01T00:00:00.000Z"),
 	};
 
-	private readonly _regionFilter = "^(?:VK|VL|VJ|ZL|ZZ)";
+	private readonly _regionFilter = "^(?:VK|VL|VJ|VI|ZL|ZZ)";
 
 	public constructor(
 		private _fetchSvc: FetchService,
@@ -109,7 +109,7 @@ export class PnPClientService {
 			actSite: spot.awardList.getAtIndex(0).siteId,
 			mode: spot.mode,
 			freq: spot.frequency,
-			actCallsign: spot.callsign,
+			actCallsign: spot.callsign.toString(),
 			comments: spot.comment,
 			userID: this._settingSvc.get(SettingsKey.PNP_USERNAME),
 			apiKey: this._settingSvc.get(SettingsKey.PNP_API_KEY),

@@ -2,6 +2,7 @@ import { Activation, HideState } from "./Activation";
 import { ActivationAward } from "./ActivationAward";
 import { ActivationAwardList } from "./ActivationAwardList";
 import { AwardScheme } from "./AwardScheme";
+import { Callsign } from "./Callsign";
 import { Guid } from "./Guid";
 import { Spot } from "./Spot";
 import { SpotMode } from "./SpotMode";
@@ -90,7 +91,7 @@ describe("Activation", () => {
 
 	describe("Testing if spots are part of the same activation", () => {
 		const spotTemplate = new Spot();
-		spotTemplate.callsignRoot = "VK1AD";
+		spotTemplate.callsign = new Callsign("VK1AD");
 		spotTemplate.siteName = "Mt Stromlo";
 		spotTemplate.time = new Date(2020, 1, 1, 12, 0, 0);
 		spotTemplate.awardList.add(
@@ -113,7 +114,7 @@ describe("Activation", () => {
 		it("Different callsign", () => {
 			// Arrange
 			const spot2 = spotTemplate.clone();
-			spot2.callsignRoot = "VK3OOO";
+			spot2.callsign = new Callsign("VK3OOO");
 			spot2.awardList = new ActivationAwardList();
 
 			// Act
@@ -296,7 +297,7 @@ describe("Activation", () => {
 
 	describe("Spots with alt location", () => {
 		const spotTemplate = new Spot();
-		spotTemplate.callsignRoot = "VK1AD";
+		spotTemplate.callsign = new Callsign("VK1AD");
 		spotTemplate.siteName = "Mt Stromlo";
 		spotTemplate.time = new Date(2020, 1, 1, 12, 0, 0);
 		spotTemplate.awardList.add(
@@ -335,7 +336,7 @@ describe("Activation", () => {
 
 		beforeEach(() => {
 			spot1 = new Spot();
-			spot1.callsignRoot = "VK1AD";
+			spot1.callsign = new Callsign("VK1AD");
 			spot1.siteName = "Mt Stromlo";
 			spot1.time = new Date(2020, 1, 1, 12, 0, 0);
 			spot1.frequency = 7.032;
@@ -575,7 +576,7 @@ describe("Activation", () => {
 		it("Changing frequency should result in type: Spot", () => {
 			// Arrange
 			const spot2 = new Spot();
-			spot2.callsignRoot = spot1.callsignRoot;
+			spot2.callsign = new Callsign(spot1.callsign.root);
 			spot2.siteName = spot1.siteName;
 			spot2.time = spot1.time.addMinutes(1);
 			spot2.frequency = 7.144;
@@ -593,7 +594,7 @@ describe("Activation", () => {
 		it("Changing mode should result in type: Spot", () => {
 			// Arrange
 			const spot2 = new Spot();
-			spot2.callsignRoot = spot1.callsignRoot;
+			spot2.callsign = new Callsign(spot1.callsign.root);
 			spot2.siteName = spot1.siteName;
 			spot2.time = spot1.time.addMinutes(1);
 			spot2.frequency = 7.032;

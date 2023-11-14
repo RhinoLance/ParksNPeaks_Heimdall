@@ -3,14 +3,14 @@ import { SpotMode } from "./SpotMode";
 import { AwardScheme } from "./AwardScheme";
 import { ActivationAwardList } from "./ActivationAwardList";
 import { Guid } from "./Guid";
+import { Callsign } from "./Callsign";
 
 export class Spot {
 	public id: Guid = Guid.create();
 	public type: SpotType = SpotType.NotSet;
 	public tPlusMinutes: number = 0;
 
-	public callsign: string = "";
-	public callsignRoot: string = "";
+	public callsign: Callsign = new Callsign("");
 	public comment: string = "";
 	public frequency: number = 0;
 	public mode: SpotMode = SpotMode.Other;
@@ -52,7 +52,7 @@ export class Spot {
 		target.type = this.type;
 		target.tPlusMinutes = this.tPlusMinutes;
 		target.callsign = this.callsign;
-		target.callsignRoot = this.callsignRoot;
+		target.callsign = new Callsign(this.callsign.toString());
 		target.comment = this.comment;
 		target.frequency = this.frequency;
 		target.mode = this.mode;

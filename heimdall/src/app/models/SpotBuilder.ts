@@ -1,5 +1,6 @@
 import { ActivationAward } from "./ActivationAward";
 import { AwardScheme } from "./AwardScheme";
+import { Callsign } from "./Callsign";
 import { PnPSpot } from "./PnPSpot";
 import { Spot } from "./Spot";
 import { SpotMode } from "./SpotMode";
@@ -21,8 +22,7 @@ export class SpotBuilder {
 
 	private createFromPnPSpot(pnpSpot: PnPSpot): Spot {
 		const spot = new Spot();
-		spot.callsign = pnpSpot.actCallsign;
-		spot.callsignRoot = pnpSpot.actCallsign.split("/P")[0];
+		spot.callsign = new Callsign(pnpSpot.actCallsign);
 		spot.frequency = this.parseFrequency(pnpSpot.actFreq);
 		spot.mode = SpotMode[pnpSpot.actMode as keyof typeof SpotMode];
 		spot.spotter = pnpSpot.actSpoter;

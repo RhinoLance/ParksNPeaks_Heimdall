@@ -212,6 +212,7 @@ describe("PnPHttpClientService", () => {
 					{ callsign: "ZL7ZA", valid: true },
 					{ callsign: "VL7ZA", valid: true },
 					{ callsign: "VJ7ZA", valid: true },
+					{ callsign: "VI10VKFF", valid: true },
 					{ callsign: "7ZAVK", valid: false },
 					{ callsign: "7ZAZL", valid: false },
 					{ callsign: "7VKZA", valid: false },

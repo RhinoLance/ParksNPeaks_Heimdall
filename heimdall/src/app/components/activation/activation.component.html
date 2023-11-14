@@ -21,7 +21,7 @@
 						<div class="activation-primary-details">
 							<div class="h5 text-muted callsign">
 								<a
-									[href]="'https://qrz.com/db/' + activation.callsignRoot"
+									[href]="'https://qrz.com/db/' + activation.callsign.root"
 									target="_blank"
 									class="activator-callsign"
 									title="View QRZ.com profile"
@@ -31,7 +31,7 @@
 							</div>
 							<div class="text-muted name">
 								<pph-callsign-name
-									[callsign]="activation.callsign"
+									[callsign]="activation.callsign.root"
 								></pph-callsign-name>
 							</div>
 							<div>

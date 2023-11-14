@@ -7,13 +7,13 @@ import commonSiteNamewords from "../../assets/data/commonSiteNameWords.json";
 import { ActivationAwardList } from "./ActivationAwardList";
 import { ReplaySubject } from "rxjs";
 import { Guid } from "./Guid";
+import { Callsign } from "./Callsign";
 
 export class Activation {
 	public activationId: Guid = Guid.create();
 	public awardList: ActivationAwardList = new ActivationAwardList();
 	public siteName: string = "";
-	public callsign: string = "";
-	public callsignRoot: string = "";
+	public callsign: Callsign;
 	public visibleState: HideState = HideState.Visible;
 	public isDeleted: boolean = false;
 
@@ -35,7 +35,6 @@ export class Activation {
 
 	public constructor(spot: Spot) {
 		this.callsign = spot.callsign;
-		this.callsignRoot = spot.callsignRoot;
 		this.siteName = spot.siteName;
 		this.addSpot(spot);
 	}
@@ -66,7 +65,7 @@ export class Activation {
 	}
 
 	public isPartOfThisActivation(spot: Spot): boolean {
-		if (this.callsignRoot != spot.callsignRoot) {
+		if (this.callsign.root != spot.callsign.root) {
 			return false;
 		}
 
@@ -93,7 +92,7 @@ export class Activation {
 		return (
 			this._spotList.filter(
 				(v) =>
-					v.callsign == spot.callsign &&
+					v.callsign.root == spot.callsign.root &&
 					v.time.getTime() == spot.time.getTime() &&
 					v.spotter == spot.spotter
 			).length > 0

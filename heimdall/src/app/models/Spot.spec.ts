@@ -1,6 +1,7 @@
 import { ActivationAward } from "./ActivationAward";
 import { ActivationAwardList } from "./ActivationAwardList";
 import { AwardScheme } from "./AwardScheme";
+import { Callsign } from "./Callsign";
 import { Spot } from "./Spot";
 import { SpotMode } from "./SpotMode";
 import { SpotType } from "./SpotType";
@@ -9,8 +10,7 @@ describe("Spot", () => {
 	const spotTemplate = new Spot();
 	spotTemplate.type = SpotType.Spot;
 	spotTemplate.tPlusMinutes = 0;
-	spotTemplate.callsign = "VK3WMD/P";
-	spotTemplate.callsignRoot = "VK3WMD";
+	spotTemplate.callsign = new Callsign("VK3WMD/P");
 	spotTemplate.comment = "Cq @1030 local time  *[iPnP] [VK3WMD]";
 	spotTemplate.frequency = 7.09;
 	spotTemplate.mode = SpotMode.SSB;

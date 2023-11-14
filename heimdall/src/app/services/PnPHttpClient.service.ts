@@ -109,7 +109,7 @@ export class PnPClientService {
 			actSite: spot.awardList.getAtIndex(0).siteId,
 			mode: spot.mode,
 			freq: spot.frequency,
-			actCallsign: spot.callsign,
+			actCallsign: spot.callsign.toString(),
 			comments: spot.comment,
 			userID: this._settingSvc.get(SettingsKey.PNP_USERNAME),
 			apiKey: this._settingSvc.get(SettingsKey.PNP_API_KEY),

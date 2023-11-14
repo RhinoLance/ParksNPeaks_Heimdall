@@ -4,11 +4,11 @@ import { Callsign } from "./Callsign";
 describe("Callsign", () => {
 	describe("Extracts parts", () => {
 		const tests = [
-			{ callsign: "VK0AA", base: "VK0AA", prefix: "", suffix: "" },
-			{ callsign: "VK0AA/P", base: "VK0AA", prefix: "", suffix: "P" },
-			{ callsign: "VK3/VK0AA/P", base: "VK0AA", prefix: "VK3", suffix: "P" },
-			{ callsign: "VK3/VK0A/P", base: "VK0A", prefix: "VK3", suffix: "P" },
-			{ callsign: "VK3/VK0A", base: "VK0A", prefix: "VK3", suffix: "" },
+			{ callsign: "VK0AA", root: "VK0AA", prefix: "", suffix: "" },
+			{ callsign: "VK0AA/P", root: "VK0AA", prefix: "", suffix: "P" },
+			{ callsign: "VK3/VK0AA/P", root: "VK0AA", prefix: "VK3", suffix: "P" },
+			{ callsign: "VK3/VK0A/P", root: "VK0A", prefix: "VK3", suffix: "P" },
+			{ callsign: "VK3/VK0A", root: "VK0A", prefix: "VK3", suffix: "" },
 		];
 
 		tests.forEach((test) => {
@@ -17,12 +17,12 @@ describe("Callsign", () => {
 				const callsign = new Callsign(test.callsign);
 
 				// Act
-				const base = callsign.base;
+				const root = callsign.root;
 				const prefix = callsign.prefix;
 				const suffix = callsign.suffix;
 
 				// Assert
-				expect(base).toEqual(test.base);
+				expect(root).toEqual(test.root);
 				expect(prefix).toEqual(test.prefix);
 				expect(suffix).toEqual(test.suffix);
 			});

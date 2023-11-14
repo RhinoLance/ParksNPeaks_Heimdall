@@ -33,7 +33,7 @@ export class ActivationCatalogue {
 
 	private findActivation(spot: Spot): Activation | null {
 		const callSignActivations = this._activationList.filter(
-			(v) => v.callsignRoot == spot.callsignRoot
+			(v) => v.callsign.root == spot.callsign.root
 		);
 
 		let retVal = null;

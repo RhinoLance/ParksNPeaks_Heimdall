@@ -1,10 +1,10 @@
 export class Callsign {
-	private _base: string = "";
+	private _root: string = "";
 	private _prefix: string = "";
 	private _suffix: string = "";
 
-	public get base(): string {
-		return this._base;
+	public get root(): string {
+		return this._root;
 	}
 
 	public get prefix(): string {
@@ -16,6 +16,8 @@ export class Callsign {
 	}
 
 	constructor(public callsign: string) {
+		if (callsign == "") return;
+
 		this.extractParts(callsign);
 	}
 
@@ -33,7 +35,7 @@ export class Callsign {
 
 		if (matches) {
 			this._prefix = matches[1] ?? "";
-			this._base = matches[2];
+			this._root = matches[2];
 			this._suffix = matches[3] ?? "";
 		} else {
 			throw `Invalid callsign: ${callsign}`;

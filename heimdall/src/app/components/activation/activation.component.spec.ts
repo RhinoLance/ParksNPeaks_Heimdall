@@ -18,6 +18,7 @@ import { ReplaySubject } from "rxjs";
 import { AppRouter, RoutePath } from "src/app/services/AppRountingService";
 import { Router } from "@angular/router";
 import { DataService } from "src/app/services/DataService";
+import { Callsign } from "src/app/models/Callsign";
 
 describe("ActivationComponent", () => {
 	let component: ActivationComponent;
@@ -169,8 +170,7 @@ describe("ActivationComponent", () => {
 				spot1.frequency = 7.144;
 				spot1.comment = "first";
 				spot1.time = new Date("2021-01-01T12:00:00Z");
-				spot1.callsign = "VK7ABC/P";
-				spot1.callsignRoot = "VK7ABC";
+				spot1.callsign = new Callsign("VK7ABC/P");
 
 				component.activation = new Activation(spot1);
 

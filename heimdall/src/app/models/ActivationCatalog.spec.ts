@@ -1,6 +1,8 @@
+import { Call } from "@angular/compiler";
 import { ActivationCatalogue } from "./ActivationCatalogue";
 import { Spot } from "./Spot";
 import { SpotMode } from "./SpotMode";
+import { Callsign } from "./Callsign";
 
 describe("Activation Catalogue", () => {
 	it("Adds spot to new activation", () => {
@@ -100,13 +102,11 @@ describe("Activation Catalogue", () => {
 		// Arrange
 		const spot1 = new Spot();
 		spot1.mode = SpotMode.CW;
-		spot1.callsign = "G4OBK";
-		spot1.callsignRoot = "G4OBK";
+		spot1.callsign = new Callsign("G4OBK");
 
 		const spot2 = new Spot();
 		spot2.mode = SpotMode.SSB;
-		spot2.callsign = "VK2IO";
-		spot2.callsignRoot = "VK2IO";
+		spot2.callsign = new Callsign("VK2IO");
 
 		const ac = new ActivationCatalogue();
 

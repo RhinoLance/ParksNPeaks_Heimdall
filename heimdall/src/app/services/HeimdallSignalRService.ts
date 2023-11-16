@@ -6,8 +6,9 @@ import {
 } from "@microsoft/signalr";
 import { NAVIGATOR, WINDOW } from "@ng-web-apis/common";
 import { retryBackoff } from "backoff-rxjs";
-import { BehaviorSubject, finalize, from, map, timer } from "rxjs";
+import { BehaviorSubject, finalize, from, map, tap, timer } from "rxjs";
 import { environment } from "src/environments/environment";
+import { LatLng } from "../models/LatLng";
 
 @Injectable({
 	providedIn: "root",
@@ -116,5 +117,15 @@ export class HeimdallSignalrService {
 		} else {
 			this._cnsl.log("Will try to reconnect when back online ...");
 		}
+	}
+
+	public updateUserDetails(name: string, location: LatLng): void {
+		this.connection.invoke<void>(
+			"SetUserDetails",
+			this.connection.connectionId,
+			name,
+			location.lat,
+			location.lng
+		);
 	}
 }

@@ -38,7 +38,7 @@ export class MainComponent {
 		@Inject(NAVIGATOR) private _navigator: Navigator,
 		private _settingsSvc: SettingsService
 	) {
-		_heimdallSignalRSvc.connectionState.subscribe((isConnected) => {
+		_heimdallSignalRSvc.connectionStateChanged.subscribe((isConnected) => {
 			if (isConnected) {
 				this.setUserAnalytics();
 			}

@@ -1,0 +1,5 @@
+<div *ngFor="let user of viewModel.userList">
+	<div>Name: {{ user.userName }}</div>
+	<div>Location: {{ user.location | json }}</div>
+	<div>connectionId: {{ user.connectionId }}</div>
+</div>

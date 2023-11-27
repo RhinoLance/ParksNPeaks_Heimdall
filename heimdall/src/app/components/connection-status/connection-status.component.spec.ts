@@ -2,9 +2,7 @@ import { ComponentFixture, TestBed } from "@angular/core/testing";
 
 import { ConnectionStatusComponent } from "./connection-status.component";
 import { RealTimeUserService } from "src/app/services/RealTimeUserService";
-import { RealTimeUserServiceMock } from "src/app/services/RealTimeUserServiceMock";
-import { BehaviorSubject, Subject } from "rxjs";
-import { HubUser } from "src/app/services/HeimdallSignalRService";
+import { BehaviorSubject } from "rxjs";
 
 describe("ConnectionStatusComponent", () => {
 	let component: ConnectionStatusComponent;
@@ -18,9 +16,7 @@ describe("ConnectionStatusComponent", () => {
 	beforeEach(() => {
 		TestBed.configureTestingModule({
 			imports: [ConnectionStatusComponent],
-			providers: [
-				{ provide: RealTimeUserService, useValue: rtsMock },
-			]
+			providers: [{ provide: RealTimeUserService, useValue: rtsMock }],
 		});
 		fixture = TestBed.createComponent(ConnectionStatusComponent);
 		component = fixture.componentInstance;

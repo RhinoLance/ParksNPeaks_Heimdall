@@ -2,11 +2,12 @@ import { Component } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { HubUser } from "src/app/services/HeimdallSignalRService";
 import { RealTimeUserService } from "src/app/services/RealTimeUserService";
+import { UserMapComponent } from "src/app/components/user-map/user-map.component";
 
 @Component({
 	selector: "pph-analytics",
 	standalone: true,
-	imports: [CommonModule],
+	imports: [CommonModule, UserMapComponent],
 	templateUrl: "./analytics.component.html",
 	styleUrls: ["./analytics.component.scss"],
 })

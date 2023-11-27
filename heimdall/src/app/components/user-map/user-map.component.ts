@@ -9,8 +9,9 @@ import {
 	ViewChild,
 } from "@angular/core";
 import { FeatureCollection, Point, Position } from "geojson";
-import maplibregl, { GeoJSONSource, LngLatBounds } from "maplibre-gl";
+import { GeoJSONSource, LngLatBounds } from "maplibre-gl";
 import { Subject, debounceTime, timer } from "rxjs";
+import { MapLibreBuilder } from "src/app/models/MapLibreBuilder";
 
 import { HubUser } from "src/app/services/HeimdallSignalRService";
 import { objectToGeoJSONPointFeature } from "src/app/utilities/geoJSONUtilities";
@@ -44,7 +45,7 @@ export class UserMapComponent implements AfterViewInit, DoCheck {
 	}
 
 	public ngAfterViewInit(): void {
-		this._map = this.buildMap(this.mapEl.nativeElement);
+		this.initMap();
 	}
 
 	public ngDoCheck() {
@@ -61,135 +62,35 @@ export class UserMapComponent implements AfterViewInit, DoCheck {
 					this.removeMapMarker(change.item);
 				}
 			});
-
-			//const extent = this._markerLayerSource.getExtent() as Extent;
-			//this._map.set  .getView().fit(extent, {padding: [1, 1, 1, 1]});
 		}
 	}
 
-	private buildMap(container: HTMLElement): maplibregl.Map {
-		const map = new maplibregl.Map({
-			container: container, // container ID
-			center: [133.67, -25.58], // starting position [lng, lat]
-			zoom: 3, // starting zoom
+	private initMap() {
+		this._map = new MapLibreBuilder({
+			container: this.mapEl.nativeElement,
+			center: [133.67, -25.58],
+			zoom: 3,
 			maxZoom: 12,
-			style: {
-				version: 8,
-				sources: {
-					bgTiles: {
-						type: "raster",
-						tiles: [
-							"https://cartodb-basemaps-c.global.ssl.fastly.net/rastertiles/voyager/{z}/{x}/{y}.png",
-						],
-						tileSize: 256,
-						attribution: "",
-					},
-					users: {
-						type: "geojson",
-						data: {
-							type: "FeatureCollection",
-							features: [],
-						},
-						cluster: true,
-						clusterMaxZoom: 14,
-						clusterRadius: 50,
-					},
-				},
-				layers: [
-					{
-						id: "bgTiles",
-						type: "raster",
-						source: "bgTiles",
-						minzoom: 0,
-						maxzoom: 22,
-					},
-					{
-						id: "users",
-						type: "circle",
-						source: "users",
-						filter: ["!", ["has", "point_count"]],
-						paint: {
-							"circle-radius": 10,
-							"circle-color": "#007cbf",
-						},
-					},
-					{
-						id: "clustered_users",
-						type: "circle",
-						source: "users",
-						filter: ["has", "point_count"],
-						paint: {
-							"circle-radius": 20,
-							"circle-color": "#007cbf",
-						},
-					},
-					{
-						id: "cluster-count",
-						type: "symbol",
-						source: "users",
-						filter: ["has", "point_count"],
-						layout: {
-							"text-field": "{point_count_abbreviated}",
-							"text-font": ["Open Sans Bold"],
-							"text-size": 12,
-						},
-						paint: {
-							"text-color": "#FFFFFF",
-						},
-					},
-				],
-				glyphs: "https://fonts.openmaptiles.org/{fontstack}/{range}.pbf",
-			},
+		})
+			.addBackgroundTiles()
+			.build();
+
+		this._map.on("load", () => {
+			this.addUsersToMap();
 		});
 
-		map.on("click", "users", (e) => {
-			new maplibregl.Popup()
-				.setLngLat(e.lngLat)
-				.setHTML(e.features![0].properties["userName"] as string)
-				.addTo(map);
-		});
-
-		map.on("styledata", () => {
-			if (map.getLayer("users-label") !== undefined) {
-				return;
+		this._map.on("sourcedata", (e) => {
+			if (e.isSourceLoaded && e.sourceId === "users") {
+				this._userSource = this._map.getSource("users") as GeoJSONSource;
 			}
-
-			map.addLayer({
-				id: "users-label",
-				type: "symbol",
-				source: "users",
-				filter: ["!", ["has", "point_count"]],
-				layout: {
-					"text-field": ["get", "userName"],
-					"text-font": ["Open Sans Bold"],
-					"text-size": 12,
-					"text-offset": [1.5, 1.5],
-				},
-				paint: {
-					"text-color": "#888888",
-					"text-halo-color": "#ffffff",
-					"text-halo-width": 2,
-					"text-halo-blur": 1,
-				},
-			});
 		});
-
-		return map;
 	}
 
 	private updateMap(): void {
-		if (this._map === undefined) {
+		if (this._userSource === undefined) {
 			this.retryUpdateMap();
 
 			return;
-		}
-
-		if (this._userSource === undefined) {
-			this._userSource = this._map.getSource("users") as GeoJSONSource;
-
-			if (this._userSource === undefined) {
-				this.retryUpdateMap();
-			}
 		}
 
 		const users = Array.from(this._users.values());
@@ -235,5 +136,78 @@ export class UserMapComponent implements AfterViewInit, DoCheck {
 		});
 
 		return bounds;
+	}
+
+	private addUsersToMap(): void {
+		this._map.addSource("users", {
+			type: "geojson",
+			data: {
+				type: "FeatureCollection",
+				features: [],
+			},
+			cluster: true,
+			clusterMaxZoom: 14,
+			clusterRadius: 50,
+		});
+
+		this._map.addLayer({
+			id: "users",
+			type: "circle",
+			source: "users",
+			filter: ["!", ["has", "point_count"]],
+			paint: {
+				"circle-radius": 10,
+				"circle-color": "#007cbf",
+				"circle-stroke-color": "#FFFFFF",
+				"circle-stroke-width": 2,
+			},
+		});
+
+		this._map.addLayer({
+			id: "clustered_users",
+			type: "circle",
+			source: "users",
+			filter: ["has", "point_count"],
+			paint: {
+				"circle-radius": 20,
+				"circle-color": "#007cbf",
+				"circle-stroke-color": "#FFFFFF",
+				"circle-stroke-width": 2,
+			},
+		});
+
+		this._map.addLayer({
+			id: "cluster-count",
+			type: "symbol",
+			source: "users",
+			filter: ["has", "point_count"],
+			layout: {
+				"text-field": "{point_count_abbreviated}",
+				"text-font": ["Open Sans Bold"],
+				"text-size": 12,
+			},
+			paint: {
+				"text-color": "#FFFFFF",
+			},
+		});
+
+		this._map.addLayer({
+			id: "users-label",
+			type: "symbol",
+			source: "users",
+			filter: ["!", ["has", "point_count"]],
+			layout: {
+				"text-field": ["get", "userName"],
+				"text-font": ["Open Sans Bold"],
+				"text-size": 12,
+				"text-offset": [1.5, 1.5],
+			},
+			paint: {
+				"text-color": "#888888",
+				"text-halo-color": "#ffffff",
+				"text-halo-width": 2,
+				"text-halo-blur": 1,
+			},
+		});
 	}
 }

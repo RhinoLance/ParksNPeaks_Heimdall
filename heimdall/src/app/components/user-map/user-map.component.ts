@@ -13,9 +13,7 @@ import maplibregl, { GeoJSONSource, LngLatBounds } from "maplibre-gl";
 import { Subject, debounceTime, timer } from "rxjs";
 
 import { HubUser } from "src/app/services/HeimdallSignalRService";
-import {
-	objectToGeoJSONPointFeature,
-} from "src/app/utilities/geoJSONUtilities";
+import { objectToGeoJSONPointFeature } from "src/app/utilities/geoJSONUtilities";
 
 @Component({
 	selector: "pph-user-map",
@@ -50,9 +48,8 @@ export class UserMapComponent implements AfterViewInit, DoCheck {
 	}
 
 	public ngDoCheck() {
-		let changes = this._iterableDiffer.diff(this.users);
+		const changes = this._iterableDiffer.diff(this.users);
 		if (changes) {
-			
 			changes.forEachAddedItem((change) => {
 				if (change) {
 					this.addUser(change.item);

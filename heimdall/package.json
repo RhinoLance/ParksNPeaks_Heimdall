@@ -46,7 +46,6 @@
 		"maplibre-gl": "^3.6.2",
 		"ng-animate": "^2.0.1",
 		"ngx-timeago": "^3.0.0",
-		"ol": "^8.1.0",
 		"rxjs": "~7.5.0",
 		"tslib": "^2.3.0",
 		"zone.js": "~0.13.1"
@@ -64,7 +63,6 @@
 		"@types/gtag.js": "^0.0.13",
 		"@types/jasmine": "~3.10.0",
 		"@types/node": "^12.11.1",
-		"@types/openlayers": "^4.6.20",
 		"@types/signalr": "^2.4.2",
 		"@typescript-eslint/eslint-plugin": "^6.2.0",
 		"@typescript-eslint/parser": "^6.2.0",

@@ -22,6 +22,7 @@ export class MapLibreBuilder {
 			zoom: options?.zoom,
 			minZoom: options?.minZoom,
 			maxZoom: options?.maxZoom,
+			attributionControl: false,
 			style: {
 				version: 8,
 				sources: {},
@@ -77,14 +78,8 @@ const voyagerTileLayer: LayerSpecification = {
 const defaultGlyfUrl = "https://fonts.openmaptiles.org/{fontstack}/{range}.pbf";
 
 enum defaultGlyfFonts {
-	OpenSansBold = "Open Sans Bold",
 	OpenSansRegular = "Open Sans Regular",
-	NotoSansRegular = "Noto Sans Regular",
-	NotoSansBold = "Noto Sans Bold",
-	PTSansRegular = "PT Sans Regular",
-	PTSansBold = "PT Sans Bold",
-	RobotoRegular = "Roboto Regular",
-	RobotoBold = "Roboto Bold",
+	OpenSansBold = "Open Sans Bold",
 	MetropolisRegular = "Metropolis Regular",
 	MetropolisBold = "Metropolis Bold",
 }

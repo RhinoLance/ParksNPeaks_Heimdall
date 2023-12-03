@@ -1,22 +1,17 @@
-import { Component, OnInit } from "@angular/core";
-import { ConnectionStatusComponent } from "src/app/components/connection-status/connection-status.component";
-import { HeimdallSignalrService } from "src/app/services/HeimdallSignalRService";
+import { Component } from "@angular/core";
+import { ActivationPathMapComponent } from "src/app/components/activation-path-map/activation-path-map.component";
+import { LatLng } from "src/app/models/LatLng";
 
 @Component({
 	selector: "pph-component-tester",
 	templateUrl: "./component-tester.component.html",
 	styleUrls: ["./component-tester.component.scss"],
-	imports: [ConnectionStatusComponent],
+	imports: [ActivationPathMapComponent],
 	standalone: true,
 })
-export class ComponentTesterComponent implements OnInit {
-	public count: number = 0;
+export class ComponentTesterComponent {
+	public latLngStart = new LatLng(-42.8826, 147.3257);
+	public latLngEnd = new LatLng(-27.5598, 151.9507);
 
-	public constructor(private _signalRSvc: HeimdallSignalrService) {}
-
-	public ngOnInit() {
-		this._signalRSvc.currentClientCount.subscribe((message: number) => {
-			this.count = message;
-		});
-	}
+	public expand: boolean = false;
 }

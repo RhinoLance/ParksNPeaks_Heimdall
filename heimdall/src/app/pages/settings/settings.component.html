@@ -9,7 +9,8 @@
 				<div
 					class="active-state"
 					[ngClass]="
-						viewModel.pnpApiKey.length > 0 && viewModel.pnpUserName.length > 0
+						viewModel.pnpUser.apiKey.length > 0 &&
+						viewModel.pnpUser.userName.length > 0
 							? 'active'
 							: 'inactive'
 					"
@@ -21,7 +22,7 @@
 					<div class="col">
 						<label for="callsign" class="form-label">Username</label>
 						<input
-							[(ngModel)]="viewModel.pnpUserName"
+							[(ngModel)]="viewModel.pnpUser.userName"
 							class="form-control"
 							id="pnpUserName"
 							placeholder=""
@@ -30,7 +31,7 @@
 					<div class="col">
 						<label for="pnpKey" class="form-label">API Key</label>
 						<input
-							[(ngModel)]="viewModel.pnpApiKey"
+							[(ngModel)]="viewModel.pnpUser.apiKey"
 							class="form-control"
 							id="pnpKey"
 							placeholder=""

@@ -11,15 +11,12 @@ describe("PnPHttpClientService", () => {
 		let settingsSvc: SettingsService;
 		beforeEach(() => {
 			settingsSvc = {
-				get: (key: string) => {
-					switch (key) {
-						case "pnpApiKey":
-							return "1234567890";
-						case "pnpUserName":
-							return "meuser";
-						default:
-							return "";
-					}
+				getPnpUser: () => {
+					return {
+						apiKey: "1234567890",
+						userName: "meuser",
+						callsign: "VK0AA",
+					};
 				},
 				settingUpdated: new Subject<SettingsKey>(),
 			} as SettingsService;
@@ -82,15 +79,12 @@ describe("PnPHttpClientService", () => {
 
 		beforeEach(() => {
 			settingsSvc = {
-				get: (key: string) => {
-					switch (key) {
-						case "pnpApiKey":
-							return "1234567890";
-						case "pnpUserName":
-							return "meuser";
-						default:
-							return "";
-					}
+				getPnpUser: () => {
+					return {
+						apiKey: "1234567890",
+						userName: "meuser",
+						callsign: "VK0AA",
+					};
 				},
 				settingUpdated: new Subject<SettingsKey>(),
 			} as SettingsService;

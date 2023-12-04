@@ -8,7 +8,7 @@ import { NgbDropdownModule } from "@ng-bootstrap/ng-bootstrap";
 import { ConnectionStatusComponent } from "src/app/components/connection-status/connection-status.component";
 
 import { NAVIGATOR } from "@ng-web-apis/common";
-import { SettingsKey, SettingsService } from "src/app/services/SettingsService";
+import { SettingsService } from "src/app/services/SettingsService";
 import { RealTimeUserService } from "src/app/services/RealTimeUserService";
 import { randomisePoint } from "src/app/utilities/geoUtilities";
 
@@ -68,9 +68,7 @@ export class MainComponent {
 			2000
 		);
 
-		const userName = this._settingsSvc.get<string>(
-			SettingsKey.PNP_USERNAME
-		) as string;
+		const userName = this._settingsSvc.getPnpUser().userName;
 
 		this._realtimeUserSvc.updateUserDetails(userName, latLng);
 	}

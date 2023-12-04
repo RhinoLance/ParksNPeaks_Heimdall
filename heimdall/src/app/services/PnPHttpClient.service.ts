@@ -104,6 +104,8 @@ export class PnPClientService {
 	}
 
 	public submitSpot(spot: Spot): Observable<PostResponse> {
+		const pnpUser = this._settingSvc.getPnpUser();
+
 		const postSpot = {
 			actClass: spot.awardList.getAtIndex(0).award,
 			actSite: spot.awardList.getAtIndex(0).siteId,
@@ -111,8 +113,8 @@ export class PnPClientService {
 			freq: spot.frequency,
 			actCallsign: spot.callsign.toString(),
 			comments: spot.comment,
-			userID: this._settingSvc.get(SettingsKey.PNP_USERNAME),
-			apiKey: this._settingSvc.get(SettingsKey.PNP_API_KEY),
+			userID: pnpUser.userName,
+			apiKey: pnpUser.apiKey,
 		};
 
 		return this._fetchSvc
@@ -147,12 +149,14 @@ export class PnPClientService {
 			mergeMap((v) => {
 				const urlSuffix = v == undefined ? `CALLSIGN/ADD` : `CALLSIGN/EDIT`;
 
+				const pnpUser = this._settingSvc.getPnpUser();
+
 				const postData = {
 					callSign: callsignDetails.callsign,
 					name: callsignDetails.name,
 					alsoKnownAs: callsignDetails.alsoKnownAs,
-					userID: this._settingSvc.get(SettingsKey.PNP_USERNAME),
-					APIKey: this._settingSvc.get(SettingsKey.PNP_API_KEY),
+					userID: pnpUser.userName,
+					APIKey: pnpUser.apiKey,
 				};
 
 				return this._fetchSvc.postJson<PostResponse>(
@@ -209,28 +213,29 @@ export class PnPClientService {
 	}
 
 	private monitorApiKeySetting(): void {
-		this._hasApiKey = this.settingHasKey(SettingsKey.PNP_API_KEY);
-		this._hasUserId = this.settingHasKey(SettingsKey.PNP_USERNAME);
+		const setPnPUser = () => {
+			const pnpUser = this._settingSvc.getPnpUser();
+
+			this._hasApiKey = pnpUser.apiKey.length > 0;
+			this._hasUserId = pnpUser.userName.length > 0;
+		};
+
+		setPnPUser();
 
 		this._settingSvc.settingUpdated.subscribe((key) => {
-			switch (key) {
-				case SettingsKey.PNP_API_KEY:
-					this._hasApiKey = this.settingHasKey(SettingsKey.PNP_API_KEY);
-					break;
-				case SettingsKey.PNP_USERNAME:
-					this._hasUserId = this.settingHasKey(SettingsKey.PNP_USERNAME);
-					break;
+			if ((key = SettingsKey.PNP_USER)) {
+				setPnPUser();
 			}
 		});
-	}
-
-	private settingHasKey(key: SettingsKey): boolean {
-		const value = this._settingSvc.get<string>(key);
-
-		return value !== undefined && value.length > 0;
 	}
 }
 
 export type PostResponse = {
 	response: string;
+};
+
+export type PnPUser = {
+	userName: string;
+	callsign: string;
+	apiKey: string;
 };

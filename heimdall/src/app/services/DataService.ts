@@ -45,7 +45,7 @@ export class DataService {
 
 	public submitSpot(spot: Spot): Observable<PostResponse> {
 		spot.time = new Date();
-		spot.spotter = this._settingsSvc.get(SettingsKey.PNP_USERNAME) ?? "";
+		spot.spotter = this._settingsSvc.getPnpUser().userName;
 
 		return this._pnpApiSvc
 			.submitSpot(spot)

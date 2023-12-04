@@ -2,6 +2,7 @@ import { CommonModule } from "@angular/common";
 import { Component } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { AppRouter, RoutePath } from "src/app/services/AppRountingService";
+import { PnPUser } from "src/app/services/PnPHttpClient.service";
 import { SettingsKey, SettingsService } from "src/app/services/SettingsService";
 
 @Component({
@@ -19,20 +20,16 @@ export class SettingsComponent {
 		private _router: AppRouter
 	) {
 		this.viewModel = {
-			pnpApiKey: this._settingsSvc.get(SettingsKey.PNP_API_KEY) || "",
-			pnpUserName: this._settingsSvc.get(SettingsKey.PNP_USERNAME) || "",
+			pnpUser: this._settingsSvc.getPnpUser(),
 		};
 	}
 
 	public save() {
-		this._settingsSvc.set(SettingsKey.PNP_API_KEY, this.viewModel.pnpApiKey);
-		this._settingsSvc.set(SettingsKey.PNP_USERNAME, this.viewModel.pnpUserName);
-
+		this._settingsSvc.setPnpUser(this.viewModel.pnpUser);
 		this._router.navigate(RoutePath.SpotList);
 	}
 }
 
 type ViewState = {
-	pnpApiKey: string;
-	pnpUserName: string;
+	pnpUser: PnPUser;
 };

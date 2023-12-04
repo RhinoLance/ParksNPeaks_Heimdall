@@ -1,49 +1,59 @@
 import { Injectable } from "@angular/core";
 import { StorageService } from "./StorageService";
-import { Subject } from "rxjs";
+import { Subject, debounceTime } from "rxjs";
+import { PnPUser } from "./PnPHttpClient.service";
 
 @Injectable({
 	providedIn: "root",
 })
 export class SettingsService {
 	public settingUpdated: Subject<SettingsKey> = new Subject<SettingsKey>();
+	private _settingsKey = "settings";
 
 	private _settings: HeimdallSettings = {
-		pnpApiKey: "",
-		callsign: "",
+		pnpUser: {
+			userName: "",
+			callsign: "",
+			apiKey: "",
+		},
 	};
 
 	public constructor(private _storageSvc: StorageService) {
 		this.loadSavedSettings();
+		this.monitorSettingsSaved();
 	}
 
-	public set(key: SettingsKey, value: string | unknown): void {
-		this._settings[key as keyof HeimdallSettings] = value;
-		this._storageSvc.save("settings", this._settings);
-
-		this.settingUpdated.next(key);
+	public setPnpUser(value: PnPUser): void {
+		this._settings.pnpUser = value;
+		this.settingUpdated.next(SettingsKey.PNP_USER);
 	}
 
-	public get<T>(key: SettingsKey): T | undefined {
-		return this._settings[key as keyof HeimdallSettings] as T;
+	public getPnpUser(): PnPUser {
+		return this._settings.pnpUser;
 	}
 
 	private loadSavedSettings(): void {
-		const settings = this._storageSvc.load<SettingsService>("settings");
+		const settings = this._storageSvc.load<SettingsService>(this._settingsKey);
 
 		if (settings) {
 			Object.assign(this._settings, settings);
 		}
 	}
+
+	private monitorSettingsSaved(): void {
+		this.settingUpdated
+			.pipe(debounceTime(1000))
+			.subscribe(() =>
+				this._storageSvc.save(this._settingsKey, this._settings)
+			);
+	}
 }
 
 type HeimdallSettings = {
-	pnpApiKey: unknown;
-	callsign: unknown;
+	pnpUser: PnPUser;
 };
 
 export enum SettingsKey {
-	PNP_API_KEY = "pnpApiKey",
-	PNP_USERNAME = "pnpUserName",
-	CALLSIGN = "callsign",
+	PNP_USER = "pnpUser",
+	name = "",
 }

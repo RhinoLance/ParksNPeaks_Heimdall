@@ -1,7 +1,7 @@
 import { randomisePoint } from "./geoUtilities";
 
 describe("GeoUtilities", () => {
-	fdescribe("randomisePoint", () => {
+	describe("randomisePoint", () => {
 		// Arrange
 		const lat = 23.4561;
 		const lng = 12.3451;

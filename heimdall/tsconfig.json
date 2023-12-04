@@ -20,12 +20,15 @@
 		"module": "es2020",
 		"lib": ["es2020", "dom"],
 		"esModuleInterop": true,
-		"resolveJsonModule": true
+		"resolveJsonModule": true,
+		"strictNullChecks": false,
+		"skipLibCheck": true
 	},
 	"angularCompilerOptions": {
 		"enableI18nLegacyMessageIdFormat": false,
 		"strictInjectionParameters": true,
 		"strictInputAccessModifiers": true,
 		"strictTemplates": true
-	}
+	},
+	"exclude": ["node_modules"]
 }

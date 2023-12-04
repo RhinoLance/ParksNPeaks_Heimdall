@@ -7,58 +7,50 @@ import {
 	ViewChild,
 } from "@angular/core";
 import { LatLng } from "src/app/models/LatLng";
-import Map from "ol/Map";
-import TileLayer from "ol/layer/Tile";
-import XYZ from "ol/source/XYZ";
-import View from "ol/View";
-import { greatCircle, distance, getCoord, along } from "@turf/turf";
-import VectorLayer from "ol/layer/Vector";
-import GeoJSON from "ol/format/GeoJSON";
-import VectorSource from "ol/source/Vector";
-import Layer from "ol/layer/Layer";
-import { useGeographic } from "ol/proj";
-import { Extent } from "ol/extent";
-import { Feature } from "ol";
-import Style, { StyleLike } from "ol/style/Style";
-import Stroke from "ol/style/Stroke";
-import Text from "ol/style/Text";
-import Fill from "ol/style/Fill";
-import { LineString, Point } from "ol/geom";
-import Icon from "ol/style/Icon";
+import {
+	greatCircle,
+	distance,
+	LineString,
+	FeatureCollection,
+	Point,
+	along,
+} from "@turf/turf";
+import {
+	MapLibreBuilder,
+	defaultGlyfFonts,
+} from "src/app/models/MapLibreBuilder";
+import { LngLatBounds } from "maplibre-gl";
 
 @Component({
 	selector: "pph-activation-path-map",
 	templateUrl: "./activation-path-map.component.html",
-	styleUrls: ["./activation-path-map.component.scss"],
+	styleUrls: [
+		"./activation-path-map.component.scss",
+		//"../../../../node_modules/maplibre-gl/dist/maplibre-gl.css",
+	],
 	standalone: true,
 })
 export class ActivationPathMapComponent implements OnInit, AfterViewInit {
 	private _latLngStart: LatLng = new LatLng(0, 0);
 	private _latLngEnd: LatLng = new LatLng(0, 0);
-	private _pathLayer?: Layer;
 
 	@Input() public set latLngStart(latLng: LatLng) {
 		this._latLngStart = latLng;
-		this.setPath();
 	}
 
 	@Input() public set latLngEnd(latLng: LatLng) {
 		this._latLngEnd = latLng;
-		this.setPath();
 	}
 
 	@Input() public padding: number = 50;
 	@Input() public pathColour: string = "#fb8500";
-	@Input() public pathWidth: number = 1;
+	@Input() public pathWidth: number = 1.5;
 
 	@ViewChild("map") public mapEl!: ElementRef<HTMLElement>;
 
-	private _map!: Map;
+	private _map!: maplibregl.Map;
 
-	public constructor() {
-		useGeographic();
-		this._map = this.buildMap();
-	}
+	public constructor() {}
 
 	public ngOnInit(): void {
 		if (!this._latLngStart) {
@@ -75,22 +67,14 @@ export class ActivationPathMapComponent implements OnInit, AfterViewInit {
 	}
 
 	public ngAfterViewInit(): void {
-		this._map.setTarget(this.mapEl.nativeElement);
-		this.setPath();
-	}
-
-	private setPath(): void {
-		if (this._latLngStart.lat === 0 || this._latLngStart.lng === 0) return;
-
-		if (this._pathLayer === undefined) {
-			this._pathLayer = new VectorLayer({
-				style: ((feature: Feature, resolution: number) =>
-					this.lineRenderer(feature, resolution)) as unknown as StyleLike,
-				declutter: true,
-			});
-			this._map.addLayer(this._pathLayer);
+		if (!this._latLngEnd || !this._latLngStart) {
+			return;
 		}
 
+		this._map = this.initMap();
+	}
+
+	private buildPathData(): FeatureCollection<LineString> {
 		const start = this._latLngStart.toArray().reverse();
 		const end = this._latLngEnd.toArray().reverse();
 		const dist = distance(start, end, { units: "kilometers" });
@@ -104,113 +88,157 @@ export class ActivationPathMapComponent implements OnInit, AfterViewInit {
 			},
 		});
 
-		const lineSource = new VectorSource({
-			features: [new GeoJSON().readFeature(path)],
-		});
+		const featureCollection = {
+			type: "FeatureCollection",
+			features: [path],
+		};
 
-		this._pathLayer.setSource(lineSource);
-
-		const extent = lineSource.getExtent() as Extent;
-		if (!extent.includes(Infinity)) {
-			this._map.getView().fit(extent, {
-				padding: [this.padding, this.padding, this.padding, this.padding],
-			});
-		}
+		return featureCollection as FeatureCollection<LineString>;
 	}
 
-	private lineRenderer(feature: Feature, resolution: number): Style[] {
-		const svgCircle = `<svg width="24" height="24" version="1.1" xmlns="http://www.w3.org/2000/svg">
-		<circle cx="12" cy="12" r="10" style="fill: %23ffffff; stroke: ${this.pathColour.replace(
-			"#",
-			"%23"
-		)}; stroke-width: 2;" />
-		</svg>`;
-
-		const label = new Text({
-			text: feature.get("label"),
-			font: "1em sans-serif",
-			fill: new Fill({ color: "#444444" }),
-			stroke: new Stroke({ color: "#ffffff", width: 1 }),
-			placement: "line",
-			overflow: true,
-		});
-
-		const lineStyle = new Style({
-			stroke: new Stroke({
-				color: this.pathColour,
-				width: this.pathWidth,
-			}),
-		});
-
-		const geometry = feature.getGeometry() as LineString;
-		const ends = [geometry.getFirstCoordinate(), geometry.getLastCoordinate()];
-
-		const labelStyle = new Style({
-			text: label,
-			geometry: this.getLabelGeometry(feature, resolution),
-		});
-
-		const styleList = [lineStyle, labelStyle];
-
-		ends.map((v) => {
-			const style = new Style({
-				geometry: new Point(v),
-				image: new Icon({
-					src: "data:image/svg+xml;utf8," + svgCircle,
-					scale: 0.5,
-				}),
-			});
-
-			styleList.push(style);
-		});
-
-		return styleList;
-	}
-
-	/*
-	 * OpenLayers has issues with labels that follow curved lines.  This function
-	 * creates a straight line between two points on the curved line against which
-	 * the label can be rendered.
-	 */
-	private getLabelGeometry(feature: Feature, resolution: number): LineString {
-		const length = parseFloat(feature.get("length"));
-		const geometry = feature.getGeometry() as LineString;
-		const geoJsonGeometry = {
-			coordinates: geometry.getCoordinates(),
-		} as GeoJSON.LineString;
-
-		const lineLenPixels = (length * 1000) / resolution;
-		const textLenPixels = 60;
-		const nDiv = Math.trunc(lineLenPixels / textLenPixels / 2) * 2 + 1;
-		const nDiv1 = (nDiv - 1) / 2;
-		const nDiv2 = nDiv1 + 1;
-
-		const pointCoord1 = getCoord(
-			along(geoJsonGeometry, (length / nDiv) * nDiv1)
-		);
-		const pointCoord2 = getCoord(
-			along(geoJsonGeometry, (length / nDiv) * nDiv2)
-		);
-
-		return new LineString([pointCoord1, pointCoord2]);
-	}
-
-	private buildMap(): Map {
-		const map = new Map({
-			controls: [],
-			layers: [
-				new TileLayer({
-					source: new XYZ({
-						url: "https://cartodb-basemaps-c.global.ssl.fastly.net/rastertiles/voyager/{z}/{x}/{y}.png",
-					}),
-				}),
+	private buildEndPointData(): FeatureCollection<Point> {
+		const data = {
+			type: "FeatureCollection",
+			features: [
+				{
+					type: "Feature",
+					properties: {
+						label: "Start",
+					},
+					geometry: {
+						type: "Point",
+						coordinates: [this._latLngStart.lng, this._latLngStart.lat],
+					},
+				},
+				{
+					type: "Feature",
+					properties: {
+						label: "End",
+					},
+					geometry: {
+						type: "Point",
+						coordinates: [this._latLngEnd.lng, this._latLngEnd.lat],
+					},
+				},
 			],
-			view: new View({
-				center: [146.3399, -41.0889],
-				zoom: 2,
-			}),
+		};
+
+		return data as FeatureCollection<Point>;
+	}
+
+	private buildLabelSourceData(
+		path: FeatureCollection<LineString>
+	): FeatureCollection<Point> {
+		const pathLabelPoint = along(
+			path.features[0].geometry,
+			path.features[0].properties["length"] / 2,
+			{ units: "kilometers" }
+		);
+
+		pathLabelPoint.properties["label"] = path.features[0].properties["label"];
+
+		const featCollection = {
+			type: "FeatureCollection",
+			features: [pathLabelPoint],
+		};
+		return featCollection as FeatureCollection<Point>;
+	}
+
+	private getBounds(): LngLatBounds {
+		const bounds = new LngLatBounds();
+
+		bounds.extend([this._latLngStart.lng, this._latLngStart.lat]);
+		bounds.extend([this._latLngEnd.lng, this._latLngEnd.lat]);
+
+		return bounds;
+	}
+
+	private initMap(): maplibregl.Map {
+		const map = new MapLibreBuilder({
+			container: this.mapEl.nativeElement,
+			center: [146.3399, -41.0889],
+			zoom: 2,
+		})
+			.addBackgroundTiles()
+			.build();
+
+		map.on("load", () => {
+			this.addPath();
+
+			const bounds = this.getBounds();
+			this._map.fitBounds(bounds, { padding: this.padding });
 		});
 
 		return map;
+	}
+
+	private addPath(): void {
+		const path = this.buildPathData();
+		const endPoints = this.buildEndPointData();
+		const labelPoint = this.buildLabelSourceData(path);
+
+		this._map.addSource("path", {
+			type: "geojson",
+			data: path,
+		});
+
+		this._map.addSource("pathLabelPoint", {
+			type: "geojson",
+			data: labelPoint,
+		});
+
+		this._map.addSource("endPoints", {
+			type: "geojson",
+			data: endPoints,
+		});
+
+		this._map.addLayer({
+			id: "path-line",
+			type: "line",
+			source: "path",
+			layout: {
+				"line-cap": "round",
+				"line-join": "round",
+			},
+			paint: {
+				"line-color": this.pathColour,
+				"line-width": this.pathWidth,
+			},
+		});
+		this._map.addLayer({
+			id: "users",
+			type: "circle",
+			source: "endPoints",
+			paint: {
+				"circle-radius": 4.5,
+				"circle-color": "#ffffff",
+				"circle-opacity": 1,
+				"circle-stroke-color": this.pathColour,
+				"circle-stroke-width": this.pathWidth,
+			},
+		});
+
+		this._map.addLayer({
+			id: "users-label",
+			type: "symbol",
+			source: "pathLabelPoint",
+			layout: {
+				"symbol-placement": "point",
+				"text-anchor": "center",
+				"text-justify": "center",
+				"text-field": ["get", "label"],
+				"text-font": [defaultGlyfFonts.OpenSansRegular],
+				"text-size": 15,
+				"text-allow-overlap": true,
+				"text-ignore-placement": true,
+				"text-offset": [0, 1],
+			},
+			paint: {
+				"text-color": "#444444",
+				"text-halo-color": "#ffffff",
+				"text-halo-width": 2,
+				"text-halo-blur": 1,
+			},
+		});
 	}
 }

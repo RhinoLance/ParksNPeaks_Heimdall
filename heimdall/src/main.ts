@@ -15,7 +15,9 @@ import { provideRouter } from "@angular/router";
 import { routes } from "./app/app-routing";
 import { provideOAuthClient } from "angular-oauth2-oidc";
 import { provideHttpClient } from "@angular/common/http";
-import { HeimdallSignalrService } from "./app/services/HeimdallSignalRService";
+import { RealTimeUserService } from "./app/services/RealTimeUserService";
+import { AppBootstrapService } from "./app/services/AppBootstrapService";
+import { provideRealTimeUserService } from "./app/services/RealTimeUserServiceProvider";
 
 if (environment.production) {
 	enableProdMode();
@@ -28,13 +30,13 @@ bootstrapApplication(MainComponent, {
 		provideOAuthClient(),
 		provideAnimations(),
 		provideRouter(routes),
-		HeimdallSignalrService,
+		provideRealTimeUserService(),
 		{
 			provide: APP_INITIALIZER,
-			useFactory: (signalrService: HeimdallSignalrService) => () =>
-				signalrService.connect(),
-			deps: [HeimdallSignalrService],
-			multi: true,
+			useFactory: (bootstrapSvc: AppBootstrapService) => {
+				bootstrapSvc.init();
+			},
+			deps: [RealTimeUserService],
 		},
 	],
 }).catch((err) => console.error(err)); // eslint-disable-line no-console

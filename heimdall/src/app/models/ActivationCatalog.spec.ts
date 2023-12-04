@@ -1,4 +1,3 @@
-import { Call } from "@angular/compiler";
 import { ActivationCatalogue } from "./ActivationCatalogue";
 import { Spot } from "./Spot";
 import { SpotMode } from "./SpotMode";

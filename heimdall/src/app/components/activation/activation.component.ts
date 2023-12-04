@@ -73,7 +73,7 @@ export class ActivationComponent implements OnInit {
 	@Output() public hiden = new EventEmitter<Activation>();
 
 	public HideState = HideState;
-
+	public expand: boolean = false;
 	public viewState: ViewState = {
 		spot: new Spot(),
 		respot: new Spot(),

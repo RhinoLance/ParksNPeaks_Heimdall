@@ -1,0 +1,19 @@
+<div class="map" #map></div>
+
+<div class="user-list">
+	<ul>
+		<li *ngFor="let user of usersSansLocation" [title]="user.connectionId">
+			{{ user.userName.length > 0 ? user.userName : "Unknown" }}
+		</li>
+	</ul>
+</div>
+
+<div class="user-list2">
+	<ul>
+		<li *ngFor="let user of usersWithLocation" [title]="user.connectionId">
+			{{ user.connectionId }}
+			{{ user.userName }}
+			{{ user.location.lat }}
+		</li>
+	</ul>
+</div>

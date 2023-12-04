@@ -1,3 +1,8 @@
-<div class="count">{{ count }} people online</div>
-
-<pph-connection-status></pph-connection-status>
+<div class="map-container">
+	<pph-activation-path-map
+		[latLngStart]="latLngStart"
+		[latLngEnd]="latLngEnd"
+		[padding]="15"
+	>
+	</pph-activation-path-map>
+</div>

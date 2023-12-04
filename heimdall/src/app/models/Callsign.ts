@@ -15,7 +15,7 @@ export class Callsign {
 		return this._suffix;
 	}
 
-	constructor(public callsign: string) {
+	public constructor(public callsign: string) {
 		if (callsign == "") return;
 
 		this.extractParts(callsign);

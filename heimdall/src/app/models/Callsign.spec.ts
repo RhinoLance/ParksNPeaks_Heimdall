@@ -1,4 +1,3 @@
-import { Subject } from "rxjs";
 import { Callsign } from "./Callsign";
 
 describe("Callsign", () => {

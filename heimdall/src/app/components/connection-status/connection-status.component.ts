@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { HeimdallSignalrService } from "src/app/services/HeimdallSignalRService";
+import { RealTimeUserService } from "src/app/services/RealTimeUserService";
 
 @Component({
 	selector: "pph-connection-status",
@@ -16,17 +16,19 @@ export class ConnectionStatusComponent implements OnInit {
 		statusText: "Offline",
 	};
 
-	public constructor(private _signalRSvc: HeimdallSignalrService) {}
+	public constructor(private _realTimeUserSvc: RealTimeUserService) {}
 
 	public ngOnInit() {
-		this._signalRSvc.currentClientCount.subscribe((count: number) => {
+		this._realTimeUserSvc.currentClientCount.subscribe((count: number) => {
 			this.viewState.count = count;
 		});
 
-		this._signalRSvc.connectionState.subscribe((isConnected: boolean) => {
-			this.viewState.isOnline = isConnected;
-			this.setOnlineStateMessage(isConnected);
-		});
+		this._realTimeUserSvc.connectionStateChanged.subscribe(
+			(isConnected: boolean) => {
+				this.viewState.isOnline = isConnected;
+				this.setOnlineStateMessage(isConnected);
+			}
+		);
 	}
 
 	private setOnlineStateMessage(isOnline: boolean): string {

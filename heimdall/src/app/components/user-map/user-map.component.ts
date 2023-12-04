@@ -1,19 +1,20 @@
+import { NgFor } from "@angular/common";
 import {
 	AfterViewInit,
 	Component,
-	DoCheck,
 	ElementRef,
 	Input,
-	IterableDiffer,
-	IterableDiffers,
 	ViewChild,
 } from "@angular/core";
+import { rotateOutUpRightOnLeaveAnimation } from "angular-animations";
 import { FeatureCollection, Point, Position } from "geojson";
-import { GeoJSONSource, LngLatBounds } from "maplibre-gl";
-import { Subject, debounceTime, timer } from "rxjs";
+import { GeoJSONSource, LngLat, LngLatBounds } from "maplibre-gl";
+import { Subject, debounceTime, merge, timer } from "rxjs";
+import { LatLng } from "src/app/models/LatLng";
 import { MapLibreBuilder } from "src/app/models/MapLibreBuilder";
 
 import { HubUser } from "src/app/services/HeimdallSignalRService";
+import { RealTimeUserService } from "src/app/services/RealTimeUserService";
 import { objectToGeoJSONPointFeature } from "src/app/utilities/geoUtilities";
 
 @Component({
@@ -23,46 +24,41 @@ import { objectToGeoJSONPointFeature } from "src/app/utilities/geoUtilities";
 		"./user-map.component.scss",
 		//"../../../../node_modules/maplibre-gl/dist/maplibre-gl.css",
 	],
+	imports: [NgFor],
 	standalone: true,
 })
-export class UserMapComponent implements AfterViewInit, DoCheck {
+export class UserMapComponent implements AfterViewInit {
 	@ViewChild("map") public mapEl!: ElementRef<HTMLElement>;
 
 	@Input() public users: HubUser[] = [];
 
 	private _map!: maplibregl.Map;
-	private _iterableDiffer: IterableDiffer<HubUser>;
 	private _userSource!: GeoJSONSource;
-	private _users = new Map<string, HubUser>();
+	public usersSansLocation: HubUser[] = [];
+	public usersWithLocation: HubUser[] = [];
 	private _usersUpdated = new Subject<void>();
 
-	public constructor(private iterableDiffer: IterableDiffers) {
-		this._iterableDiffer = this.iterableDiffer.find(this.users).create();
-
+	public constructor(private _realTimeUserService: RealTimeUserService) {
 		this._usersUpdated.pipe(debounceTime(1000)).subscribe(() => {
 			this.updateMap();
 		});
+
+		merge(
+			this._realTimeUserService.connectionAdded,
+			this._realTimeUserService.connectionRemoved
+		)
+			.pipe(debounceTime(1000))
+			.subscribe(() => this.updateUsers());
 	}
 
 	public ngAfterViewInit(): void {
 		this.initMap();
 	}
 
-	public ngDoCheck() {
-		const changes = this._iterableDiffer.diff(this.users);
-		if (changes) {
-			changes.forEachAddedItem((change) => {
-				if (change) {
-					this.addUser(change.item);
-				}
-			});
-
-			changes.forEachRemovedItem((change) => {
-				if (change) {
-					this.removeMapMarker(change.item);
-				}
-			});
-		}
+	private updateUsers() {
+		this.usersWithLocation = this.users.filter((v) => v.location.lat !== 0);
+		this.usersSansLocation = this.users.filter((v) => v.location.lat === 0);
+		this._usersUpdated.next();
 	}
 
 	private initMap() {
@@ -70,7 +66,7 @@ export class UserMapComponent implements AfterViewInit, DoCheck {
 			container: this.mapEl.nativeElement,
 			center: [133.67, -25.58],
 			zoom: 3,
-			maxZoom: 12,
+			maxZoom: 20,
 		})
 			.addBackgroundTiles()
 			.build();
@@ -93,8 +89,21 @@ export class UserMapComponent implements AfterViewInit, DoCheck {
 			return;
 		}
 
-		const users = Array.from(this._users.values());
-		const features = users.map((user) => {
+		const geoJSON = this.usersToFeatureCollection();
+
+		this._userSource.setData(geoJSON);
+
+		this.setMapBounds(geoJSON);
+	}
+
+	private retryUpdateMap(): void {
+		timer(1000).subscribe(() => {
+			this.updateMap();
+		});
+	}
+
+	private usersToFeatureCollection(): FeatureCollection<Point> {
+		const features = this.usersWithLocation.map((user) => {
 			return objectToGeoJSONPointFeature(user.location.lng, user.location.lat, {
 				userName: user.userName,
 			});
@@ -105,26 +114,7 @@ export class UserMapComponent implements AfterViewInit, DoCheck {
 			features: features,
 		};
 
-		this._userSource.setData(geoJSON);
-
-		const bounds = this.getBounds(geoJSON);
-		this._map.fitBounds(bounds, { padding: 100 });
-	}
-
-	private retryUpdateMap(): void {
-		timer(1000).subscribe(() => {
-			this.updateMap();
-		});
-	}
-
-	private addUser(item: HubUser): void {
-		this._users.set(item.userName, item);
-		this._usersUpdated.next();
-	}
-
-	private removeMapMarker(item: HubUser): void {
-		this._users.delete(item.userName);
-		this._usersUpdated.next();
+		return geoJSON;
 	}
 
 	private getBounds(geoJSON: FeatureCollection<Point>): LngLatBounds {
@@ -136,6 +126,13 @@ export class UserMapComponent implements AfterViewInit, DoCheck {
 		});
 
 		return bounds;
+	}
+
+	private setMapBounds(geoJSON: FeatureCollection<Point>): void {
+		const bounds = this.getBounds(geoJSON);
+		if (bounds.isEmpty()) return;
+
+		this._map.fitBounds(bounds, { padding: 100 });
 	}
 
 	private addUsersToMap(): void {

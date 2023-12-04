@@ -26,7 +26,7 @@ import { LngLatBounds } from "maplibre-gl";
 	templateUrl: "./activation-path-map.component.html",
 	styleUrls: [
 		"./activation-path-map.component.scss",
-		"../../../../node_modules/maplibre-gl/dist/maplibre-gl.css",
+		//"../../../../node_modules/maplibre-gl/dist/maplibre-gl.css",
 	],
 	standalone: true,
 })

@@ -21,7 +21,7 @@ import { objectToGeoJSONPointFeature } from "src/app/utilities/geoUtilities";
 	templateUrl: "./user-map.component.html",
 	styleUrls: [
 		"./user-map.component.scss",
-		"../../../../node_modules/maplibre-gl/dist/maplibre-gl.css",
+		//"../../../../node_modules/maplibre-gl/dist/maplibre-gl.css",
 	],
 	standalone: true,
 })

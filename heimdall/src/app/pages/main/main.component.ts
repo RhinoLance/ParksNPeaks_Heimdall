@@ -6,11 +6,11 @@ import { RaysDirective } from "../../directives/rays.directive";
 import { AppRouter, RoutePath } from "src/app/services/AppRountingService";
 import { NgbDropdownModule } from "@ng-bootstrap/ng-bootstrap";
 import { ConnectionStatusComponent } from "src/app/components/connection-status/connection-status.component";
-import { HeimdallSignalrService } from "src/app/services/HeimdallSignalRService";
 
 import { NAVIGATOR } from "@ng-web-apis/common";
 import { SettingsKey, SettingsService } from "src/app/services/SettingsService";
-import { LatLng } from "src/app/models/LatLng";
+import { RealTimeUserService } from "src/app/services/RealTimeUserService";
+import { randomisePoint } from "src/app/utilities/geoUtilities";
 
 @Component({
 	selector: "pph-root",
@@ -34,11 +34,11 @@ export class MainComponent {
 
 	public constructor(
 		private _appRouter: AppRouter,
-		private _heimdallSignalRSvc: HeimdallSignalrService,
+		private _realtimeUserSvc: RealTimeUserService,
 		@Inject(NAVIGATOR) private _navigator: Navigator,
 		private _settingsSvc: SettingsService
 	) {
-		_heimdallSignalRSvc.connectionStateChanged.subscribe((isConnected) => {
+		_realtimeUserSvc.connectionStateChanged.subscribe((isConnected) => {
 			if (isConnected) {
 				this.setUserAnalytics();
 			}
@@ -62,14 +62,17 @@ export class MainComponent {
 		};
 
 		const position = await getPosition();
+		const latLng = randomisePoint(
+			position.coords.latitude,
+			position.coords.longitude,
+			2000
+		);
+
 		const userName = this._settingsSvc.get<string>(
 			SettingsKey.PNP_USERNAME
 		) as string;
 
-		this._heimdallSignalRSvc.updateUserDetails(
-			userName,
-			new LatLng(position.coords.latitude, position.coords.longitude)
-		);
+		this._realtimeUserSvc.updateUserDetails(userName, latLng);
 	}
 }
 

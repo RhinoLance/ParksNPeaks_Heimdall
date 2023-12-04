@@ -14,7 +14,7 @@ import { Subject, debounceTime, timer } from "rxjs";
 import { MapLibreBuilder } from "src/app/models/MapLibreBuilder";
 
 import { HubUser } from "src/app/services/HeimdallSignalRService";
-import { objectToGeoJSONPointFeature } from "src/app/utilities/geoJSONUtilities";
+import { objectToGeoJSONPointFeature } from "src/app/utilities/geoUtilities";
 
 @Component({
 	selector: "pph-user-map",

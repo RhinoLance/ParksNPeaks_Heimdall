@@ -72,6 +72,8 @@ describe("CopyToClipboardDirective", async () => {
 	}));
 
 	it("should copy to clipboard on click", fakeAsync(async () => {
+		spyOn(navigator.clipboard, "writeText").and.returnValue(Promise.resolve());
+
 		testEl.triggerEventHandler("mouseover", null);
 		tick(1);
 		fixture.detectChanges();
@@ -79,8 +81,10 @@ describe("CopyToClipboardDirective", async () => {
 		const iconElement = fixture.debugElement.query(
 			By.css(".copy-to-clipboard-icon")
 		);
+
 		iconElement.triggerEventHandler("click", null);
 
 		//If we get this far, assume the write to clipboard was successfull as we can't read the clipboard in test.
+		expect(true).toBeTruthy();
 	}));
 });

@@ -28,17 +28,15 @@ describe("Callsign", () => {
 		});
 	});
 
-	it("Throws on invalid callsign", () => {
+	it("Uses whole callsign as roon on invalid callsign", () => {
 		// Arrange
-		const callsign = "VK0AA/VK3/P";
+		const callString = "VK0AA/VK3/P";
 
 		// Act
-		const act = () => {
-			return new Callsign(callsign);
-		};
+		const callsign = new Callsign(callString);
 
 		// Assert
-		expect(act).toThrow();
+		expect(callsign.root).toEqual(callString);
 	});
 
 	it("provicdes a toString() method", () => {

@@ -18,7 +18,12 @@ export class Callsign {
 	public constructor(public callsign: string) {
 		if (callsign == "") return;
 
-		this.extractParts(callsign);
+		try{
+			this.extractParts(callsign);
+		}
+		catch (e) {
+			this._root = callsign;
+		}
 	}
 
 	public toString(): string {

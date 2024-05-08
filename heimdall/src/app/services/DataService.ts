@@ -4,7 +4,7 @@ import { Observable, Subject, tap } from "rxjs";
 import { Activation } from "../models/Activation";
 import { PnPClientService, PostResponse } from "./PnPHttpClient.service";
 import { Spot } from "../models/Spot";
-import { SettingsKey, SettingsService } from "./SettingsService";
+import { SettingsService } from "./SettingsService";
 import { ActivationAward } from "../models/ActivationAward";
 import { AwardScheme } from "../models/AwardScheme";
 import { Site } from "../models/Site";

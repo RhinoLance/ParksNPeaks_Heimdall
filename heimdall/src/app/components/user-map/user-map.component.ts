@@ -6,11 +6,9 @@ import {
 	Input,
 	ViewChild,
 } from "@angular/core";
-import { rotateOutUpRightOnLeaveAnimation } from "angular-animations";
 import { FeatureCollection, Point, Position } from "geojson";
-import { GeoJSONSource, LngLat, LngLatBounds } from "maplibre-gl";
+import { GeoJSONSource, LngLatBounds } from "maplibre-gl";
 import { Subject, debounceTime, merge, timer } from "rxjs";
-import { LatLng } from "src/app/models/LatLng";
 import { MapLibreBuilder } from "src/app/models/MapLibreBuilder";
 
 import { HubUser } from "src/app/services/HeimdallSignalRService";

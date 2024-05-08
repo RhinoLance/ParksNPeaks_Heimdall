@@ -3,7 +3,7 @@ import { Component } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { AppRouter, RoutePath } from "src/app/services/AppRountingService";
 import { PnPUser } from "src/app/services/PnPHttpClient.service";
-import { SettingsKey, SettingsService } from "src/app/services/SettingsService";
+import { SettingsService } from "src/app/services/SettingsService";
 
 @Component({
 	selector: "pph-settings",

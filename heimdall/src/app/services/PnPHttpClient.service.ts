@@ -223,7 +223,7 @@ export class PnPClientService {
 		setPnPUser();
 
 		this._settingSvc.settingUpdated.subscribe((key) => {
-			if ((key = SettingsKey.PNP_USER)) {
+			if (key == SettingsKey.PNP_USER) {
 				setPnPUser();
 			}
 		});

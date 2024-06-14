@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "An interface to the Parks 'n Peaks website.",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepare": "husky install"
@@ -19,5 +20,8 @@
   "homepage": "https://github.com/RhinoLance/ParksNPeaks_Heimdall#readme",
   "devDependencies": {
     "husky": "^8.0.0"
+  },
+  "dependencies": {
+    "@types/node": "^20.10.3"
   }
 }

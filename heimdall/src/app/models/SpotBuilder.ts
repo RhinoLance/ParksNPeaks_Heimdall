@@ -1,3 +1,4 @@
+import { AwardSchemeParser } from "../classes/awardSchemeParser";
 import { ActivationAward } from "./ActivationAward";
 import { AwardScheme } from "./AwardScheme";
 import { Callsign } from "./Callsign";
@@ -56,6 +57,10 @@ export class SpotBuilder {
 				retVal.push(new ActivationAward(altAward, altSiteId));
 			}
 		}
+
+		const commentAwards = new AwardSchemeParser(pnpSpot.actComments).parse();
+		const locationAwards = new AwardSchemeParser(pnpSpot.altLocation).parse();
+		retVal.push(...commentAwards, ...locationAwards);
 
 		return retVal;
 	}

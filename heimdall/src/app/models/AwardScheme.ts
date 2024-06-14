@@ -31,4 +31,4 @@ const regexVkff = /VKFF-\d{4}/i;
 const regexZlff = /ZLFF-\d{4}/i;
 const regexPota = /(?:AU|NZ)-\d{4}/i;
 
-export {regexPota, regexSota, regexVkff, regexZlff}
+export { regexPota, regexSota, regexVkff, regexZlff };

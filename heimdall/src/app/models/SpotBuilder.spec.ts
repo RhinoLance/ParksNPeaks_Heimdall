@@ -224,7 +224,8 @@ describe("SpotBuilder", () => {
 				altClass: "",
 				actLocation: "VK4/SE-114",
 				altLocation: "",
-				actComments: "Cq @1030 local time also VKFF-1234 and AU-1234 *[iPnP] [VK3WMD]",
+				actComments:
+					"Cq @1030 local time also VKFF-1234 and AU-1234 *[iPnP] [VK3WMD]",
 				actSpoter: "VK3WMD",
 				WWFFid: "VKFF-0344",
 			};

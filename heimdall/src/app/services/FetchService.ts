@@ -20,6 +20,19 @@ export class FetchService {
 		return this._deps.fromFetch(url, request);
 	}
 
+	public getPromise<T>(url: string, request: RequestInit): Promise<T> {
+		return new Promise((resolve, reject) => {
+			this.get<T>(url, request).subscribe({
+				next: (data: T) => {
+					return resolve(data);
+				},
+				error: (err: unknown) => {
+					return reject("Caught: " + err);
+				},
+			});
+		});
+	}
+
 	public getJsonPromise<T>(url: string, request: RequestInit): Promise<T> {
 		return new Promise((resolve, reject) => {
 			this.getJson<T>(url, request).subscribe({
@@ -31,6 +44,15 @@ export class FetchService {
 				},
 			});
 		});
+	}
+
+	public get<T>(url: string, request: RequestInit): Observable<T> {
+		const requestInit = {
+			selector: (response: Response) => response,
+		};
+		Object.assign(requestInit, request);
+
+		return this._deps.fromFetch(url, requestInit);
 	}
 
 	public getJson<T>(url: string, request: RequestInit): Observable<T> {

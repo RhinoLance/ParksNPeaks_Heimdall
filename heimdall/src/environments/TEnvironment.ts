@@ -2,6 +2,7 @@ export type Environment = {
 	potaBaseHref: string;
 	pnpBaseHref: string;
 	zlotaBaseHref: string;
+	siotaBaseHref: string;
 	heimdallHubUrl: string;
 	pnpPollMinutesInterval: number;
 	production: boolean;

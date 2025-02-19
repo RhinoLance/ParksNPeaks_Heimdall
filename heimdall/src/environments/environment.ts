@@ -9,6 +9,7 @@ export const environment: Environment = {
 	production: false,
 	potaBaseHref: "https://api.pota.app/",
 	pnpBaseHref: "http://localhost:9000/?suffix=",
+	siotaBaseHref: "http://localhost:9000/siota/?suffix=",
 	zlotaBaseHref: "http://localhost:9000/zlota/?suffix=",
 	heimdallHubUrl: "http://heimdall.conryclan.com/heimdallHub",
 	//pnpBaseHref: "http://localhost:8080/pnp.spots.all.4.json/?suffix=",

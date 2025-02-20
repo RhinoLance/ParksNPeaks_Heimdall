@@ -7,6 +7,9 @@
 <section class="section">
 	<div class="container">
 		<div class="row">
+			<pph-spot-filter></pph-spot-filter>
+		</div>
+		<div class="row">
 			<pph-activation
 				*ngFor="let activation of viewState.activationList; index as cI"
 				[hidden]="activation.visibleState !== HideState.Visible"

@@ -6,13 +6,14 @@ import { RaysDirective } from "../../directives/rays.directive";
 import { DataService } from "src/app/services/DataService";
 import { AppRouter, RoutePath } from "src/app/services/AppRountingService";
 import { animate, style, transition, trigger } from "@angular/animations";
+import { SpotFilterComponent } from "src/app/components/spot-filter/spot-filter.component";
 
 @Component({
 	selector: "pph-spot-list",
 	templateUrl: "./spot-list.component.html",
 	styleUrls: ["./spot-list.component.scss"],
 	standalone: true,
-	imports: [CommonModule, RaysDirective, ActivationComponent],
+	imports: [CommonModule, RaysDirective, ActivationComponent, SpotFilterComponent],
 	animations: [
 		trigger("hideActivationAnimation", [
 			transition(":leave", [

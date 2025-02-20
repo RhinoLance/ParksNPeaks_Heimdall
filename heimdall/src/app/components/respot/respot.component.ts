@@ -20,7 +20,6 @@ import { finalize } from "rxjs";
 	selector: "pph-respot",
 	templateUrl: "./respot.component.html",
 	styleUrls: ["./respot.component.scss"],
-	standalone: true,
 	schemas: [CUSTOM_ELEMENTS_SCHEMA],
 	imports: [
 		CommonModule,

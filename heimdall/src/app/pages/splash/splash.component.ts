@@ -8,7 +8,6 @@ import { DataService } from "src/app/services/DataService";
 	selector: "pph-splash",
 	templateUrl: "./splash.component.html",
 	styleUrls: ["./splash.component.scss"],
-	standalone: true,
 	imports: [RaysDirective],
 })
 export class SplashComponent implements OnInit {

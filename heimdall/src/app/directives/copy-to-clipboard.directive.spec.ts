@@ -23,7 +23,6 @@ describe("CopyToClipboardDirective", async () => {
 				testing
 			</div>
 		`,
-		standalone: true,
 		imports: [CopyToClipboardDirective],
 	})
 	class TestComponent {

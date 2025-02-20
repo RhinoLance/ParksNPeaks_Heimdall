@@ -1,8 +1,6 @@
 import { CUSTOM_ELEMENTS_SCHEMA, Component, Inject } from "@angular/core";
 import { RouterOutlet } from "@angular/router";
 import packageJson from "../../../../package.json";
-import { NgIf } from "@angular/common";
-import { RaysDirective } from "../../directives/rays.directive";
 import { AppRouter, RoutePath } from "src/app/services/AppRountingService";
 import { NgbDropdownModule } from "@ng-bootstrap/ng-bootstrap";
 import { ConnectionStatusComponent } from "src/app/components/connection-status/connection-status.component";
@@ -16,15 +14,10 @@ import { randomisePoint } from "src/app/utilities/geoUtilities";
 	selector: "pph-root",
 	templateUrl: "./main.component.html",
 	styleUrls: ["./main.component.scss"],
-	standalone: true,
-	imports: [
-		RouterOutlet,
-		NgIf,
-		RaysDirective,
-		NgbDropdownModule,
-		ConnectionStatusComponent,
-	],
+	imports: [RouterOutlet, NgbDropdownModule, ConnectionStatusComponent],
 	schemas: [CUSTOM_ELEMENTS_SCHEMA],
+
+	standalone: true,
 })
 export class MainComponent {
 	public viewModel: ViewModel = {

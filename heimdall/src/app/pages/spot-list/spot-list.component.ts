@@ -12,13 +12,7 @@ import { SpotFilterComponent } from "src/app/components/spot-filter/spot-filter.
 	selector: "pph-spot-list",
 	templateUrl: "./spot-list.component.html",
 	styleUrls: ["./spot-list.component.scss"],
-	standalone: true,
-	imports: [
-		CommonModule,
-		RaysDirective,
-		ActivationComponent,
-		SpotFilterComponent,
-	],
+	imports: [CommonModule, ActivationComponent, SpotFilterComponent],
 	animations: [
 		trigger("hideActivationAnimation", [
 			transition(":leave", [
@@ -32,6 +26,7 @@ import { SpotFilterComponent } from "src/app/components/spot-filter/spot-filter.
 			]),
 		]),
 	],
+	standalone: true,
 })
 export class SpotListComponent implements OnInit {
 	public viewState: ViewState = {

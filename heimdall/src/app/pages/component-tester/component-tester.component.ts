@@ -7,7 +7,6 @@ import { LatLng } from "src/app/models/LatLng";
 	templateUrl: "./component-tester.component.html",
 	styleUrls: ["./component-tester.component.scss"],
 	imports: [ActivationPathMapComponent],
-	standalone: true,
 })
 export class ComponentTesterComponent {
 	public latLngStart = new LatLng(-42.8826, 147.3257);

@@ -4,7 +4,6 @@ import { RealTimeUserService } from "src/app/services/RealTimeUserService";
 
 @Component({
 	selector: "pph-connection-status",
-	standalone: true,
 	imports: [CommonModule],
 	templateUrl: "./connection-status.component.html",
 	styleUrls: ["./connection-status.component.scss"],

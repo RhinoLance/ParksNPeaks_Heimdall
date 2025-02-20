@@ -8,7 +8,6 @@ import { TimeagoModule } from "ngx-timeago";
 	selector: "pph-spot-history-card",
 	templateUrl: "./spot-history-card.component.html",
 	styleUrls: ["./spot-history-card.component.scss"],
-	standalone: true,
 	imports: [NgIf, NgClass, NgStyle, NgFor, ModeBadgeComponent, TimeagoModule],
 })
 export class SpotHistoryCardComponent implements OnInit {

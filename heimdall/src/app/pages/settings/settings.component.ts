@@ -9,7 +9,6 @@ import { SettingsService } from "src/app/services/SettingsService";
 	selector: "pph-settings",
 	templateUrl: "./settings.component.html",
 	styleUrls: ["./settings.component.scss"],
-	standalone: true,
 	imports: [CommonModule, FormsModule],
 })
 export class SettingsComponent {

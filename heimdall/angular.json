@@ -95,16 +95,16 @@
 					"builder": "@angular-devkit/build-angular:dev-server",
 					"configurations": {
 						"production": {
-							"browserTarget": "heimdall:build:production"
+							"buildTarget": "heimdall:build:production"
 						},
 						"live": {
-							"browserTarget": "heimdall:build:live"
+							"buildTarget": "heimdall:build:live"
 						},
 						"development": {
-							"browserTarget": "heimdall:build:development"
+							"buildTarget": "heimdall:build:development"
 						},
 						"localServer": {
-							"browserTarget": "heimdall:build:localServer"
+							"buildTarget": "heimdall:build:localServer"
 						}
 					},
 					"defaultConfiguration": "development"
@@ -112,7 +112,7 @@
 				"extract-i18n": {
 					"builder": "@angular-devkit/build-angular:extract-i18n",
 					"options": {
-						"browserTarget": "heimdall:build"
+						"buildTarget": "heimdall:build"
 					}
 				},
 				"test": {

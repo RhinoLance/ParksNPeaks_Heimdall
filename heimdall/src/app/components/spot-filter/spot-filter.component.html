@@ -1,58 +1,72 @@
 <div class="dropdown">
-	<button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-	  Mode
+	<button
+		class="btn btn-secondary dropdown-toggle"
+		type="button"
+		data-bs-toggle="dropdown"
+		aria-expanded="false"
+	>
+		Mode
 	</button>
 	<ul class="dropdown-menu">
-	  <li><a class="dropdown-item" href="#">AM</a></li>
-	  <li><a class="dropdown-item" href="#">CW</a></li>
-	  <li><a class="dropdown-item" href="#">Data</a></li>
-	  <li><a class="dropdown-item" href="#">FM</a></li>
-	  <li><a class="dropdown-item" href="#">SSB</a></li>
+		<li><a class="dropdown-item" href="#">AM</a></li>
+		<li><a class="dropdown-item" href="#">CW</a></li>
+		<li><a class="dropdown-item" href="#">Data</a></li>
+		<li><a class="dropdown-item" href="#">FM</a></li>
+		<li><a class="dropdown-item" href="#">SSB</a></li>
 	</ul>
 </div>
 
 <div class="dropdown">
-	<button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-	  Band
+	<button
+		class="btn btn-secondary dropdown-toggle"
+		type="button"
+		data-bs-toggle="dropdown"
+		aria-expanded="false"
+	>
+		Band
 	</button>
 	<ul class="dropdown-menu">
 		<li>
 			<div class="form-check">
-				<input type="checkbox" class="form-check-input" id="dropdownCheck">
+				<input type="checkbox" class="form-check-input" id="dropdownCheck" />
 				<label class="form-check-label" for="dropdownCheck">
-				  Remember me
+					Remember me
 				</label>
-			  </div>
+			</div>
 		</li>
-	  <li><a class="dropdown-item" href="#">160 m</a></li>
-	  <li><a class="dropdown-item" href="#">80 m</a></li>
-	  <li><a class="dropdown-item" href="#">40 m</a></li>
-	  <li><a class="dropdown-item" href="#">30 m</a></li>
-	  <li><a class="dropdown-item" href="#">20 m</a></li>
-	  <li><a class="dropdown-item" href="#">17 m</a></li>
-	  <li><a class="dropdown-item" href="#">15 m</a></li>
-	  <li><a class="dropdown-item" href="#">12 m</a></li>
-	  <li><a class="dropdown-item" href="#">10 m</a></li>
-	  <li><hr class="dropdown-divider"></li>
-	  <li><a class="dropdown-item" href="#">6 m</a></li>
-	  <li><a class="dropdown-item" href="#">2 m</a></li>
-	  <li><a class="dropdown-item" href="#">70 cm</a></li>
-	  <li><hr class="dropdown-divider"></li>
-	  <li><a class="dropdown-item" href="#">Microwave</a></li>
+		<li><a class="dropdown-item" href="#">160 m</a></li>
+		<li><a class="dropdown-item" href="#">80 m</a></li>
+		<li><a class="dropdown-item" href="#">40 m</a></li>
+		<li><a class="dropdown-item" href="#">30 m</a></li>
+		<li><a class="dropdown-item" href="#">20 m</a></li>
+		<li><a class="dropdown-item" href="#">17 m</a></li>
+		<li><a class="dropdown-item" href="#">15 m</a></li>
+		<li><a class="dropdown-item" href="#">12 m</a></li>
+		<li><a class="dropdown-item" href="#">10 m</a></li>
+		<li><hr class="dropdown-divider" /></li>
+		<li><a class="dropdown-item" href="#">6 m</a></li>
+		<li><a class="dropdown-item" href="#">2 m</a></li>
+		<li><a class="dropdown-item" href="#">70 cm</a></li>
+		<li><hr class="dropdown-divider" /></li>
+		<li><a class="dropdown-item" href="#">Microwave</a></li>
 	</ul>
 </div>
 
 <div class="row">
 	<div class="col">
 		<div ngbDropdown class="d-inline-block">
-			<button type="button" class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>
+			<button
+				type="button"
+				class="btn btn-outline-primary"
+				id="dropdownBasic1"
+				ngbDropdownToggle
+			>
 				Toggle dropdown
 			</button>
 			<div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-				<button ngbDropdownItem><pph-mode-badge
-									class="mode"
-									[mode]="SpotMode.SSB"
-								></pph-mode-badge></span></button>
+				<button ngbDropdownItem>
+					<pph-mode-badge class="mode" [mode]="SpotMode.SSB"></pph-mode-badge>
+				</button>
 				<button ngbDropdownItem><span class="badge cw"></span></button>
 				<button ngbDropdownItem><span class="badge data"></span></button>
 				<button ngbDropdownItem><span class="badge fm"></span></button>
@@ -60,3 +74,4 @@
 			</div>
 		</div>
 	</div>
+</div>

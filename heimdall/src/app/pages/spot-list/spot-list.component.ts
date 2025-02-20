@@ -13,7 +13,12 @@ import { SpotFilterComponent } from "src/app/components/spot-filter/spot-filter.
 	templateUrl: "./spot-list.component.html",
 	styleUrls: ["./spot-list.component.scss"],
 	standalone: true,
-	imports: [CommonModule, RaysDirective, ActivationComponent, SpotFilterComponent],
+	imports: [
+		CommonModule,
+		RaysDirective,
+		ActivationComponent,
+		SpotFilterComponent,
+	],
 	animations: [
 		trigger("hideActivationAnimation", [
 			transition(":leave", [

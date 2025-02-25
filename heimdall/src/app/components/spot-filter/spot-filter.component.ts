@@ -5,6 +5,8 @@ import { SpotMode } from "src/app/models/SpotMode";
 import { ModeBadgeComponent } from "../mode-badge/mode-badge.component";
 import { FormsModule } from "@angular/forms";
 import { AwardScheme } from "src/app/models/AwardScheme";
+import { Bands, IFrequencyBand } from "src/app/models/Bands";
+import { SpotFilterService } from "src/app/services/SpotFilterService";
 
 @Component({
 	selector: "pph-spot-filter",
@@ -24,24 +26,21 @@ export class SpotFilterComponent {
 	];
 
 	public bandList: IBandFilterItem[] = [
-		{ name: "160m", kHz: 1800, checked: true },
-		{ name: "80m", kHz: 3500, checked: true },
-		{ name: "40m", kHz: 7000, checked: true },
-		{ name: "30m", kHz: 10100, checked: true },
-		{ name: "20m", kHz: 14000, checked: true },
-		{ name: "17m", kHz: 18068, checked: true },
-		{ name: "15m", kHz: 21000, checked: true },
-		{ name: "12m", kHz: 24890, checked: true },
-		{ name: "10m", kHz: 28000, checked: true },
-		{ name: "6m", kHz: 50000, checked: true },
-		{ name: "2m", kHz: 144000, checked: true },
-		{ name: "70cm", kHz: 432000, checked: true },
-		{ name: "23cm", kHz: 1296000, checked: true },
-		{ name: "13cm", kHz: 2300000, checked: true },
-		{ name: "9cm", kHz: 3456000, checked: true },
-		{ name: "6cm", kHz: 5760000, checked: true },
-		{ name: "3cm", kHz: 10368000, checked: true },
-		{ name: "Microwave", kHz: 24192000, checked: true },
+		{ band: Bands.m160, checked: true },
+		{ band: Bands.m80, checked: true },
+		{ band: Bands.m60, checked: true },
+		{ band: Bands.m40, checked: true },
+		{ band: Bands.m30, checked: true },
+		{ band: Bands.m20, checked: true },
+		{ band: Bands.m17, checked: true },
+		{ band: Bands.m15, checked: true },
+		{ band: Bands.m12, checked: true },
+		{ band: Bands.m10, checked: true },
+		{ band: Bands.m6, checked: true },
+		{ band: Bands.m4, checked: true },
+		{ band: Bands.m2, checked: true },
+		{ band: Bands.cm70, checked: true },
+		{ band: Bands.Microwave, checked: true },
 	];
 
 	public schemeList: ISchemeFilterItem[] = [
@@ -55,7 +54,7 @@ export class SpotFilterComponent {
 		{ name: "Other", scheme: undefined, checked: true },
 	];
 
-	public filterState = {
+	public filterState: IFilterState = {
 		mode: {
 			active: false,
 		},
@@ -67,30 +66,97 @@ export class SpotFilterComponent {
 		},
 	};
 
-	public updateFilterState(list: IChecked[]) {
-		this.filterState.mode.active = this.hasUnChecked(list);
+	/**
+	 *
+	 */
+	constructor(private _spotFilterSvc: SpotFilterService) {
+		this.loadFilters();
+	}
+
+	public loadFilters() {
+		// Load Mode Filters
+		if (this._spotFilterSvc.spotModes.length > 0) {
+			this.clearAllItems(this.modeList);
+
+			this._spotFilterSvc.spotModes.map((x) => {
+				const item = this.modeList.find((y) => y.mode == x);
+				if (item) item.checked = true;
+			});
+
+			this.updateFilterState(this.modeList, this.filterState.mode);
+		}
+
+		// Load Band Filters
+		if (this._spotFilterSvc.bands.length > 0) {
+			this.clearAllItems(this.bandList);
+
+			this._spotFilterSvc.bands.map((x) => {
+				const item = this.bandList.find((y) => y.band.name == x.name);
+				if (item) item.checked = true;
+			});
+
+			this.updateFilterState(this.bandList, this.filterState.band);
+		}
+
+		// Load Scheme Filters
+		if (this._spotFilterSvc.awardSchemes.length > 0) {
+			this.clearAllItems(this.schemeList);
+
+			this._spotFilterSvc.awardSchemes.map((x) => {
+				const item = this.schemeList.find((y) => y.scheme == x);
+				if (item) item.checked = true;
+			});
+
+			this.updateFilterState(this.schemeList, this.filterState.scheme);
+		}
+	}
+
+	public updateFilterState(list: IChecked[], state: IFilterStateItem) {
+		state.active = this.hasUnChecked(list);
 	}
 
 	public updateModeFilter(isOpen: boolean) {
 		if (isOpen) return;
 
-		this.updateFilterState(this.modeList);
+		this.updateFilterState(this.modeList, this.filterState.mode);
+
+		const list = this.hasUnChecked(this.modeList)
+			? this.modeList.filter((x) => x.checked).map((x) => x.mode)
+			: [];
+
+		this._spotFilterSvc.setSpotModes(list);
 	}
 
 	public updateBandFilter(isOpen: boolean) {
 		if (isOpen) return;
 
-		this.updateFilterState(this.bandList);
+		this.updateFilterState(this.bandList, this.filterState.band);
+
+		const list = this.hasUnChecked(this.bandList)
+			? this.bandList.filter((x) => x.checked).map((x) => x.band)
+			: [];
+
+		this._spotFilterSvc.setBands(list);
 	}
 
 	public updateSchemeFilter(isOpen: boolean) {
 		if (isOpen) return;
 
-		this.updateFilterState(this.schemeList);
+		this.updateFilterState(this.schemeList, this.filterState.scheme);
+
+		const list = this.hasUnChecked(this.schemeList)
+			? this.schemeList.filter((x) => x.checked).map((x) => x.scheme)
+			: [];
+
+		this._spotFilterSvc.setAwardSchemes(list);
 	}
 
-	public hasUnChecked(list: IChecked[]) {
+	private hasUnChecked(list: IChecked[]) {
 		return list.some((x) => !x.checked);
+	}
+
+	private clearAllItems(list: IChecked[]) {
+		list.forEach((x) => (x.checked = false));
 	}
 }
 
@@ -101,10 +167,18 @@ interface IModeFilterItem extends IChecked {
 	mode: SpotMode;
 }
 interface IBandFilterItem extends IChecked {
-	name: string;
-	kHz: number;
+	band: IFrequencyBand;
 }
 interface ISchemeFilterItem extends IChecked {
 	name: string;
 	scheme: AwardScheme;
+}
+
+interface IFilterState {
+	mode: IFilterStateItem;
+	band: IFilterStateItem;
+	scheme: IFilterStateItem;
+}
+interface IFilterStateItem {
+	active: boolean;
 }

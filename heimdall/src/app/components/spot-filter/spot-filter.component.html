@@ -54,10 +54,10 @@
 				<button ngbDropdownItem>
 					<input
 						type="checkbox"
-						id="band-{{ item.name }}"
+						id="band-{{ item.band.name }}"
 						[(ngModel)]="item.checked"
 					/>
-					{{ item.name }}
+					{{ item.band.name }}
 				</button>
 				}
 			</div>

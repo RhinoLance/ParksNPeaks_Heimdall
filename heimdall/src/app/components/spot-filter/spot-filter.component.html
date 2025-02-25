@@ -1,74 +1,97 @@
-<div class="dropdown">
-	<button
-		class="btn btn-secondary dropdown-toggle"
-		type="button"
-		data-bs-toggle="dropdown"
-		aria-expanded="false"
+<div class="btn-group me-3">
+	<div
+		class="btn-group"
+		ngbDropdown
+		role="group"
+		[autoClose]="false"
+		(openChange)="updateModeFilter($event)"
 	>
-		Mode
-	</button>
-	<ul class="dropdown-menu">
-		<li><a class="dropdown-item" href="#">AM</a></li>
-		<li><a class="dropdown-item" href="#">CW</a></li>
-		<li><a class="dropdown-item" href="#">Data</a></li>
-		<li><a class="dropdown-item" href="#">FM</a></li>
-		<li><a class="dropdown-item" href="#">SSB</a></li>
-	</ul>
-</div>
-
-<div class="dropdown">
-	<button
-		class="btn btn-secondary dropdown-toggle"
-		type="button"
-		data-bs-toggle="dropdown"
-		aria-expanded="false"
-	>
-		Band
-	</button>
-	<ul class="dropdown-menu">
-		<li>
-			<div class="form-check">
-				<input type="checkbox" class="form-check-input" id="dropdownCheck" />
-				<label class="form-check-label" for="dropdownCheck">
-					Remember me
-				</label>
-			</div>
-		</li>
-		<li><a class="dropdown-item" href="#">160 m</a></li>
-		<li><a class="dropdown-item" href="#">80 m</a></li>
-		<li><a class="dropdown-item" href="#">40 m</a></li>
-		<li><a class="dropdown-item" href="#">30 m</a></li>
-		<li><a class="dropdown-item" href="#">20 m</a></li>
-		<li><a class="dropdown-item" href="#">17 m</a></li>
-		<li><a class="dropdown-item" href="#">15 m</a></li>
-		<li><a class="dropdown-item" href="#">12 m</a></li>
-		<li><a class="dropdown-item" href="#">10 m</a></li>
-		<li><hr class="dropdown-divider" /></li>
-		<li><a class="dropdown-item" href="#">6 m</a></li>
-		<li><a class="dropdown-item" href="#">2 m</a></li>
-		<li><a class="dropdown-item" href="#">70 cm</a></li>
-		<li><hr class="dropdown-divider" /></li>
-		<li><a class="dropdown-item" href="#">Microwave</a></li>
-	</ul>
-</div>
-
-<div class="row">
-	<div class="col">
-		<div ngbDropdown class="d-inline-block">
-			<button
-				type="button"
-				class="btn btn-outline-primary"
-				id="dropdownBasic1"
-				ngbDropdownToggle
-			>
-				Toggle dropdown
-			</button>
+		<button
+			type="button"
+			class="btn"
+			[class]="
+				filterState.mode.active ? 'btn-secondary' : 'btn-outline-secondary'
+			"
+			ngbDropdownToggle
+		>
+			Mode
+		</button>
+		<div class="dropdown-menu" ngbDropdownMenu>
 			<div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-				<button ngbDropdownItem></button>
-				<button ngbDropdownItem><span class="badge cw"></span></button>
-				<button ngbDropdownItem><span class="badge data"></span></button>
-				<button ngbDropdownItem><span class="badge fm"></span></button>
-				<button ngbDropdownItem><span class="badge ssb"></span></button>
+				@for (item of modeList; track $index) {
+				<button ngbDropdownItem>
+					<input
+						type="checkbox"
+						id="mode-{{ item.mode }}"
+						[(ngModel)]="item.checked"
+					/>
+					<pph-mode-badge [mode]="item.mode"></pph-mode-badge>
+				</button>
+				}
+			</div>
+		</div>
+	</div>
+	<div
+		class="btn-group"
+		ngbDropdown
+		role="group"
+		[autoClose]="false"
+		(openChange)="updateBandFilter($event)"
+	>
+		<button
+			type="button"
+			class="btn"
+			[class]="
+				filterState.band.active ? 'btn-secondary' : 'btn-outline-secondary'
+			"
+			ngbDropdownToggle
+		>
+			Band
+		</button>
+		<div class="dropdown-menu" ngbDropdownMenu>
+			<div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+				@for (item of bandList; track $index) {
+				<button ngbDropdownItem>
+					<input
+						type="checkbox"
+						id="band-{{ item.name }}"
+						[(ngModel)]="item.checked"
+					/>
+					{{ item.name }}
+				</button>
+				}
+			</div>
+		</div>
+	</div>
+	<div
+		class="btn-group"
+		ngbDropdown
+		role="group"
+		[autoClose]="false"
+		(openChange)="updateSchemeFilter($event)"
+	>
+		<button
+			type="button"
+			class="btn"
+			[class]="
+				filterState.scheme.active ? 'btn-secondary' : 'btn-outline-secondary'
+			"
+			ngbDropdownToggle
+		>
+			Scheme
+		</button>
+		<div class="dropdown-menu" ngbDropdownMenu>
+			<div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+				@for (item of schemeList; track $index) {
+				<button ngbDropdownItem>
+					<input
+						type="checkbox"
+						id="scheme-{{ item.scheme }}"
+						[(ngModel)]="item.checked"
+					/>
+					{{ item.name }}
+				</button>
+				}
 			</div>
 		</div>
 	</div>

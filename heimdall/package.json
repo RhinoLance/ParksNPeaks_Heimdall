@@ -1,6 +1,6 @@
 {
 	"name": "heimdall",
-	"version": "1.6.0",
+	"version": "1.6.1",
 	"buildVersion": "",
 	"scripts": {
 		"ng": "ng",

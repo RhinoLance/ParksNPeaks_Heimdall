@@ -1,10 +1,4 @@
-import {
-	AfterViewInit,
-	Component,
-	ElementRef,
-	OnInit,
-	ViewChild,
-} from "@angular/core";
+import { AfterViewInit, Component, ViewChild } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { NgbDropdown, NgbDropdownModule } from "@ng-bootstrap/ng-bootstrap";
 import { SpotMode } from "src/app/models/SpotMode";
@@ -13,7 +7,6 @@ import { FormsModule } from "@angular/forms";
 import { AwardScheme } from "src/app/models/AwardScheme";
 import { Band } from "src/app/models/Band";
 import { SpotFilterService } from "src/app/services/SpotFilterService";
-import { TmplAstUnknownBlock } from "@angular/compiler";
 
 @Component({
 	selector: "pph-spot-filter",
@@ -81,6 +74,10 @@ export class SpotFilterComponent implements AfterViewInit {
 	 */
 	public constructor(private _spotFilterSvc: SpotFilterService) {
 		this.loadFilters();
+
+		this._spotFilterSvc.filterUpdated.subscribe((filterType) => {
+			this.loadFilters();
+		});
 	}
 
 	public ngAfterViewInit() {
@@ -107,16 +104,18 @@ export class SpotFilterComponent implements AfterViewInit {
 		];
 
 		filters.map((v) => {
-			if (v.filter.length > 0) {
-				this.clearAllItems(v.list);
+			if (v.filter.length === 0) {
+				this.setAllItems(v.list, true);
+			} else {
+				this.setAllItems(v.list, false);
 
 				v.filter.map((x) => {
 					const item = v.list.find((y) => y.key == x);
 					if (item) item.checked = true;
 				});
-
-				this.updateFilterState(v.list, v.filterState);
 			}
+
+			this.updateFilterState(v.list, v.filterState);
 		});
 	}
 
@@ -125,6 +124,10 @@ export class SpotFilterComponent implements AfterViewInit {
 		const filterList = hasUnchecked
 			? list.filter((x) => x.checked).map((x) => x.key)
 			: [];
+
+		if (filterList.length === 0) {
+			filterList.push({ key: "___DUMMY___" });
+		}
 
 		let filterState: IFilterStateItem;
 
@@ -184,8 +187,8 @@ export class SpotFilterComponent implements AfterViewInit {
 		return list.some((x) => !x.checked);
 	}
 
-	private clearAllItems(list: IChecked[]) {
-		list.forEach((x) => (x.checked = false));
+	private setAllItems(list: IChecked[], checked: boolean) {
+		list.forEach((x) => (x.checked = checked));
 	}
 
 	private configToggleDrops() {

@@ -131,6 +131,7 @@ export class SpotListComponent implements OnInit {
 		if (this._spotFilterSvc.bands.length > 0) {
 			const isInBand = this._spotFilterSvc.bands.some((band) => {
 				const bandDef = frequencyBands.find((v) => v.band == band);
+				if (bandDef == undefined) return false;
 				return (
 					latestSpot.frequency >= bandDef.lower &&
 					latestSpot.frequency <= bandDef.upper

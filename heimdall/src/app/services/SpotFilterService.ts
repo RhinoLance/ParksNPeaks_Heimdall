@@ -48,6 +48,15 @@ export class SpotFilterService {
 		this.filterUpdated.next(FilterType.Bands);
 	}
 
+	public clearFilters(): void {
+		this._awardSchemes = [];
+		this._spotModes = [];
+		this._bands = [];
+		this.filterUpdated.next(FilterType.Schemes);
+		this.filterUpdated.next(FilterType.Modes);
+		this.filterUpdated.next(FilterType.Bands);
+	}
+
 	private loadFilters(): void {
 		const data = this._storageSvc.load<IStorageModel>("spotFilter");
 

@@ -8,6 +8,20 @@
 	<div class="connection-status">
 		<pph-connection-status></pph-connection-status>
 	</div>
+	<div
+		class="filter-status"
+		[class]="viewModel.filterIsActive ? 'active' : 'inactive'"
+	>
+		@if( viewModel.filterIsActive ){
+		<iconify-icon
+			icon="meteor-icons:filter"
+			width="24"
+			height="24"
+			ngbTooltip="Clear filters"
+			(click)="clearFilters()"
+		></iconify-icon>
+		}
+	</div>
 	<div ngbDropdown class="d-inline-block" dropdownClass="settings-ddl">
 		<div class="ddl-toggle" id="dropdownBasic1" ngbDropdownToggle>
 			<iconify-icon
@@ -22,9 +36,6 @@
 				(click)="settingsClick()"
 			>
 				Settings
-			</li>
-			<li ngbDropdownItem class="text-secondary fs-6 text">
-				Version {{ viewModel.version }}
 			</li>
 			<li ngbDropdownItem class="text-secondary fs-6 text">
 				<small>
@@ -52,7 +63,8 @@
 				<ul class="list-unstyled small">
 					<li class="mb-2">
 						Designed and built with love for the VK and ZL
-						<a href="https://parksnpeaks.org/">Parks 'n Peaks</a> community.
+						<a href="https://parksnpeaks.org/">Parks 'n Peaks</a> community by
+						Lance - VK7TO.
 					</li>
 					<li class="mb-2">
 						Code licensed
@@ -83,6 +95,7 @@
 							>GitHub Issues</a
 						>
 					</li>
+					<li class="mb-2">Version {{ viewModel.version }}</li>
 				</ul>
 			</div>
 			<div class="col-6 col-lg-2 mb-3"></div>

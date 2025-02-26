@@ -95,3 +95,17 @@ footer {
 		display: none;
 	}
 }
+
+.filter-status {
+	&:hover {
+		cursor: pointer;
+	}
+
+	&.active {
+		margin: 0 1em;
+	}
+
+	iconify-icon:hover {
+		transform: scale(1.2);
+	}
+}

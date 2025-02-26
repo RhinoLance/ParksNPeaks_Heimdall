@@ -8,6 +8,7 @@ import { animate, style, transition, trigger } from "@angular/animations";
 import { SpotFilterService } from "src/app/services/SpotFilterService";
 import { frequencyBands } from "src/app/models/Band";
 import { SpotFilterComponent } from "src/app/components/spot-filter/spot-filter.component";
+import { debounceTime } from "rxjs";
 
 @Component({
 	selector: "pph-spot-list",
@@ -51,7 +52,7 @@ export class SpotListComponent implements OnInit {
 			this.processActivationUpdates(v);
 		});
 
-		this._spotFilterSvc.filterUpdated.subscribe(() => {
+		this._spotFilterSvc.filterUpdated.pipe(debounceTime(400)).subscribe(() => {
 			this.processActivationUpdates(this._dataSvc.getActivations());
 		});
 	}

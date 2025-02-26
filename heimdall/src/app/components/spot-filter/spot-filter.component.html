@@ -1,11 +1,5 @@
 <div class="btn-group me-3">
-	<div
-		class="btn-group"
-		ngbDropdown
-		role="group"
-		[autoClose]="false"
-		(openChange)="updateModeFilter($event)"
-	>
+	<div class="btn-group" ngbDropdown role="group" [autoClose]="false">
 		<button
 			type="button"
 			class="btn"
@@ -22,22 +16,17 @@
 				<button ngbDropdownItem>
 					<input
 						type="checkbox"
-						id="mode-{{ item.mode }}"
+						id="mode-{{ item.key }}"
 						[(ngModel)]="item.checked"
+						(change)="selectionChanged(modeList)"
 					/>
-					<pph-mode-badge [mode]="item.mode"></pph-mode-badge>
+					<pph-mode-badge [mode]="item.key"></pph-mode-badge>
 				</button>
 				}
 			</div>
 		</div>
 	</div>
-	<div
-		class="btn-group"
-		ngbDropdown
-		role="group"
-		[autoClose]="false"
-		(openChange)="updateBandFilter($event)"
-	>
+	<div class="btn-group" ngbDropdown role="group" [autoClose]="false">
 		<button
 			type="button"
 			class="btn"
@@ -54,22 +43,17 @@
 				<button ngbDropdownItem>
 					<input
 						type="checkbox"
-						id="band-{{ item.band }}"
+						id="band-{{ item.key }}"
 						[(ngModel)]="item.checked"
+						(change)="selectionChanged(bandList)"
 					/>
-					{{ item.band }}
+					{{ item.key }}
 				</button>
 				}
 			</div>
 		</div>
 	</div>
-	<div
-		class="btn-group"
-		ngbDropdown
-		role="group"
-		[autoClose]="false"
-		(openChange)="updateSchemeFilter($event)"
-	>
+	<div class="btn-group" ngbDropdown role="group" [autoClose]="false">
 		<button
 			type="button"
 			class="btn"
@@ -82,14 +66,15 @@
 		</button>
 		<div class="dropdown-menu" ngbDropdownMenu>
 			<div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-				@for (item of schemeList; track $index) {
+				@for (item of awardSchemeList; track $index) {
 				<button ngbDropdownItem>
 					<input
 						type="checkbox"
-						id="scheme-{{ item.scheme }}"
+						id="scheme-{{ item.key }}"
 						[(ngModel)]="item.checked"
+						(change)="selectionChanged(awardSchemeList)"
 					/>
-					{{ item.name }}
+					{{ item.key }}
 				</button>
 				}
 			</div>

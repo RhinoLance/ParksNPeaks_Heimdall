@@ -65,7 +65,6 @@ describe("Spot", () => {
 			const spot = spotTemplate.clone();
 
 			// Act
-			spot.shortTime;
 			const result = spot.shortTime;
 
 			// Assert

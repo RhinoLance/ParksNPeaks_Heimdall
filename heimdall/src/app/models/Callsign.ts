@@ -20,7 +20,7 @@ export class Callsign {
 
 		try {
 			this.extractParts(callsign);
-		} catch (e) {
+		} catch (_) {
 			this._root = callsign;
 		}
 	}

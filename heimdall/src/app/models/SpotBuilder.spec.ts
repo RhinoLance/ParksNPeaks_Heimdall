@@ -90,7 +90,7 @@ describe("SpotBuilder", () => {
 
 			try {
 				builder.build();
-			} catch (e) {
+			} catch (_) {
 				threwError = true;
 			}
 

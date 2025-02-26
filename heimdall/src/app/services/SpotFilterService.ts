@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { AwardScheme } from "../models/AwardScheme";
 import { SpotMode } from "../models/SpotMode";
-import { IFrequencyBand } from "../models/Bands";
+import { Band } from "../models/Band";
 import { debounceTime, Subject } from "rxjs";
 import { StorageService } from "./StorageService";
 
@@ -11,7 +11,7 @@ import { StorageService } from "./StorageService";
 export class SpotFilterService {
 	private _awardSchemes: AwardScheme[] = [];
 	private _spotModes: SpotMode[] = [];
-	private _bands: IFrequencyBand[] = [];
+	private _bands: Band[] = [];
 
 	public get awardSchemes(): AwardScheme[] {
 		return this._awardSchemes;
@@ -19,34 +19,33 @@ export class SpotFilterService {
 	public get spotModes(): SpotMode[] {
 		return this._spotModes;
 	}
-	public get bands(): IFrequencyBand[] {
+	public get bands(): Band[] {
 		return this._bands;
 	}
 
-	public filtersChanged: Subject<FilterType> = new Subject<FilterType>();
-	private _pendingSave: Subject<void> = new Subject<void>();
+	public filterUpdated: Subject<FilterType> = new Subject<FilterType>();
 
 	/**
 	 *
 	 */
-	constructor(private _storageSvc: StorageService) {
+	public constructor(private _storageSvc: StorageService) {
 		this.configureSave();
 		this.loadFilters();
 	}
 
 	public setAwardSchemes(schemes: AwardScheme[]): void {
 		this._awardSchemes = schemes;
-		this.filtersChanged.next(FilterType.Schemes);
+		this.filterUpdated.next(FilterType.Schemes);
 	}
 
 	public setSpotModes(modes: SpotMode[]): void {
 		this._spotModes = modes;
-		this.filtersChanged.next(FilterType.Modes);
+		this.filterUpdated.next(FilterType.Modes);
 	}
 
-	public setBands(bands: IFrequencyBand[]): void {
+	public setBands(bands: Band[]): void {
 		this._bands = bands;
-		this.filtersChanged.next(FilterType.Bands);
+		this.filterUpdated.next(FilterType.Bands);
 	}
 
 	private loadFilters(): void {
@@ -60,7 +59,7 @@ export class SpotFilterService {
 	}
 
 	private configureSave(): void {
-		this.filtersChanged
+		this.filterUpdated
 			.pipe(debounceTime(1000))
 			.subscribe(() => this.saveFilters());
 	}
@@ -85,5 +84,5 @@ export enum FilterType {
 interface IStorageModel {
 	awardSchemes: AwardScheme[];
 	spotModes: SpotMode[];
-	bands: IFrequencyBand[];
+	bands: Band[];
 }

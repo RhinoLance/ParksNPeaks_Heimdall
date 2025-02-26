@@ -5,7 +5,7 @@ import { SpotMode } from "src/app/models/SpotMode";
 import { ModeBadgeComponent } from "../mode-badge/mode-badge.component";
 import { FormsModule } from "@angular/forms";
 import { AwardScheme } from "src/app/models/AwardScheme";
-import { Bands, IFrequencyBand } from "src/app/models/Bands";
+import { Band } from "src/app/models/Band";
 import { SpotFilterService } from "src/app/services/SpotFilterService";
 
 @Component({
@@ -26,21 +26,21 @@ export class SpotFilterComponent {
 	];
 
 	public bandList: IBandFilterItem[] = [
-		{ band: Bands.m160, checked: true },
-		{ band: Bands.m80, checked: true },
-		{ band: Bands.m60, checked: true },
-		{ band: Bands.m40, checked: true },
-		{ band: Bands.m30, checked: true },
-		{ band: Bands.m20, checked: true },
-		{ band: Bands.m17, checked: true },
-		{ band: Bands.m15, checked: true },
-		{ band: Bands.m12, checked: true },
-		{ band: Bands.m10, checked: true },
-		{ band: Bands.m6, checked: true },
-		{ band: Bands.m4, checked: true },
-		{ band: Bands.m2, checked: true },
-		{ band: Bands.cm70, checked: true },
-		{ band: Bands.Microwave, checked: true },
+		{ band: Band.M160, checked: true },
+		{ band: Band.M80, checked: true },
+		{ band: Band.M60, checked: true },
+		{ band: Band.M40, checked: true },
+		{ band: Band.M30, checked: true },
+		{ band: Band.M20, checked: true },
+		{ band: Band.M17, checked: true },
+		{ band: Band.M15, checked: true },
+		{ band: Band.M12, checked: true },
+		{ band: Band.M10, checked: true },
+		{ band: Band.M6, checked: true },
+		{ band: Band.M4, checked: true },
+		{ band: Band.M2, checked: true },
+		{ band: Band.CM70, checked: true },
+		{ band: Band.Microwave, checked: true },
 	];
 
 	public schemeList: ISchemeFilterItem[] = [
@@ -69,7 +69,7 @@ export class SpotFilterComponent {
 	/**
 	 *
 	 */
-	constructor(private _spotFilterSvc: SpotFilterService) {
+	public constructor(private _spotFilterSvc: SpotFilterService) {
 		this.loadFilters();
 	}
 
@@ -91,7 +91,7 @@ export class SpotFilterComponent {
 			this.clearAllItems(this.bandList);
 
 			this._spotFilterSvc.bands.map((x) => {
-				const item = this.bandList.find((y) => y.band.name == x.name);
+				const item = this.bandList.find((y) => y.band == x);
 				if (item) item.checked = true;
 			});
 
@@ -167,7 +167,7 @@ interface IModeFilterItem extends IChecked {
 	mode: SpotMode;
 }
 interface IBandFilterItem extends IChecked {
-	band: IFrequencyBand;
+	band: Band;
 }
 interface ISchemeFilterItem extends IChecked {
 	name: string;

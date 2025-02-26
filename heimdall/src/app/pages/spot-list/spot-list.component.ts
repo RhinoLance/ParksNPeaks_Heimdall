@@ -2,10 +2,11 @@ import { Component, OnInit } from "@angular/core";
 import { Activation, HideState } from "src/app/models/Activation";
 import { ActivationComponent } from "../../components/activation/activation.component";
 import { CommonModule } from "@angular/common";
-import { RaysDirective } from "../../directives/rays.directive";
 import { DataService } from "src/app/services/DataService";
 import { AppRouter, RoutePath } from "src/app/services/AppRountingService";
 import { animate, style, transition, trigger } from "@angular/animations";
+import { SpotFilterService } from "src/app/services/SpotFilterService";
+import { frequencyBands } from "src/app/models/Band";
 import { SpotFilterComponent } from "src/app/components/spot-filter/spot-filter.component";
 
 @Component({
@@ -38,7 +39,8 @@ export class SpotListComponent implements OnInit {
 
 	public constructor(
 		private _dataSvc: DataService,
-		private _routerSvc: AppRouter
+		private _routerSvc: AppRouter,
+		private _spotFilterSvc: SpotFilterService
 	) {}
 
 	public ngOnInit(): void {
@@ -47,6 +49,10 @@ export class SpotListComponent implements OnInit {
 
 		this._dataSvc.activationUpdated.subscribe((v) => {
 			this.processActivationUpdates(v);
+		});
+
+		this._spotFilterSvc.filterUpdated.subscribe(() => {
+			this.processActivationUpdates(this._dataSvc.getActivations());
 		});
 	}
 
@@ -82,7 +88,8 @@ export class SpotListComponent implements OnInit {
 
 			if (
 				activation.isDeleted ||
-				activation.visibleState != HideState.Visible
+				activation.visibleState != HideState.Visible ||
+				this.isActivationFilteredOut(activation)
 			) {
 				//It's removed
 				if (index > -1) {
@@ -109,6 +116,44 @@ export class SpotListComponent implements OnInit {
 				);
 			});
 		}
+	}
+
+	private isActivationFilteredOut(activation: Activation): boolean {
+		const latestSpot = activation.getLatestSpot();
+
+		if (this._spotFilterSvc.spotModes.length > 0) {
+			if (!this._spotFilterSvc.spotModes.includes(latestSpot.mode)) {
+				return true;
+			}
+		}
+
+		if (this._spotFilterSvc.bands.length > 0) {
+			const isInBand = this._spotFilterSvc.bands.some((band) => {
+				const bandDef = frequencyBands.find((v) => v.band == band);
+				return (
+					latestSpot.frequency >= bandDef.lower &&
+					latestSpot.frequency <= bandDef.upper
+				);
+			});
+
+			if (!isInBand) {
+				return true;
+			}
+		}
+
+		if (this._spotFilterSvc.awardSchemes.length > 0) {
+			const hasMatchingAward = this._spotFilterSvc.awardSchemes.some(
+				(scheme) => {
+					return activation.awardList.containsAward(scheme);
+				}
+			);
+
+			if (!hasMatchingAward) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 }
 

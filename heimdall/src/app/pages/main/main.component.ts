@@ -4,7 +4,6 @@ import packageJson from "../../../../package.json";
 import { AppRouter, RoutePath } from "src/app/services/AppRountingService";
 import {
 	NgbDropdownModule,
-	NgbTooltip,
 	NgbTooltipModule,
 } from "@ng-bootstrap/ng-bootstrap";
 import { ConnectionStatusComponent } from "src/app/components/connection-status/connection-status.component";
@@ -14,6 +13,7 @@ import { SettingsService } from "src/app/services/SettingsService";
 import { RealTimeUserService } from "src/app/services/RealTimeUserService";
 import { randomisePoint } from "src/app/utilities/geoUtilities";
 import { SpotFilterService } from "src/app/services/SpotFilterService";
+import { NotificationManagerComponent } from "src/app/components/notification-manager/notification-manager.component";
 
 @Component({
 	selector: "pph-root",
@@ -24,6 +24,7 @@ import { SpotFilterService } from "src/app/services/SpotFilterService";
 		NgbDropdownModule,
 		ConnectionStatusComponent,
 		NgbTooltipModule,
+		NotificationManagerComponent,
 	],
 	schemas: [CUSTOM_ELEMENTS_SCHEMA],
 
@@ -76,7 +77,7 @@ export class MainComponent {
 
 		setFilterStatus();
 
-		this._spotFilterSvc.filterUpdated.subscribe((filterType) => {
+		this._spotFilterSvc.filterUpdated.subscribe((_) => {
 			setFilterStatus();
 		});
 	}

@@ -1,0 +1,28 @@
+<div ngbDropdown class="d-inline-block" dropdownClass="ddl">
+	<div class="ddl-toggle" id="dropdownBasic1" ngbDropdownToggle>
+		@if (viewModel.alertSound !== AlertSound.None) {
+		<iconify-icon icon="mdi:bell-outline" width="24" height="24"></iconify-icon>
+		} @else{
+		<iconify-icon
+			icon="mdi:bell-off-outline"
+			width="24"
+			height="24"
+		></iconify-icon>
+		}
+	</div>
+	<ul ngbDropdownMenu aria-labelledby="dropdownBasic1">
+		@for( item of viewModel.soundOptions; track $index ) {
+		<li ngbDropdownItem (click)="setAlertSound(item)">
+			{{ item }}
+		</li>
+		}
+		<div class="dropdown-divider"></div>
+		<li ngbDropdownItem (click)="setAlertSound('None')">
+			<iconify-icon
+				icon="mdi:bell-off-outline"
+				width="20"
+				height="20"
+			></iconify-icon>
+		</li>
+	</ul>
+</div>

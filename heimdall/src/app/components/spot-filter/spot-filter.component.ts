@@ -16,9 +16,9 @@ import { SpotFilterService } from "src/app/services/SpotFilterService";
 	standalone: true,
 })
 export class SpotFilterComponent implements AfterViewInit {
-	@ViewChild("modeDrop") modeDrop: NgbDropdown;
-	@ViewChild("bandDrop") bandDrop: NgbDropdown;
-	@ViewChild("awardSchemeDrop") schemeDrop: NgbDropdown;
+	@ViewChild("modeDrop") private modeDrop: NgbDropdown;
+	@ViewChild("bandDrop") private bandDrop: NgbDropdown;
+	@ViewChild("awardSchemeDrop") private schemeDrop: NgbDropdown;
 
 	public modeList: IModeFilterItem[] = [
 		{ key: SpotMode.CW, checked: true },
@@ -75,7 +75,7 @@ export class SpotFilterComponent implements AfterViewInit {
 	public constructor(private _spotFilterSvc: SpotFilterService) {
 		this.loadFilters();
 
-		this._spotFilterSvc.filterUpdated.subscribe((filterType) => {
+		this._spotFilterSvc.filterUpdated.subscribe((_) => {
 			this.loadFilters();
 		});
 	}

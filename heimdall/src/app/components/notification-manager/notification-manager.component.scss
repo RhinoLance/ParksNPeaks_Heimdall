@@ -1,0 +1,15 @@
+.dropdown-toggle {
+	cursor: pointer;
+
+	&:hover {
+		transform: scale(1.2);
+	}
+
+	&::after {
+		display: none;
+	}
+}
+
+.dropdown-item {
+	cursor: pointer;
+}

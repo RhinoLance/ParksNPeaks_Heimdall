@@ -46,6 +46,7 @@
 		"bootstrap": "^5.2.3",
 		"geolib": "^3.3.4",
 		"maplibre-gl": "^3.6.2",
+		"morse-player": "^1.0.13",
 		"ng-animate": "^2.0.1",
 		"ngx-timeago": "^3.0.0",
 		"rxjs": "~7.5.0",

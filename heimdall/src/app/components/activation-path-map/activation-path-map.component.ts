@@ -7,19 +7,13 @@ import {
 	ViewChild,
 } from "@angular/core";
 import { LatLng } from "src/app/models/LatLng";
-import {
-	greatCircle,
-	distance,
-	LineString,
-	FeatureCollection,
-	Point,
-	along,
-} from "@turf/turf";
+import { greatCircle, distance, along } from "@turf/turf";
 import {
 	MapLibreBuilder,
 	defaultGlyfFonts,
 } from "src/app/models/MapLibreBuilder";
 import { LngLatBounds } from "maplibre-gl";
+import { FeatureCollection, LineString, Point } from "geojson";
 
 @Component({
 	selector: "pph-activation-path-map",

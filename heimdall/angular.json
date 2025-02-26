@@ -18,17 +18,19 @@
 			"prefix": "pph",
 			"architect": {
 				"build": {
-					"builder": "@angular-devkit/build-angular:browser",
+					"builder": "@angular-devkit/build-angular:application",
 					"options": {
-						"outputPath": "dist/heimdall",
+						"outputPath": {
+							"base": "dist/heimdall"
+						},
 						"index": "src/index.html",
-						"main": "src/main.ts",
-						"polyfills": "src/polyfills.ts",
+						"polyfills": ["src/polyfills.ts"],
 						"tsConfig": "tsconfig.app.json",
 						"inlineStyleLanguage": "scss",
 						"assets": ["src/favicon.ico", "src/assets"],
 						"styles": ["src/styles.scss"],
-						"scripts": []
+						"scripts": [],
+						"browser": "src/main.ts"
 					},
 					"configurations": {
 						"production": {
@@ -53,9 +55,7 @@
 							"outputHashing": "all"
 						},
 						"live": {
-							"buildOptimizer": false,
 							"optimization": false,
-							"vendorChunk": true,
 							"extractLicenses": false,
 							"sourceMap": true,
 							"namedChunks": true,
@@ -67,9 +67,7 @@
 							]
 						},
 						"localServer": {
-							"buildOptimizer": false,
 							"optimization": false,
-							"vendorChunk": true,
 							"extractLicenses": false,
 							"sourceMap": true,
 							"namedChunks": true,
@@ -81,9 +79,7 @@
 							]
 						},
 						"development": {
-							"buildOptimizer": false,
 							"optimization": false,
-							"vendorChunk": true,
 							"extractLicenses": false,
 							"sourceMap": true,
 							"namedChunks": true
@@ -95,16 +91,16 @@
 					"builder": "@angular-devkit/build-angular:dev-server",
 					"configurations": {
 						"production": {
-							"browserTarget": "heimdall:build:production"
+							"buildTarget": "heimdall:build:production"
 						},
 						"live": {
-							"browserTarget": "heimdall:build:live"
+							"buildTarget": "heimdall:build:live"
 						},
 						"development": {
-							"browserTarget": "heimdall:build:development"
+							"buildTarget": "heimdall:build:development"
 						},
 						"localServer": {
-							"browserTarget": "heimdall:build:localServer"
+							"buildTarget": "heimdall:build:localServer"
 						}
 					},
 					"defaultConfiguration": "development"
@@ -112,7 +108,7 @@
 				"extract-i18n": {
 					"builder": "@angular-devkit/build-angular:extract-i18n",
 					"options": {
-						"browserTarget": "heimdall:build"
+						"buildTarget": "heimdall:build"
 					}
 				},
 				"test": {

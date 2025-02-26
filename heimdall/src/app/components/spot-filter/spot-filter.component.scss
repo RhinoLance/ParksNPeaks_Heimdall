@@ -1,0 +1,19 @@
+.unchecked {
+	opacity: 0.25;
+}
+
+.filter-toggle {
+	margin: 5px;
+
+	&.active {
+		font-weight: bold;
+		color: #003049;
+	}
+
+	&.inactive {
+	}
+
+	&:hover {
+		cursor: pointer;
+	}
+}

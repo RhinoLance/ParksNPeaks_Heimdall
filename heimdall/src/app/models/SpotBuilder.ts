@@ -25,7 +25,8 @@ export class SpotBuilder {
 		const spot = new Spot();
 		spot.callsign = new Callsign(pnpSpot.actCallsign);
 		spot.frequency = this.parseFrequency(pnpSpot.actFreq);
-		spot.mode = SpotMode[pnpSpot.actMode as keyof typeof SpotMode];
+		spot.mode =
+			SpotMode[pnpSpot.actMode as keyof typeof SpotMode] ?? SpotMode.Other;
 		spot.spotter = pnpSpot.actSpoter;
 		spot.time = new Date(pnpSpot.actTime.replace(" ", "T") + "Z");
 		spot.type = SpotType.NotSet;

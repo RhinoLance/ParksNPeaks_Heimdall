@@ -41,7 +41,6 @@ import { CallsignNameComponent } from "../callsign-name/callsign-name.component"
 	selector: "pph-activation",
 	templateUrl: "./activation.component.html",
 	styleUrls: ["./activation.component.scss"],
-	standalone: true,
 	imports: [
 		CommonModule,
 		ModeBadgeComponent,
@@ -66,6 +65,7 @@ import { CallsignNameComponent } from "../callsign-name/callsign-name.component"
 			),
 		]),
 	],
+	standalone: true,
 })
 export class ActivationComponent implements OnInit {
 	@Input() public activation!: Activation;

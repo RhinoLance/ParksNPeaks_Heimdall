@@ -23,7 +23,6 @@ import { objectToGeoJSONPointFeature } from "src/app/utilities/geoUtilities";
 		//"../../../../node_modules/maplibre-gl/dist/maplibre-gl.css",
 	],
 	imports: [NgFor],
-	standalone: true,
 })
 export class UserMapComponent implements AfterViewInit {
 	@ViewChild("map") public mapEl!: ElementRef<HTMLElement>;

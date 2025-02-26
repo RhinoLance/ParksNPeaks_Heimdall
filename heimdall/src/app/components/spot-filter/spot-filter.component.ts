@@ -1,6 +1,12 @@
-import { Component } from "@angular/core";
+import {
+	AfterViewInit,
+	Component,
+	ElementRef,
+	OnInit,
+	ViewChild,
+} from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { NgbDropdownModule } from "@ng-bootstrap/ng-bootstrap";
+import { NgbDropdown, NgbDropdownModule } from "@ng-bootstrap/ng-bootstrap";
 import { SpotMode } from "src/app/models/SpotMode";
 import { ModeBadgeComponent } from "../mode-badge/mode-badge.component";
 import { FormsModule } from "@angular/forms";
@@ -16,7 +22,11 @@ import { TmplAstUnknownBlock } from "@angular/compiler";
 	styleUrls: ["./spot-filter.component.scss"],
 	standalone: true,
 })
-export class SpotFilterComponent {
+export class SpotFilterComponent implements AfterViewInit {
+	@ViewChild("modeDrop") modeDrop: NgbDropdown;
+	@ViewChild("bandDrop") bandDrop: NgbDropdown;
+	@ViewChild("awardSchemeDrop") schemeDrop: NgbDropdown;
+
 	public modeList: IModeFilterItem[] = [
 		{ key: SpotMode.CW, checked: true },
 		{ key: SpotMode.SSB, checked: true },
@@ -71,6 +81,10 @@ export class SpotFilterComponent {
 	 */
 	public constructor(private _spotFilterSvc: SpotFilterService) {
 		this.loadFilters();
+	}
+
+	public ngAfterViewInit() {
+		this.configToggleDrops();
 	}
 
 	public loadFilters() {
@@ -172,6 +186,23 @@ export class SpotFilterComponent {
 
 	private clearAllItems(list: IChecked[]) {
 		list.forEach((x) => (x.checked = false));
+	}
+
+	private configToggleDrops() {
+		this.modeDrop.openChange.subscribe((isOpen: boolean) => {
+			if (!isOpen) return;
+			[this.bandDrop, this.schemeDrop].map((x) => x.close());
+		});
+
+		this.bandDrop.openChange.subscribe((isOpen: boolean) => {
+			if (!isOpen) return;
+			[this.modeDrop, this.schemeDrop].map((x) => x.close());
+		});
+
+		this.schemeDrop.openChange.subscribe((isOpen: boolean) => {
+			if (!isOpen) return;
+			[this.modeDrop, this.bandDrop].map((x) => x.close());
+		});
 	}
 }
 

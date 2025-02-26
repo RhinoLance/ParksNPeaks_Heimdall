@@ -1,83 +1,86 @@
 <div class="btn-group me-3">
-	<div class="btn-group" ngbDropdown role="group" [autoClose]="false">
-		<button
-			type="button"
-			class="btn"
-			[class]="
-				filterState.mode.active ? 'btn-secondary' : 'btn-outline-secondary'
-			"
+	<div
+		class="btn-group"
+		ngbDropdown
+		role="group"
+		[autoClose]="false"
+		#modeDrop="ngbDropdown"
+	>
+		<div
+			class="filter-toggle"
+			[class]="filterState.mode.active ? 'active' : 'inactive'"
 			ngbDropdownToggle
 		>
 			Mode
-		</button>
+		</div>
 		<div class="dropdown-menu" ngbDropdownMenu>
-			<div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-				@for (item of modeList; track $index) {
-				<button ngbDropdownItem>
-					<input
-						type="checkbox"
-						id="mode-{{ item.key }}"
-						[(ngModel)]="item.checked"
-						(change)="selectionChanged(modeList)"
-					/>
-					<pph-mode-badge [mode]="item.key"></pph-mode-badge>
-				</button>
-				}
-			</div>
+			@for (item of modeList; track $index) {
+			<button ngbDropdownItem [class]="{ unchecked: !item.checked }">
+				<input
+					type="checkbox"
+					id="mode-{{ item.key }}"
+					[(ngModel)]="item.checked"
+					(change)="selectionChanged(modeList)"
+				/>
+				<pph-mode-badge [mode]="item.key"></pph-mode-badge>
+			</button>
+			}
 		</div>
 	</div>
-	<div class="btn-group" ngbDropdown role="group" [autoClose]="false">
-		<button
-			type="button"
-			class="btn"
-			[class]="
-				filterState.band.active ? 'btn-secondary' : 'btn-outline-secondary'
-			"
+	<div
+		class="btn-group"
+		ngbDropdown
+		role="group"
+		[autoClose]="false"
+		#bandDrop="ngbDropdown"
+	>
+		<div
+			class="filter-toggle"
+			[class]="filterState.band.active ? 'active' : 'inactive'"
 			ngbDropdownToggle
 		>
 			Band
-		</button>
+		</div>
 		<div class="dropdown-menu" ngbDropdownMenu>
-			<div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-				@for (item of bandList; track $index) {
-				<button ngbDropdownItem>
-					<input
-						type="checkbox"
-						id="band-{{ item.key }}"
-						[(ngModel)]="item.checked"
-						(change)="selectionChanged(bandList)"
-					/>
-					{{ item.key }}
-				</button>
-				}
-			</div>
+			@for (item of bandList; track $index) {
+			<button ngbDropdownItem [class]="{ unchecked: !item.checked }">
+				<input
+					type="checkbox"
+					id="band-{{ item.key }}"
+					[(ngModel)]="item.checked"
+					(change)="selectionChanged(bandList)"
+				/>
+				{{ item.key }}
+			</button>
+			}
 		</div>
 	</div>
-	<div class="btn-group" ngbDropdown role="group" [autoClose]="false">
-		<button
-			type="button"
-			class="btn"
-			[class]="
-				filterState.scheme.active ? 'btn-secondary' : 'btn-outline-secondary'
-			"
+	<div
+		class="btn-group"
+		ngbDropdown
+		role="group"
+		[autoClose]="false"
+		#awardSchemeDrop="ngbDropdown"
+	>
+		<div
+			class="filter-toggle"
+			[class]="filterState.scheme.active ? 'active' : 'inactive'"
 			ngbDropdownToggle
 		>
 			Scheme
-		</button>
+		</div>
 		<div class="dropdown-menu" ngbDropdownMenu>
-			<div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-				@for (item of awardSchemeList; track $index) {
-				<button ngbDropdownItem>
-					<input
-						type="checkbox"
-						id="scheme-{{ item.key }}"
-						[(ngModel)]="item.checked"
-						(change)="selectionChanged(awardSchemeList)"
-					/>
-					{{ item.key }}
-				</button>
-				}
-			</div>
+			@for (item of awardSchemeList; track $index) {
+			<button ngbDropdownItem [class]="{ unchecked: !item.checked }">
+				<input
+					type="checkbox"
+					id="scheme-{{ item.key }}"
+					[(ngModel)]="item.checked"
+					(change)="selectionChanged(awardSchemeList)"
+				/>
+				{{ item.key }}
+			</button>
+			}
 		</div>
 	</div>
 </div>

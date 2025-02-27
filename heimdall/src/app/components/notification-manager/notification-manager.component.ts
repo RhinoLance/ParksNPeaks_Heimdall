@@ -56,7 +56,7 @@ export class NotificationManagerComponent {
 	public setAlertSound(soundName: string) {
 		const sound = AlertSound[soundName as keyof typeof AlertSound];
 
-		this._notificationSvc.setAudioAlert(sound);
+		this._notificationSvc.setAlertSound(sound);
 		this.viewModel.alertSound = sound;
 
 		this.playTestSound();

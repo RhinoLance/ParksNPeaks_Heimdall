@@ -9,6 +9,7 @@ import { SpotFilterService } from "src/app/services/SpotFilterService";
 import { frequencyBands } from "src/app/models/Band";
 import { SpotFilterComponent } from "src/app/components/spot-filter/spot-filter.component";
 import { debounceTime } from "rxjs";
+import { NotificationService } from "src/app/services/NotificationService";
 
 @Component({
 	selector: "pph-spot-list",
@@ -31,6 +32,8 @@ import { debounceTime } from "rxjs";
 	standalone: true,
 })
 export class SpotListComponent implements OnInit {
+	private _hasHadInitialLoad = false;
+
 	public viewState: ViewState = {
 		activationList: [],
 		visibleActivationCount: 0,
@@ -41,7 +44,8 @@ export class SpotListComponent implements OnInit {
 	public constructor(
 		private _dataSvc: DataService,
 		private _routerSvc: AppRouter,
-		private _spotFilterSvc: SpotFilterService
+		private _spotFilterSvc: SpotFilterService,
+		private _notificationSvc: NotificationService
 	) {}
 
 	public ngOnInit(): void {
@@ -81,6 +85,7 @@ export class SpotListComponent implements OnInit {
 
 	private processActivationUpdates(activationList: Activation[]): void {
 		let sortRequired = false;
+		const notificationList: string[] = [];
 
 		activationList.map((activation) => {
 			const index = this.viewState.activationList.findIndex(
@@ -96,13 +101,16 @@ export class SpotListComponent implements OnInit {
 				if (index > -1) {
 					this.viewState.activationList.splice(index, 1);
 				}
-			} else if (index == -1) {
-				//It's added
-				this.viewState.activationList.push(activation);
-				sortRequired = true;
 			} else {
-				//It's updated
+				//It's added or updated
+
+				if (index == -1) {
+					//It's added
+					this.viewState.activationList.push(activation);
+				}
+
 				sortRequired = true;
+				notificationList.push(activation.getLatestSpot().mode.charAt(0));
 			}
 		});
 
@@ -117,6 +125,17 @@ export class SpotListComponent implements OnInit {
 				);
 			});
 		}
+
+		if (notificationList.length > 0) {
+			//Don't play notifications if this is the first load
+			if (!this._hasHadInitialLoad) {
+				notificationList.length = 0;
+			}
+
+			this._notificationSvc.playAudioAlert(notificationList.join("  "));
+		}
+
+		this._hasHadInitialLoad = true;
 	}
 
 	private isActivationFilteredOut(activation: Activation): boolean {

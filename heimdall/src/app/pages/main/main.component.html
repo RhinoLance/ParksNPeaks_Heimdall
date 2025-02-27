@@ -9,7 +9,7 @@
 		<pph-connection-status></pph-connection-status>
 	</div>
 	<div
-		class="filter-status"
+		class="filter-status toolbar-icon"
 		[class]="viewModel.filterIsActive ? 'active' : 'inactive'"
 	>
 		@if( viewModel.filterIsActive ){
@@ -22,7 +22,14 @@
 		></iconify-icon>
 		}
 	</div>
-	<div ngbDropdown class="d-inline-block" dropdownClass="settings-ddl">
+	<div class="toolbar-icon">
+		<pph-notification-manager></pph-notification-manager>
+	</div>
+	<div
+		ngbDropdown
+		class="d-inline-block toolbar-icon"
+		dropdownClass="settings-ddl"
+	>
 		<div class="ddl-toggle" id="dropdownBasic1" ngbDropdownToggle>
 			<iconify-icon
 				id="settings-icon"

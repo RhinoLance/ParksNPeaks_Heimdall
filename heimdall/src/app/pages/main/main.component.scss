@@ -50,6 +50,10 @@ p {
 	margin: 0 16px;
 }
 
+.toolbar-icon {
+	margin: 0 5px;
+}
+
 .toolbar .version {
 	padding: 0 16px;
 
@@ -99,10 +103,6 @@ footer {
 .filter-status {
 	&:hover {
 		cursor: pointer;
-	}
-
-	&.active {
-		margin: 0 1em;
 	}
 
 	iconify-icon:hover {

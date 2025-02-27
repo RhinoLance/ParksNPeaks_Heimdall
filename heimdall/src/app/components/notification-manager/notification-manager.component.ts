@@ -1,3 +1,4 @@
+import { ChangeContext, NgxSliderModule } from "@angular-slider/ngx-slider";
 import { CUSTOM_ELEMENTS_SCHEMA, Component } from "@angular/core";
 import { NgbDropdownModule } from "@ng-bootstrap/ng-bootstrap";
 import {
@@ -7,7 +8,7 @@ import {
 
 @Component({
 	selector: "pph-notification-manager",
-	imports: [NgbDropdownModule],
+	imports: [NgbDropdownModule, NgxSliderModule],
 	templateUrl: "./notification-manager.component.html",
 	styleUrl: "./notification-manager.component.scss",
 	standalone: true,
@@ -19,9 +20,20 @@ export class NotificationManagerComponent {
 	public viewModel: IViewModel = {
 		alertSound: AlertSound.None,
 		soundOptions: [],
+		volume: 50,
+		volumeIcon: "",
 	};
 
-	private constructor(private _notificationSvc: NotificationService) {
+	public volumeSliderOptions = {
+		floor: 0,
+		ceil: 100,
+		step: 1,
+		hideLimitLabels: true,
+		animate: false,
+		hidePointerLabels: true,
+	};
+
+	public constructor(private _notificationSvc: NotificationService) {
 		this.setSoundOptions();
 
 		this.viewModel.alertSound = this._notificationSvc.getAlertSound();
@@ -36,6 +48,9 @@ export class NotificationManagerComponent {
 		}
 
 		this.viewModel.alertSound = this._notificationSvc.getAlertSound();
+		this.viewModel.volume = this._notificationSvc.getVolume();
+
+		this.setVolumeIcon(this.viewModel.volume);
 	}
 
 	public setAlertSound(soundName: string) {
@@ -44,10 +59,32 @@ export class NotificationManagerComponent {
 		this._notificationSvc.setAudioAlert(sound);
 		this.viewModel.alertSound = sound;
 
-		this._notificationSvc.playAudioAlert("C");
+		this.playTestSound();
 	}
 
-	public test() {
+	public volumeChanged(changeContext: ChangeContext) {
+		this._notificationSvc.setVolume(changeContext.value);
+		this.viewModel.volume = changeContext.value;
+
+		this.playTestSound();
+	}
+
+	public volumeChanging(changeContext: ChangeContext) {
+		this.setVolumeIcon(changeContext.value);
+	}
+
+	private setVolumeIcon(level: number) {
+		this.viewModel.volumeIcon =
+			level === 0
+				? "lineicons:volume-mute"
+				: level < 33
+				? "lineicons:volume-low"
+				: level < 66
+				? "lineicons:volume-1"
+				: "lineicons:volume-high";
+	}
+
+	private playTestSound() {
 		this._notificationSvc.playAudioAlert("C");
 	}
 }
@@ -55,4 +92,6 @@ export class NotificationManagerComponent {
 interface IViewModel {
 	alertSound: AlertSound;
 	soundOptions: string[];
+	volume: number;
+	volumeIcon: string;
 }

@@ -12,7 +12,7 @@ export class NotificationService {
 		this.loadConfig();
 	}
 
-	public loadConfig() {
+	private loadConfig() {
 		let config = this._storageSvc.load<INotificationSettings>(
 			"notificationSettings"
 		);
@@ -20,10 +20,15 @@ export class NotificationService {
 		if (!config) {
 			config = {
 				audioType: AlertSound.Click,
+				volume: 50,
 			};
 		}
 
 		this._config = config;
+	}
+
+	private saveConfig() {
+		this._storageSvc.save("notificationSettings", this._config);
 	}
 
 	public playAudioAlert(text?: string) {
@@ -42,15 +47,25 @@ export class NotificationService {
 
 	public setAudioAlert(sound: AlertSound) {
 		this._config.audioType = sound;
+		this.saveConfig();
+	}
+
+	public setVolume(volume: number) {
+		this._config.volume = volume;
+		this.saveConfig();
 	}
 
 	public getAlertSound(): AlertSound {
 		return this._config.audioType;
 	}
 
+	public getVolume(): number {
+		return this._config.volume;
+	}
+
 	private playFile(fileName: string) {
 		const audio = new Audio();
-		audio.volume = 0.7;
+		audio.volume = this._config.volume / 100;
 		audio.src = `assets/audio/alerts/${fileName}`;
 		audio.load();
 		audio.play();
@@ -58,16 +73,15 @@ export class NotificationService {
 
 	private playMorse(text: string) {
 		const player = new Player({
-			volume: 0.7,
+			volume: this._config.volume / 100,
 			gain: 0.5,
-			freq: 650,
+			freq: 850,
 			q: 10,
-			wpm: 30,
-			eff: 30,
+			wpm: 35,
 			color: "#fff",
 		});
 
-		player.play("  " + text);
+		player.play("  " + text, { volume: 0.2, freq: 850 });
 	}
 }
 
@@ -80,4 +94,5 @@ export enum AlertSound {
 
 interface INotificationSettings {
 	audioType: AlertSound;
+	volume: number;
 }

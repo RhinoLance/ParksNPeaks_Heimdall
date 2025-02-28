@@ -17,6 +17,7 @@
 		"test": "ng test",
 		"test:cI": "ng test --browsers ChromeHeadless --watch=false",
 		"prepare": "cd .. && husky install heimdall/.husky",
+		"lint-staged": "lint-staged",
 		"lint": "ng lint",
 		"lint:fix": "ng lint --fix",
 		"prettier": "prettier . --write",

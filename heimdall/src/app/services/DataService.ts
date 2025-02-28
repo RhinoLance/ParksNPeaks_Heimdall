@@ -20,6 +20,9 @@ export class DataService {
 	public activationUpdated = new Subject<Activation[]>();
 
 	private _activations: ActivationCatalogue = new ActivationCatalogue();
+	public get activationCalalogue(): ActivationCatalogue {
+		return this._activations;
+	}
 
 	private _siteCache = new Map<string, Promise<Site>>();
 

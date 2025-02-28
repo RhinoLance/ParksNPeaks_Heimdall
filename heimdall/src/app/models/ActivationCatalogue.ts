@@ -1,11 +1,16 @@
+import { Observable, Subject } from "rxjs";
 import { Activation } from "./Activation";
 import { Spot } from "./Spot";
 
 export class ActivationCatalogue {
 	private _activationList: Activation[] = [];
-
 	public get activations(): Activation[] {
 		return this._activationList;
+	}
+
+	private _onUpdate = new Subject<Activation>();
+	public get onUpdate() {
+		return this._onUpdate as Observable<Activation>;
 	}
 
 	public addSpot(spot: Spot): Activation | undefined {
@@ -18,6 +23,10 @@ export class ActivationCatalogue {
 			activation = new Activation(spot);
 			this._activationList.push(activation);
 			spotAdded = true;
+		}
+
+		if (spotAdded) {
+			this._onUpdate.next(activation);
 		}
 
 		return spotAdded ? activation : undefined;

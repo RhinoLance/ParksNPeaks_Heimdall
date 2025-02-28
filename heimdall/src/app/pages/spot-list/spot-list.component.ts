@@ -8,7 +8,7 @@ import { animate, style, transition, trigger } from "@angular/animations";
 import { SpotFilterService } from "src/app/services/SpotFilterService";
 import { frequencyBands } from "src/app/models/Band";
 import { SpotFilterComponent } from "src/app/components/spot-filter/spot-filter.component";
-import { debounceTime } from "rxjs";
+import { buffer, debounceTime, map } from "rxjs";
 import { NotificationService } from "src/app/services/NotificationService";
 
 @Component({
@@ -32,8 +32,6 @@ import { NotificationService } from "src/app/services/NotificationService";
 	standalone: true,
 })
 export class SpotListComponent implements OnInit {
-	private _hasHadInitialLoad = false;
-
 	public viewState: ViewState = {
 		activationList: [],
 		visibleActivationCount: 0,
@@ -50,14 +48,30 @@ export class SpotListComponent implements OnInit {
 
 	public ngOnInit(): void {
 		const activations = this._dataSvc.getActivations();
-		this.processActivationUpdates(activations);
-
-		this._dataSvc.activationUpdated.subscribe((v) => {
-			this.processActivationUpdates(v);
-		});
+		activations.map((v) => this.processActivationUpdate(v));
 
 		this._spotFilterSvc.filterUpdated.pipe(debounceTime(400)).subscribe(() => {
-			this.processActivationUpdates(this._dataSvc.getActivations());
+			activations.map((v) => this.processActivationUpdate(v));
+		});
+
+		this.configureActivationUpdateWatcher();
+	}
+
+	private configureActivationUpdateWatcher(): void {
+		const source = this._dataSvc.activationCalalogue.onUpdate.pipe(
+			map((activation) => {
+				const hasUpdates = this.processActivationUpdate(activation);
+				return hasUpdates;
+			})
+		);
+
+		const debounceNotification = source.pipe(debounceTime(500));
+
+		source.pipe(buffer(debounceNotification)).subscribe((hasUpdatesList) => {
+			if (hasUpdatesList.some((v) => v)) {
+				const latestSpot = this.viewState.activationList[0].getLatestSpot();
+				this._notificationSvc.playAudioAlert(latestSpot.mode.charAt(0));
+			}
 		});
 	}
 
@@ -83,36 +97,36 @@ export class SpotListComponent implements OnInit {
 		}
 	}
 
-	private processActivationUpdates(activationList: Activation[]): void {
+	private processActivationUpdate(activation: Activation): boolean {
 		let sortRequired = false;
-		const notificationList: string[] = [];
 
-		activationList.map((activation) => {
-			const index = this.viewState.activationList.findIndex(
-				(v) => v.activationId == activation.activationId
-			);
+		let hasNewSpots = false;
 
-			if (
-				activation.isDeleted ||
-				activation.visibleState != HideState.Visible ||
-				this.isActivationFilteredOut(activation)
-			) {
-				//It's removed
-				if (index > -1) {
-					this.viewState.activationList.splice(index, 1);
-				}
-			} else {
-				//It's added or updated
+		const index = this.viewState.activationList.findIndex(
+			(v) => v.activationId == activation.activationId
+		);
 
-				if (index == -1) {
-					//It's added
-					this.viewState.activationList.push(activation);
-				}
-
-				sortRequired = true;
-				notificationList.push(activation.getLatestSpot().mode.charAt(0));
+		if (
+			activation.isDeleted ||
+			activation.visibleState != HideState.Visible ||
+			this.isActivationFilteredOut(activation)
+		) {
+			//It's removed
+			if (index > -1) {
+				this.viewState.activationList.splice(index, 1);
 			}
-		});
+		} else {
+			if (index == -1) {
+				//It's added
+				this.viewState.activationList.push(activation);
+			} else {
+				//It's updated
+				this.viewState.activationList[index] = activation;
+			}
+
+			hasNewSpots = true;
+			sortRequired = true;
+		}
 
 		if (this.viewState.activationList.length == 0) {
 			this._routerSvc.navigate(RoutePath.Splash);
@@ -126,16 +140,7 @@ export class SpotListComponent implements OnInit {
 			});
 		}
 
-		if (notificationList.length > 0) {
-			//Don't play notifications if this is the first load
-			if (!this._hasHadInitialLoad) {
-				notificationList.length = 0;
-			}
-
-			this._notificationSvc.playAudioAlert(notificationList.join("  "));
-		}
-
-		this._hasHadInitialLoad = true;
+		return hasNewSpots;
 	}
 
 	private isActivationFilteredOut(activation: Activation): boolean {

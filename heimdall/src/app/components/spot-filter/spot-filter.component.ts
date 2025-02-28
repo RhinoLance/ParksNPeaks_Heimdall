@@ -107,11 +107,9 @@ export class SpotFilterComponent implements AfterViewInit {
 			if (v.filter.length === 0) {
 				this.setAllItems(v.list, true);
 			} else {
-				this.setAllItems(v.list, false);
-
-				v.filter.map((x) => {
-					const item = v.list.find((y) => y.key == x);
-					if (item) item.checked = true;
+				v.list.map((x) => {
+					const item = v.filter.find((y) => y == x.key);
+					x.checked = item ? true : false;
 				});
 			}
 
@@ -124,10 +122,6 @@ export class SpotFilterComponent implements AfterViewInit {
 		const filterList = hasUnchecked
 			? list.filter((x) => x.checked).map((x) => x.key)
 			: [];
-
-		if (filterList.length === 0) {
-			filterList.push({ key: "___DUMMY___" });
-		}
 
 		let filterState: IFilterStateItem;
 

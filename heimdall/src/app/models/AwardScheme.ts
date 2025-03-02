@@ -25,3 +25,10 @@ export class AwardScheme {
 	public static VK_SOTA: string = "SOTA";
 	public static ZL_SOTA: string = "SOTA";
 }
+
+const regexSota = /(?:VK|ZL)[0-9]{1,3}\/[A-Z]{1,3}-\d+/i;
+const regexVkff = /VKFF-\d{4}/i;
+const regexZlff = /ZLFF-\d{4}/i;
+const regexPota = /(?:AU|NZ)-\d{4}/i;
+
+export { regexPota, regexSota, regexVkff, regexZlff };

@@ -15,7 +15,7 @@ describe("Guid", () => {
 				// Act
 				try {
 					new Guid(guidString);
-				} catch (ex: unknown) {
+				} catch (_) {
 					threwError = true;
 				}
 

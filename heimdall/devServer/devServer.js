@@ -20,7 +20,7 @@ const server = http.createServer((req, res) => {
 
 	switch (path) {
 		case "/?suffix=ALL":
-			responseData = getData("./data/ALL.json");
+			responseData = feedData("./data/ALL.json");
 			break;
 		case "/?suffix=PARK/WWFF/VKFF-0994":
 			responseData = getData("./data/PARK/VKFF-0994.json");
@@ -69,6 +69,37 @@ const server = http.createServer((req, res) => {
 
 const getData = (filePath) => {
 	return fs.readFileSync(filePath, "utf8");
+};
+
+const dataCache = new Map();
+const feedData = (filePath) => {
+	let data;
+
+	if (!dataCache.has(filePath)) {
+		data = {
+			lastIndex: 0,
+			records: fs.readFileSync(filePath, "utf8"),
+		};
+
+		console.log(data);
+	} else {
+		data = dataCache.get(filePath);
+	}
+
+	const jsonData = JSON.parse(data.records);
+
+	if (data.lastIndex >= jsonData.length) {
+		return JSON.stringify(jsonData);
+	}
+
+	const start = jsonData.length - data.lastIndex;
+	const end = jsonData.length;
+	const returnRecords = jsonData.slice(start, end);
+	data.lastIndex++;
+
+	dataCache.set(filePath, data);
+
+	return JSON.stringify(returnRecords);
 };
 
 // Have the server listen on port 9000

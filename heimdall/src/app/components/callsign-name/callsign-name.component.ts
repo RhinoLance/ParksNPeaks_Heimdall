@@ -16,7 +16,6 @@ import { DataService } from "src/app/services/DataService";
 	selector: "pph-callsign-name",
 	templateUrl: "./callsign-name.component.html",
 	styleUrls: ["./callsign-name.component.scss"],
-	standalone: true,
 	schemas: [CUSTOM_ELEMENTS_SCHEMA],
 	imports: [CommonModule, FormsModule],
 })

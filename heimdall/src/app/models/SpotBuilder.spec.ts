@@ -58,6 +58,7 @@ describe("SpotBuilder", () => {
 			// Arrange
 			const pnpSpot = JSON.parse(JSON.stringify(pnpSpotTemplate));
 			pnpSpot.altClass = "POTA";
+			pnpSpot.altLocation = ""; //clear this otherwise it will be used
 			// Act
 			const spot = new SpotBuilder().addPnpSpot(pnpSpot).build();
 
@@ -89,7 +90,7 @@ describe("SpotBuilder", () => {
 
 			try {
 				builder.build();
-			} catch (e) {
+			} catch (_) {
 				threwError = true;
 			}
 
@@ -172,6 +173,73 @@ describe("SpotBuilder", () => {
 
 			// Assert
 			expect(builder.build().frequency).toEqual(7);
+		});
+	});
+
+	describe("Pick up single awardScheme from comments", () => {
+		let pnpSpotTemplate: PnPSpot;
+
+		beforeEach(() => {
+			pnpSpotTemplate = {
+				actTime: "2023-07-04 00:28:00",
+				actID: "2114006",
+				actSiteID: "VK4/SE-114",
+				actCallsign: "VK3WMD/P",
+				actMode: "SSB",
+				actFreq: "7.090",
+				actClass: "SOTA",
+				altClass: "",
+				actLocation: "VK4/SE-114",
+				altLocation: "",
+				actComments: "Cq @1030 local time also VKFF-1234 *[iPnP] [VK3WMD]",
+				actSpoter: "VK3WMD",
+				WWFFid: "VKFF-0344",
+			};
+		});
+
+		it("should interpret a number", () => {
+			// Arrange
+			pnpSpotTemplate.actFreq = "7.090";
+
+			// Act
+			const builder = new SpotBuilder().addPnpSpot(pnpSpotTemplate);
+
+			// Assert
+			expect(builder.build().awardList.length).toEqual(2);
+		});
+	});
+
+	describe("Pick up two awardSchemes from comments", () => {
+		let pnpSpotTemplate: PnPSpot;
+
+		beforeEach(() => {
+			pnpSpotTemplate = {
+				actTime: "2023-07-04 00:28:00",
+				actID: "2114006",
+				actSiteID: "VK4/SE-114",
+				actCallsign: "VK3WMD/P",
+				actMode: "SSB",
+				actFreq: "7.090",
+				actClass: "SOTA",
+				altClass: "",
+				actLocation: "VK4/SE-114",
+				altLocation: "",
+				actComments:
+					"Cq @1030 local time also VKFF-1234 and AU-1234 *[iPnP] [VK3WMD]",
+				actSpoter: "VK3WMD",
+				WWFFid: "VKFF-0344",
+			};
+		});
+
+		it("should interpret a number", () => {
+			// Arrange
+			pnpSpotTemplate.actFreq = "7.090";
+
+			// Act
+			const builder = new SpotBuilder().addPnpSpot(pnpSpotTemplate);
+
+			// Assert
+			expect(builder.build().awardList.length).toEqual(3);
 		});
 	});
 });

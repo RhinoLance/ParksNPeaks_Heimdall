@@ -7,6 +7,8 @@ import {
 	platformBrowserDynamicTesting,
 } from "@angular/platform-browser-dynamic/testing";
 
+//Ignore lint errors as this is used outside of this file;
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 declare const require: {
 	context(
 		path: string,
@@ -17,9 +19,6 @@ declare const require: {
 		keys(): string[];
 	};
 };
-
-//Dummy to stop lint errors as this is used outside of this file;
-require;
 
 // First, initialize the Angular testing environment.
 getTestBed().initTestEnvironment(

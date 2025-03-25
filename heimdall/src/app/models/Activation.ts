@@ -14,8 +14,8 @@ export class Activation {
 	public awardList: ActivationAwardList = new ActivationAwardList();
 	public siteName: string = "";
 	public callsign: Callsign;
-	public visibleState: HideState = HideState.Visible;
 	public isDeleted: boolean = false;
+	public visibility: ActivationVisibility = ActivationVisibility.Visible;
 
 	public onUpdate = new ReplaySubject<Spot>();
 
@@ -175,23 +175,21 @@ export class Activation {
 	}
 
 	private setActivationVilbility(addedSpot: Spot, previousSpot: Spot): void {
-		if (
-			this.visibleState == HideState.Visible ||
-			this.visibleState == HideState.Activation
-		)
+		if (this.visibility == ActivationVisibility.Hidden) return;
+		if (this.visibility !== ActivationVisibility.HiddenPendingNewBandOrMode)
 			return;
 
 		if (
 			addedSpot.mode !== previousSpot.mode ||
 			addedSpot.frequency !== previousSpot.frequency
 		) {
-			this.visibleState = HideState.Visible;
+			this.visibility = ActivationVisibility.Visible;
 		}
 	}
 }
 
-export enum HideState {
-	Visible = 0,
-	Spot = 1,
-	Activation = 2,
+export enum ActivationVisibility {
+	Visible,
+	Hidden,
+	HiddenPendingNewBandOrMode,
 }

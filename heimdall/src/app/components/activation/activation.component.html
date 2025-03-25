@@ -157,7 +157,9 @@
 			</div>
 			<div
 				class="action-item btn"
-				(click)="hideActivation(HideState.Spot)"
+				(click)="
+					hideActivation(__activationVisiblility.HiddenPendingNewBandOrMode)
+				"
 				#tooltip="matTooltip"
 				matTooltip="Hide until band or mode change"
 				matTooltipShowDelay="500"
@@ -167,7 +169,7 @@
 			<div class="vr"></div>
 			<div
 				class="action-item btn"
-				(click)="hideActivation(HideState.Activation)"
+				(click)="hideActivation(__activationVisiblility.Hidden)"
 				#tooltip="matTooltip"
 				matTooltip="Don't show this activation"
 				matTooltipShowDelay="500"

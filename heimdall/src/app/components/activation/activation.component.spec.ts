@@ -8,7 +8,7 @@ import {
 
 import { ActivationComponent, ElapsedTimeState } from "./activation.component";
 import { Spot } from "src/app/models/Spot";
-import { Activation, HideState } from "src/app/models/Activation";
+import { Activation, ActivationVisibility } from "src/app/models/Activation";
 import { TimeagoModule } from "ngx-timeago";
 import { importProvidersFrom } from "@angular/core";
 import { SpotMode } from "src/app/models/SpotMode";
@@ -207,30 +207,36 @@ describe("ActivationComponent", () => {
 					// Arrange
 					spot1.mode = SpotMode.SSB;
 					spot2.mode = SpotMode.CW;
-					activation.visibleState = HideState.Spot;
+					activation.visibility =
+						ActivationVisibility.HiddenPendingNewBandOrMode;
 
 					// Act
 					subject.next(spot2);
 					fixture.detectChanges();
-					const result = activation.visibleState;
+					const result = activation.visibility;
 
 					// Assert
-					expect<HideState>(result).toBe(HideState.Visible);
+					expect<ActivationVisibility>(result).toBe(
+						ActivationVisibility.Visible
+					);
 				});
 
 				it("should update visibleState on band change", () => {
 					// Arrange
 					spot1.frequency = 7.144;
 					spot2.frequency = 3.5;
-					activation.visibleState = HideState.Spot;
+					activation.visibility =
+						ActivationVisibility.HiddenPendingNewBandOrMode;
 
 					// Act
 					subject.next(spot2);
 					fixture.detectChanges();
-					const result = activation.visibleState;
+					const result = activation.visibility;
 
 					// Assert
-					expect<HideState>(result).toBe(HideState.Visible);
+					expect<ActivationVisibility>(result).toBe(
+						ActivationVisibility.Visible
+					);
 				});
 			});
 		});
@@ -276,24 +282,30 @@ describe("ActivationComponent", () => {
 
 			it("should update visibleState", () => {
 				// Arrange
-				activation.visibleState = HideState.Visible;
+				activation.visibility = ActivationVisibility.Visible;
 
 				// Act
-				component.hideActivation(HideState.Spot);
+				component.hideActivation(
+					ActivationVisibility.HiddenPendingNewBandOrMode
+				);
 
 				// Assert
-				expect<HideState>(activation.visibleState).toBe(HideState.Spot);
+				expect<ActivationVisibility>(activation.visibility).toBe(
+					ActivationVisibility.HiddenPendingNewBandOrMode
+				);
 			});
 
 			it("should not update visibleState", () => {
 				// Arrange
-				activation.visibleState = HideState.Spot;
+				activation.visibility = ActivationVisibility.HiddenPendingNewBandOrMode;
 
 				// Act
-				component.hideActivation(HideState.Visible);
+				component.hideActivation(ActivationVisibility.Visible);
 
 				// Assert
-				expect<HideState>(activation.visibleState).toBe(HideState.Spot);
+				expect<ActivationVisibility>(activation.visibility).toBe(
+					ActivationVisibility.HiddenPendingNewBandOrMode
+				);
 			});
 		});
 
@@ -307,13 +319,15 @@ describe("ActivationComponent", () => {
 
 			it("should update visibleState", () => {
 				// Arrange
-				activation.visibleState = HideState.Visible;
+				activation.visibility = ActivationVisibility.Visible;
 
 				// Act
 				component.showActivation();
 
 				// Assert
-				expect<HideState>(activation.visibleState).toBe(HideState.Visible);
+				expect<ActivationVisibility>(activation.visibility).toBe(
+					ActivationVisibility.Visible
+				);
 			});
 		});
 
@@ -418,7 +432,7 @@ describe("ActivationComponent", () => {
 				component.activation = activation;
 				component.viewState.respotIsVisible = false;
 
-				activation.visibleState = HideState.Visible;
+				activation.visibility = ActivationVisibility.Visible;
 
 				// Act
 				component.showReSpot();

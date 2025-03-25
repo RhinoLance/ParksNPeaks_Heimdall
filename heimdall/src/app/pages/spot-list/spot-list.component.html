@@ -14,7 +14,7 @@
 		<div class="row">
 			<pph-activation
 				*ngFor="let activation of viewState.activationList; index as cI"
-				[hidden]="activation.visibleState !== HideState.Visible"
+				[hidden]="activation.visibility !== __activationVisibilty.Visible"
 				[activation]="activation"
 				(hiden)="onActivationHide($event)"
 				@hideActivationAnimation

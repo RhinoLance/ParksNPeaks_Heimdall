@@ -1,4 +1,4 @@
-import { Activation, HideState } from "./Activation";
+import { Activation, ActivationVisibility } from "./Activation";
 import { ActivationAward } from "./ActivationAward";
 import { ActivationAwardList } from "./ActivationAwardList";
 import { AwardScheme } from "./AwardScheme";
@@ -624,7 +624,7 @@ describe("Activation", () => {
 
 		it("it should be visible after band change if spot hidden", () => {
 			// Arrange
-			activation.visibleState = HideState.Spot;
+			activation.visibility = ActivationVisibility.HiddenPendingNewBandOrMode;
 			spot1.frequency = 3.5;
 			spot2.frequency = 7.144;
 
@@ -632,12 +632,14 @@ describe("Activation", () => {
 			activation.addSpot(spot2);
 
 			// Assert
-			expect<HideState>(activation.visibleState).toBe(HideState.Visible);
+			expect<ActivationVisibility>(activation.visibility).toBe(
+				ActivationVisibility.Visible
+			);
 		});
 
 		it("it should be visible after mode change if spot hidden", () => {
 			// Arrange
-			activation.visibleState = HideState.Spot;
+			activation.visibility = ActivationVisibility.HiddenPendingNewBandOrMode;
 			spot1.mode = SpotMode.SSB;
 			spot2.mode = SpotMode.CW;
 
@@ -645,12 +647,14 @@ describe("Activation", () => {
 			activation.addSpot(spot2);
 
 			// Assert
-			expect<HideState>(activation.visibleState).toBe(HideState.Visible);
+			expect<ActivationVisibility>(activation.visibility).toBe(
+				ActivationVisibility.Visible
+			);
 		});
 
 		it("it should be remain hidden after mode or frequency change if activation hidden", () => {
 			// Arrange
-			activation.visibleState = HideState.Activation;
+			activation.visibility = ActivationVisibility.Hidden;
 
 			spot1.frequency = 3.5;
 			spot2.frequency = 7.144;
@@ -662,7 +666,7 @@ describe("Activation", () => {
 			activation.addSpot(spot2);
 
 			// Assert
-			expect(activation.visibleState).toBe(HideState.Activation);
+			expect(activation.visibility).toBe(ActivationVisibility.Hidden);
 		});
 	});
 });

@@ -1,5 +1,5 @@
-import { Component, OnInit } from "@angular/core";
-import { Activation, HideState } from "src/app/models/Activation";
+import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Activation, ActivationVisibility } from "src/app/models/Activation";
 import { ActivationComponent } from "../../components/activation/activation.component";
 import { CommonModule } from "@angular/common";
 import { DataService } from "src/app/services/DataService";
@@ -8,7 +8,7 @@ import { animate, style, transition, trigger } from "@angular/animations";
 import { SpotFilterService } from "src/app/services/SpotFilterService";
 import { frequencyBands } from "src/app/models/Band";
 import { SpotFilterComponent } from "src/app/components/spot-filter/spot-filter.component";
-import { buffer, debounceTime, map } from "rxjs";
+import { buffer, debounceTime, map, ReplaySubject, takeUntil } from "rxjs";
 import { NotificationService } from "src/app/services/NotificationService";
 
 @Component({
@@ -31,13 +31,16 @@ import { NotificationService } from "src/app/services/NotificationService";
 	],
 	standalone: true,
 })
-export class SpotListComponent implements OnInit {
+export class SpotListComponent implements OnInit, OnDestroy {
+	private _componentDestroyed = new ReplaySubject<void>();
+
+	//Define local enum ref for template use.
+	public __activationVisibilty = ActivationVisibility;
+
 	public viewState: ViewState = {
 		activationList: [],
 		visibleActivationCount: 0,
 	};
-
-	public HideState = HideState;
 
 	public constructor(
 		private _dataSvc: DataService,
@@ -47,31 +50,37 @@ export class SpotListComponent implements OnInit {
 	) {}
 
 	public ngOnInit(): void {
-		const activations = this._dataSvc.getActivations();
+		const activations = this._dataSvc.activationCalalogue.activations;
 		activations.map((v) => this.processActivationUpdate(v));
+		this.redirectToSplashOnEmptyList();
 
-		this._spotFilterSvc.filterUpdated.pipe(debounceTime(400)).subscribe(() => {
-			activations.map((v) => this.processActivationUpdate(v));
-		});
+		this._spotFilterSvc.filterUpdated
+			.pipe(takeUntil(this._componentDestroyed), debounceTime(400))
+			.subscribe(() => {
+				activations.map((v) => this.processActivationUpdate(v));
+			});
 
 		this.configureActivationUpdateWatcher();
 	}
 
 	private configureActivationUpdateWatcher(): void {
 		const source = this._dataSvc.activationCalalogue.onUpdate.pipe(
+			takeUntil(this._componentDestroyed),
 			map((activation) => {
 				const hasUpdates = this.processActivationUpdate(activation);
 				return hasUpdates;
 			})
 		);
 
-		const debounceNotification = source.pipe(debounceTime(500));
+		const debounceUpdates = source.pipe(debounceTime(500));
 
-		source.pipe(buffer(debounceNotification)).subscribe((hasUpdatesList) => {
+		source.pipe(buffer(debounceUpdates)).subscribe((hasUpdatesList) => {
 			if (hasUpdatesList.some((v) => v)) {
 				const latestSpot = this.viewState.activationList[0].getLatestSpot();
 				this._notificationSvc.playAudioAlert(latestSpot.mode.charAt(0));
 			}
+
+			this.redirectToSplashOnEmptyList();
 		});
 	}
 
@@ -90,7 +99,7 @@ export class SpotListComponent implements OnInit {
 
 		if (
 			this.viewState.activationList.filter(
-				(v) => v.visibleState == HideState.Visible
+				(v) => v.visibility == ActivationVisibility.Visible
 			).length == 0
 		) {
 			this._routerSvc.navigate(RoutePath.Splash);
@@ -108,7 +117,7 @@ export class SpotListComponent implements OnInit {
 
 		if (
 			activation.isDeleted ||
-			activation.visibleState != HideState.Visible ||
+			activation.visibility != ActivationVisibility.Visible ||
 			this.isActivationFilteredOut(activation)
 		) {
 			//It's removed
@@ -126,10 +135,6 @@ export class SpotListComponent implements OnInit {
 
 			hasNewSpots = true;
 			sortRequired = true;
-		}
-
-		if (this.viewState.activationList.length == 0) {
-			this._routerSvc.navigate(RoutePath.Splash);
 		}
 
 		if (sortRequired) {
@@ -180,6 +185,17 @@ export class SpotListComponent implements OnInit {
 		}
 
 		return false;
+	}
+
+	public ngOnDestroy(): void {
+		this._componentDestroyed.next();
+		this._componentDestroyed.complete();
+	}
+
+	private redirectToSplashOnEmptyList(): void {
+		if (this.viewState.activationList.length == 0) {
+			this._routerSvc.navigate(RoutePath.Splash);
+		}
 	}
 }
 

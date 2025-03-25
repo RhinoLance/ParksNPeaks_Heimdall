@@ -6,7 +6,7 @@ import {
 	Output,
 	EventEmitter,
 } from "@angular/core";
-import { Activation, HideState } from "src/app/models/Activation";
+import { Activation, ActivationVisibility } from "src/app/models/Activation";
 import { Spot } from "src/app/models/Spot";
 import { SpotHistoryCardComponent } from "../spot-history-card/spot-history-card.component";
 import { ModeBadgeComponent } from "../mode-badge/mode-badge.component";
@@ -72,7 +72,8 @@ export class ActivationComponent implements OnInit {
 	@Output() public shown = new EventEmitter<Activation>();
 	@Output() public hiden = new EventEmitter<Activation>();
 
-	public HideState = HideState;
+	public __activationVisiblility = ActivationVisibility;
+
 	public expand: boolean = false;
 	public viewState: ViewState = {
 		spot: new Spot(),
@@ -112,12 +113,15 @@ export class ActivationComponent implements OnInit {
 					.getSupersededSpots()
 					.reverse();
 
-				if (this.activation.visibleState == HideState.Spot) {
+				if (
+					this.activation.visibility ==
+					ActivationVisibility.HiddenPendingNewBandOrMode
+				) {
 					if (
 						oldSpot.mode !== this.viewState.spot.mode ||
 						oldSpot.frequency !== this.viewState.spot.frequency
 					) {
-						this.activation.visibleState = HideState.Visible;
+						this.activation.visibility = ActivationVisibility.Visible;
 					}
 				}
 
@@ -173,17 +177,17 @@ export class ActivationComponent implements OnInit {
 		});
 	}
 
-	public hideActivation(hideState: HideState): void {
-		if (hideState === HideState.Visible) {
+	public hideActivation(visibility: ActivationVisibility): void {
+		if (visibility === ActivationVisibility.Visible) {
 			return;
 		}
 
-		this.activation.visibleState = hideState;
+		this.activation.visibility = visibility;
 		this.hiden.emit(this.activation);
 	}
 
 	public showActivation(): void {
-		this.activation.visibleState = HideState.Visible;
+		this.activation.visibility = ActivationVisibility.Visible;
 		this.shown.emit(this.activation);
 	}
 

@@ -41,7 +41,8 @@ export class RealTimeUserServiceMock extends RealTimeUserService {
 	public updateUserDetails(name: string, location: LatLng): void {
 		const user = this._hubUsers.find((u) => u.userName === name);
 		(<Subject<HubUser>>this.connectionAdded).next({
-			connectionId: user.connectionId,
+			connectionId:
+				user?.connectionId || Math.random().toString(36).substring(2, 15),
 			userName: name,
 			location: location,
 		});

@@ -15,8 +15,11 @@
 		<script>
 			window.dataLayer = window.dataLayer || [];
 			function gtag() {
-				dataLayer.push(arguments);
+				try {
+					dataLayer.push(arguments);
+				} catch (_) {}
 			}
+
 			gtag("js", new Date());
 
 			gtag("config", "G-NZ371DWNMF");

@@ -21,8 +21,23 @@ export const environment: Environment = {
 			{
 				baseHref: "https://spots.wwff.co/static/spots.json",
 				pollIntervalMinutes: 1,
-				//siteFilter: "^(?:VKFF|ZLFF)",
-				siteFilter: "",
+				siteFilter: "^(?:VKFF|ZLFF)",
+			},
+		],
+		[
+			"sota",
+			{
+				baseHref: "https://api-db2.sota.org.uk/api/",
+				pollIntervalMinutes: 1,
+				siteFilter: "^(?:VK|ZL)",
+			},
+		],
+		[
+			"pota",
+			{
+				baseHref: "https://api.pota.app/spot/activator",
+				pollIntervalMinutes: 1,
+				siteFilter: "^(?:AU|NZ)",
 			},
 		],
 		[

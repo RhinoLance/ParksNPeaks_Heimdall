@@ -28,7 +28,7 @@ export const environment: Environment = {
 			{
 				baseHref: "https://api-db2.sota.org.uk/api/",
 				pollIntervalMinutes: 1,
-				siteFilter: "^(?:VK|ZL|JA)",
+				siteFilter: "^(?:VK|ZL)",
 			},
 		],
 		[
@@ -36,7 +36,7 @@ export const environment: Environment = {
 			{
 				baseHref: "https://api.pota.app/spot/activator",
 				pollIntervalMinutes: 1,
-				siteFilter: "^(?:AU|NZ|JP)",
+				siteFilter: "^(?:AU|NZ)",
 			},
 		],
 		[

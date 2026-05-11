@@ -36,6 +36,9 @@ export class FetchService {
 	public getJson<T>(url: string, request: RequestInit): Observable<T> {
 		const requestInit = {
 			selector: (response: Response) => response.json(),
+			headers: {
+				"User-Agent": "PnP_Heimdall/1.0",
+			},
 		};
 		Object.assign(requestInit, request);
 

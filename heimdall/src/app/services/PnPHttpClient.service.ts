@@ -16,11 +16,12 @@ import {
 	pnpResponseToJSON,
 	throwOnPnpResponseError,
 } from "./PnPHttpClientOperators";
+import { ISpotSource } from "./ISpotSource";
 
 @Injectable({
 	providedIn: "root",
 })
-export class PnPClientService {
+export class PnPClientService implements ISpotSource {
 	private _hasApiKey: boolean = false;
 	public get hasApiKey(): boolean {
 		return this._hasApiKey;
@@ -31,13 +32,11 @@ export class PnPClientService {
 		return this._hasUserId;
 	}
 
-	private _phpBaseHref: string = environment.pnpBaseHref;
+	private _apiEnv = environment.spotSources.get("pnp");
 
 	private _pnpSubscription = {
 		latestSpot: new Date("1970-01-01T00:00:00.000Z"),
 	};
-
-	private readonly _regionFilter = "^(?:VK|VL|VJ|VI|ZL|ZZ)";
 
 	public constructor(
 		private _fetchSvc: FetchService,
@@ -60,16 +59,6 @@ export class PnPClientService {
 		return data[0];
 	}
 
-	public async getSpotList(): Promise<Spot[]> {
-		//const data = await this.get<PnPSpot[]>("VK");
-		const data = await this.get<PnPSpot[]>("ALL");
-
-		return new SpotListBuilder()
-			.setCallsignFilter(this._regionFilter)
-			.setSorting("DESC")
-			.buildFromPnPSpots(data);
-	}
-
 	/***
 	 * Returns an observable of spots that will update every updateInterval minutes
 	 * @param updateInterval - how often to check for new spots in minutes
@@ -79,7 +68,7 @@ export class PnPClientService {
 	public subscribeToSpots(
 		updateInterval?: number,
 		cancellationToken?: CancellationToken
-	): Observable<Spot[]> {
+	): Observable<Spot> {
 		updateInterval = updateInterval || environment.pnpPollMinutesInterval;
 
 		cancellationToken = cancellationToken || new CancellationToken();
@@ -87,17 +76,18 @@ export class PnPClientService {
 		const obs = this._fetchSvc
 			.pollJson<PnPSpot[]>(
 				updateInterval,
-				`${this._phpBaseHref}ALL`,
+				`${this._apiEnv.baseHref}ALL`,
 				{},
 				cancellationToken
 			)
 			.pipe(
 				map((pnpSpots) => {
 					return new SpotListBuilder()
-						.setCallsignFilter(this._regionFilter)
+						.setCallsignFilter(this._apiEnv.siteFilter)
 						.setSorting("DESC")
 						.buildFromPnPSpots(pnpSpots);
-				})
+				}),
+				mergeMap((spots) => spots) // convert the array of spots into a stream of spots
 			);
 
 		return obs;
@@ -118,7 +108,7 @@ export class PnPClientService {
 		};
 
 		return this._fetchSvc
-			.postJson<PostResponse>(this._phpBaseHref + "SPOT", postSpot)
+			.postJson<PostResponse>(this._apiEnv.baseHref + "SPOT", postSpot)
 			.pipe(
 				mergeMap((v) => {
 					if (v.response.toLocaleLowerCase().includes("failure")) {
@@ -160,7 +150,7 @@ export class PnPClientService {
 				};
 
 				return this._fetchSvc.postJson<PostResponse>(
-					this._phpBaseHref + urlSuffix,
+					this._apiEnv.baseHref + urlSuffix,
 					postData
 				);
 			}),
@@ -180,7 +170,7 @@ export class PnPClientService {
 		};
 
 		const data = await this._fetchSvc.getJsonPromise<T>(
-			this._phpBaseHref + suffix,
+			this._apiEnv.baseHref + suffix,
 			request
 		);
 
@@ -197,19 +187,8 @@ export class PnPClientService {
 		};
 
 		return this._fetchSvc
-			.fetch<string>(this._phpBaseHref + urlSuffix, request)
+			.fetch<string>(this._apiEnv.baseHref + urlSuffix, request)
 			.pipe(pnpResponseToJSON<T>());
-	}
-
-	private getAsObs<T>(suffix: string): Observable<T> {
-		const request: RequestInit = {
-			method: "GET",
-			headers: {
-				"Content-Type": "text/html; charset=UTF-8",
-			},
-		};
-
-		return this._fetchSvc.getJson<T>(this._phpBaseHref + suffix, request);
 	}
 
 	private monitorApiKeySetting(): void {

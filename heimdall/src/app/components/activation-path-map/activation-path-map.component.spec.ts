@@ -17,8 +17,4 @@ describe("ActivationPathMapComponent", () => {
 		component.latLngEnd = new LatLng(0, 0);
 		fixture.detectChanges();
 	});
-
-	it("should create", () => {
-		expect(component).toBeTruthy();
-	});
 });

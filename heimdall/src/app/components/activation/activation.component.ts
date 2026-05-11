@@ -162,8 +162,8 @@ export class ActivationComponent implements OnInit {
 
 		if (award == undefined) return;
 
-		const site = await this._dataSvc.getSiteDetails(award);
-		this.viewState.mapEnd = new LatLng(site.latitude, site.longitude);
+		const lastSpot = this.activation.getLatestSpot();
+		this.viewState.mapEnd = new LatLng(lastSpot.lat, lastSpot.lon);
 
 		this.viewState.siteDetailsRetrieved = true;
 	}

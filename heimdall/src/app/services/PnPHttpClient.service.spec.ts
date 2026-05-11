@@ -90,22 +90,6 @@ describe("PnPHttpClientService", () => {
 			} as SettingsService;
 		});
 
-		it("shouild get a spot list", async () => {
-			// Arrange
-			const fetch = new FetchService(new FetchServiceDeps());
-			spyOn(fetch, "getJsonPromise").and.returnValues(
-				Promise.resolve([clonePnPSpot(templateSpot)])
-			);
-
-			const svc = new PnPClientService(fetch, settingsSvc);
-
-			// Act
-			const result = await svc.getSpotList();
-
-			// Assert
-			expect(result.length).not.toBeNull();
-		});
-
 		describe("SubscribeToSpots", () => {
 			it("should get a spot list", (done) => {
 				// Arrange
@@ -119,7 +103,7 @@ describe("PnPHttpClientService", () => {
 				// Act
 				svc.subscribeToSpots().subscribe((result) => {
 					// Assert
-					expect(result.length).not.toBeNull();
+					expect(result).not.toBeNull();
 					done();
 				});
 			});
@@ -142,7 +126,7 @@ describe("PnPHttpClientService", () => {
 
 				svc.subscribeToSpots().subscribe({
 					next: (next) => {
-						result.push(...next);
+						result.push(next);
 					},
 				});
 
@@ -185,7 +169,7 @@ describe("PnPHttpClientService", () => {
 							hadError = true;
 						},
 						next: (value) => {
-							result.push(...value);
+							result.push(value);
 						},
 					});
 
@@ -213,29 +197,6 @@ describe("PnPHttpClientService", () => {
 					{ callsign: "7ZLZA", valid: false },
 				];
 
-				describe("getSpotList", () => {
-					csTests.forEach((test: CsTest) => {
-						it(`should filter ${test.callsign} to region`, async () => {
-							// Arrange
-							const pnpSpot1 = clonePnPSpot(templateSpot);
-							pnpSpot1.actCallsign = test.callsign;
-
-							const fetch = new FetchService(new FetchServiceDeps());
-							spyOn(fetch, "getJsonPromise").and.returnValues(
-								Promise.resolve([pnpSpot1])
-							);
-
-							const svc = new PnPClientService(fetch, settingsSvc);
-
-							// Act
-							const spotList = await svc.getSpotList();
-
-							// Assert
-							expect(spotList.length).toBe(test.valid ? 1 : 0);
-						});
-					});
-				});
-
 				describe("subscribeToSpots", () => {
 					csTests.forEach((test: CsTest) => {
 						it(`should filter ${test.callsign} to region`, async () => {
@@ -252,7 +213,7 @@ describe("PnPHttpClientService", () => {
 
 							svc.subscribeToSpots().subscribe({
 								next: (next) => {
-									result.push(...next);
+									result.push(next);
 								},
 							});
 
@@ -267,85 +228,5 @@ describe("PnPHttpClientService", () => {
 				});
 			});
 		});
-
-		/*
-		it("subscribing should return one result", () => {
-			// Arrange
-	
-			const fetch = new FetchService();
-	
-			const fetchValue = [clonePnPSpot(templateSpot)];
-	
-			spyOn(fetch, "getJsonPromise").and.returnValues(
-				Promise.resolve(fetchValue),
-				Promise.resolve(fetchValue)
-			);
-	
-			const svc = new PnPClientService(fetch);
-	
-			const expectedValues = {
-				a: "one",
-				b: "two",
-				c: "three",
-			};
-	
-			const expectedMarbles = "-abc|";
-			const subMarbles = "----!";
-	
-			//const sub = svc.subscribeToSpots(1/60/1000);
-			const sub = svc.subscribeToSpots2();
-			// Act
-			testScheduler.run(({ expectObservable }) => {
-				expectObservable(sub, subMarbles).toBe(expectedMarbles, expectedValues);
-			});
-		});
-	
-	
-		it("subscribing should return two results", (done: DoneFn) => {
-			
-			// Arrange
-			const pnp1 = clonePnPSpot(templateSpot);
-			const pnp2 = clonePnPSpot(templateSpot);
-			pnp2.actTime = new Date(pnp1.actTime).addMinutes(1).toISOString();
-	
-			const data = [[pnp1], [pnp2]];
-	
-			var fetch = new FetchService();
-			const fetchSpy = spyOn(fetch, "getJson").and.returnValues(
-				Promise.resolve(pnp1), 
-				Promise.resolve(pnp2)
-			);
-			
-			const svc = new PnPClientService(fetch);
-			const resultSpots: Spot[] = [];
-			let queryCount = 0;
-	
-			const cancellationToken = new CancellationToken();
-	
-			// Act
-			const sub = svc.subscribeToSpots(0.001, cancellationToken)	.subscribe( {
-				next: spotList => {
-					queryCount++;
-					if( queryCount == 5	){
-						cancellationToken.cancel();
-					}
-	
-					return resultSpots.push(...spotList);
-				},
-				error: err=>  {
-					console.error("Whoops!: " + err);
-					expect(err).toBeNull();
-					done();
-				},
-				complete: () => {
-					console.log(`Done with ${resultSpots.length}`);
-					expect(resultSpots.length).toEqual(2);
-					expect(true).toEqual(false);
-					done();
-				}
-			});
-			
-		});
-		*/
 	});
 });

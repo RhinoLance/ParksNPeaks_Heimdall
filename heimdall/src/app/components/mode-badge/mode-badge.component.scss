@@ -28,6 +28,11 @@
 		--mode-colour: #e71d36;
 	}
 
+	&.QRT {
+		--mode-icon: "";
+		--mode-colour: #949494;
+	}
+
 	&.DEFAULT,
 	&.Other {
 		--mode-icon: "\F043B";

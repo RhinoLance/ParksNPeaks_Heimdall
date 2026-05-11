@@ -69,7 +69,7 @@ export class PnPClientService implements ISpotSource {
 		updateInterval?: number,
 		cancellationToken?: CancellationToken
 	): Observable<Spot> {
-		updateInterval = updateInterval || environment.pnpPollMinutesInterval;
+		updateInterval = updateInterval || this._apiEnv.pollIntervalMinutes;
 
 		cancellationToken = cancellationToken || new CancellationToken();
 

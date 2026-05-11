@@ -25,25 +25,27 @@ export class SotaApiService implements ISpotSource {
 	private _lastFetchedEpoch: string = null;
 
 	public constructor(
-		private _oAuthSvc: OAuthService,
+		//private _oAuthSvc: OAuthService,
 		private _fetchSvc: FetchService
 	) {
 		this.configureSingleSignOn();
 	}
 
 	public login(): void {
-		this._oAuthSvc.initLoginFlow();
+		throw new Error("Not implemented");
+		//this._oAuthSvc.initLoginFlow();
 	}
 
 	public logout(): void {
-		this._oAuthSvc.logOut();
+		throw new Error("Not implemented");
+		//this._oAuthSvc.logOut();
 	}
 
 	private configureSingleSignOn(): void {
-		this._oAuthSvc.configure(authConfig);
+		//this._oAuthSvc.configure(authConfig);
 		//this._oAuthSvc.tokenValidationHandler = new JwksValidationHandler();
 		//this._oAuthSvc.loadDiscoveryDocumentAndTryLogin();
-		this._oAuthSvc.loadDiscoveryDocumentAndLogin();
+		//this._oAuthSvc.loadDiscoveryDocumentAndLogin();
 	}
 
 	private getSummitDetails(summitCode: string): Observable<ISotaSummit> {

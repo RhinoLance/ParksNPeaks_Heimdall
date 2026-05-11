@@ -108,7 +108,7 @@ export class DataService {
 
 	private initSpotListener(): void {
 		merge(
-			//this._pnpApiSvc.subscribeToSpots(),
+			this._pnpApiSvc.subscribeToSpots(),
 			this._wwffApiSvc.subscribeToSpots(),
 			this._sotaApiSvc.subscribeToSpots(),
 			this._potaApiSvc.subscribeToSpots()

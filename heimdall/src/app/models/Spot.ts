@@ -18,6 +18,9 @@ export class Spot {
 	public spotter: string = "";
 	public time: Date = new Date();
 
+	public lat: number = 0;
+	public lon: number = 0;
+
 	public awardList: ActivationAwardList = new ActivationAwardList();
 
 	private _shortTime: string = "";
@@ -59,6 +62,8 @@ export class Spot {
 		target.siteName = this.siteName;
 		target.spotter = this.spotter;
 		target.time = this.time;
+		target.lat = this.lat;
+		target.lon = this.lon;
 		target.awardList = this.awardList.clone();
 		target._shortTime = this._shortTime;
 	}

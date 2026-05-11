@@ -2,7 +2,7 @@
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-import { Environment, EnvironmentName } from "./TEnvironment";
+import { Environment, EnvironmentName, SpotSource } from "./TEnvironment";
 
 export const environment: Environment = {
 	name: EnvironmentName.Empty,
@@ -11,8 +11,30 @@ export const environment: Environment = {
 	pnpBaseHref: "http://localhost:9000/?suffix=",
 	zlotaBaseHref: "http://localhost:9000/zlota/?suffix=",
 	heimdallHubUrl: "http://heimdall.conryclan.com/heimdallHub",
+	wwffBaseHref: "https://spots.wwff.co/static/spots.json",
 	//pnpBaseHref: 'https://rhinoswtools.azurewebsites.net/api/PnP/Get?suffix=',
 	pnpPollMinutesInterval: 1,
+
+	spotSources: new Map<string, SpotSource>([
+		[
+			"wwff",
+			{
+				baseHref: "https://spots.wwff.co/static/spots.json",
+				pollIntervalMinutes: 1,
+				//siteFilter: "^(?:VKFF|ZLFF)",
+				siteFilter: "",
+			},
+		],
+		[
+			"pnp",
+			{
+				baseHref: "https://rhinoswtools.azurewebsites.net/PnPProxy?suffix=",
+				pollIntervalMinutes: 1,
+				siteFilter: "^(?:VK|VL|VJ|VI|ZL|ZZ)",
+			},
+		],
+	]),
+	maxSpotAgeMinutes: 120,
 };
 
 /*

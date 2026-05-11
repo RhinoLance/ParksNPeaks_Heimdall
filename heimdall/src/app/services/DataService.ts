@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { ActivationCatalogue } from "../models/ActivationCatalogue";
-import { Observable, Subject, tap } from "rxjs";
+import { Observable, Subject, tap, merge, bufferTime, filter } from "rxjs";
 import { Activation } from "../models/Activation";
 import { PnPClientService, PostResponse } from "./PnPHttpClient.service";
 import { Spot } from "../models/Spot";
@@ -12,6 +12,8 @@ import { SiteFactory } from "../models/SiteFactory";
 import { PotaClientService } from "./PotaHttpClient.service";
 import { ZLotaClientService } from "./ZLotaHttpClient";
 import { CallsignDetails } from "../models/CallsignDetails";
+import { WwffApiService } from "./wwffApiSvc";
+import { environment } from "src/environments/environment";
 
 @Injectable({
 	providedIn: "root",
@@ -37,9 +39,10 @@ export class DataService {
 		private _pnpApiSvc: PnPClientService,
 		private _potaApiSvc: PotaClientService,
 		private _settingsSvc: SettingsService,
-		private _zlotaApiSvc: ZLotaClientService
+		private _zlotaApiSvc: ZLotaClientService,
+		private _wwffApiSvc: WwffApiService
 	) {
-		this.initPnpListener();
+		this.initSpotListener();
 	}
 
 	public getActivations(): Activation[] {
@@ -56,6 +59,8 @@ export class DataService {
 	}
 
 	public async getSiteDetails(award: ActivationAward): Promise<Site> {
+		throw new Error("Depreciated");
+
 		if (this._siteCache.has(award.siteId)) {
 			return (await this._siteCache.get(award.siteId)) as Site;
 		}
@@ -99,13 +104,29 @@ export class DataService {
 		return this._pnpApiSvc.updateCallsignDetails(callsignDetails);
 	}
 
-	private initPnpListener(): void {
-		this._pnpApiSvc.subscribeToSpots().subscribe((v) => {
-			const updatedActivations = this._activations.addSpots(v);
+	private initSpotListener(): void {
+		merge(
+			this._pnpApiSvc.subscribeToSpots(),
+			this._wwffApiSvc.subscribeToSpots(),
+			this._potaApiSvc.subscribeToSpots()
+		)
+			.pipe(
+				filter((spot) => {
+					const spotAgeMinutes =
+						(new Date().getTime() - new Date(spot.time).getTime()) / 60000;
+					return spotAgeMinutes <= environment.maxSpotAgeMinutes;
+				}),
+				bufferTime(2000),
+				filter((v) => v.length > 0)
+			)
+			.subscribe({
+				next: (v) => {
+					const updatedActivations = this._activations.addSpots(v);
 
-			if (updatedActivations.length > 0) {
-				this.activationUpdated.next(updatedActivations);
-			}
-		});
+					if (updatedActivations.length > 0) {
+						this.activationUpdated.next(updatedActivations);
+					}
+				},
+			});
 	}
 }

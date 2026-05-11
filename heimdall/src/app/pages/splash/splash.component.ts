@@ -3,8 +3,7 @@ import { AppRouter, RoutePath } from "src/app/services/AppRountingService";
 import { RaysDirective } from "src/app/directives/rays.directive";
 import { ActivationVisibility } from "src/app/models/Activation";
 import { DataService } from "src/app/services/DataService";
-import { Observable, ReplaySubject, take, takeUntil, takeWhile } from "rxjs";
-import { Subject } from "@microsoft/signalr";
+import { ReplaySubject, takeUntil } from "rxjs";
 
 @Component({
 	selector: "pph-splash",

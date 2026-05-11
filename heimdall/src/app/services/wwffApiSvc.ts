@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { ISpotSource } from "./ISpotSource";
 import { Spot } from "../models/Spot";
 import { Observable } from "rxjs";
-import { filter, map, mergeMap, tap } from "rxjs/operators";
+import { map, mergeMap } from "rxjs/operators";
 import { FetchService } from "./FetchService";
 
 import { environment } from "src/environments/environment";
@@ -29,7 +29,7 @@ export class WwffApiService implements ISpotSource {
 	private _lastFetchedSpotTime: number =
 		new Date("1970-01-01T00:00:00.000Z").getTime() / 1000;
 
-	constructor(public _fetchSvc: FetchService) {}
+	public constructor(public _fetchSvc: FetchService) {}
 
 	public subscribeToSpots(
 		updateInterval?: number,

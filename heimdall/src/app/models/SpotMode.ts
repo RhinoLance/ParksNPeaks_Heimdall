@@ -6,6 +6,7 @@ export enum SpotMode {
 	DATA = "DATA",
 	FT4 = "FT4",
 	FT8 = "FT8",
+	QRT = "QRT",
 	Other = "Other",
 }
 
@@ -17,6 +18,7 @@ const spotModeList: SpotMode[] = [
 	SpotMode.DATA,
 	SpotMode.FT4,
 	SpotMode.FT8,
+	SpotMode.QRT,
 	SpotMode.Other,
 ];
 

@@ -14,6 +14,7 @@ import { ZLotaClientService } from "./ZLotaHttpClient";
 import { CallsignDetails } from "../models/CallsignDetails";
 import { WwffApiService } from "./wwffApiSvc";
 import { environment } from "src/environments/environment";
+import { SotaApiService } from "./SotaApiService";
 
 @Injectable({
 	providedIn: "root",
@@ -40,7 +41,8 @@ export class DataService {
 		private _potaApiSvc: PotaClientService,
 		private _settingsSvc: SettingsService,
 		private _zlotaApiSvc: ZLotaClientService,
-		private _wwffApiSvc: WwffApiService
+		private _wwffApiSvc: WwffApiService,
+		private _sotaApiSvc: SotaApiService
 	) {
 		this.initSpotListener();
 	}
@@ -106,8 +108,9 @@ export class DataService {
 
 	private initSpotListener(): void {
 		merge(
-			this._pnpApiSvc.subscribeToSpots(),
+			//this._pnpApiSvc.subscribeToSpots(),
 			this._wwffApiSvc.subscribeToSpots(),
+			this._sotaApiSvc.subscribeToSpots(),
 			this._potaApiSvc.subscribeToSpots()
 		)
 			.pipe(

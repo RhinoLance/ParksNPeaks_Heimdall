@@ -11,12 +11,13 @@ import { SpotMode } from "../models/SpotMode";
 import { Callsign } from "../models/Callsign";
 import { ActivationAward } from "../models/ActivationAward";
 import { AwardScheme } from "../models/AwardScheme";
+import { DataSource } from "src/environments/TEnvironment";
 
 @Injectable({
 	providedIn: "root",
 })
 export class WwffApiService implements ISpotSource {
-	private _apiEnv = environment.spotSources.get("wwff");
+	private _apiEnv = environment.spotSources.get(DataSource.WWFF);
 	private _modeMap: { [key: string]: SpotMode } = {
 		AM: SpotMode.AM,
 		FM: SpotMode.FM,

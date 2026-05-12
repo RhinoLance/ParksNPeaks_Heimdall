@@ -9,6 +9,7 @@ import { FetchService } from "./FetchService";
 import { Callsign } from "../models/Callsign";
 import { ActivationAward } from "../models/ActivationAward";
 import { AwardScheme } from "../models/AwardScheme";
+import { DataSource } from "src/environments/TEnvironment";
 
 @Injectable({
 	providedIn: "root",
@@ -16,7 +17,7 @@ import { AwardScheme } from "../models/AwardScheme";
 export class SotaApiService implements ISpotSource {
 	private _numberOfSpotsToFetch = 30;
 
-	private _apiEnv = environment.spotSources.get("sota");
+	private _apiEnv = environment.spotSources.get(DataSource.SOTA);
 	private _epochEndpoint = `${this._apiEnv.baseHref}spots/epoch/`;
 	private _spotsEndpoint =
 		`${this._apiEnv.baseHref}spots/` + `${this._numberOfSpotsToFetch}/all/all/`;

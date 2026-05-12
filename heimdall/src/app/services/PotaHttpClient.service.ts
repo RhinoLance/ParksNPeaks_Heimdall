@@ -10,12 +10,13 @@ import { SpotMode } from "../models/SpotMode";
 import { Callsign } from "../models/Callsign";
 import { ActivationAward } from "../models/ActivationAward";
 import { AwardScheme } from "../models/AwardScheme";
+import { DataSource } from "src/environments/TEnvironment";
 
 @Injectable({
 	providedIn: "root",
 })
 export class PotaClientService implements ISpotSource {
-	private _apiEnv = environment.spotSources.get("pota");
+	private _apiEnv = environment.spotSources.get(DataSource.POTA);
 	private _modeMap: { [key: string]: SpotMode } = {
 		AM: SpotMode.AM,
 		FM: SpotMode.FM,

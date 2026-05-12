@@ -17,6 +17,7 @@ import {
 	throwOnPnpResponseError,
 } from "./PnPHttpClientOperators";
 import { ISpotSource } from "./ISpotSource";
+import { DataSource } from "src/environments/TEnvironment";
 
 @Injectable({
 	providedIn: "root",
@@ -32,7 +33,7 @@ export class PnPClientService implements ISpotSource {
 		return this._hasUserId;
 	}
 
-	private _apiEnv = environment.spotSources.get("pnp");
+	private _apiEnv = environment.spotSources.get(DataSource.PNP);
 
 	private _pnpSubscription = {
 		latestSpot: new Date("1970-01-01T00:00:00.000Z"),

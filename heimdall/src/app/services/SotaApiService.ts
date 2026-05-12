@@ -1,6 +1,4 @@
 import { Injectable } from "@angular/core";
-import { OAuthService } from "angular-oauth2-oidc";
-import { authConfig } from "../utilities/sota.sso.config";
 import { ISpotSource } from "./ISpotSource";
 import { environment } from "src/environments/environment";
 import { SpotMode } from "../models/SpotMode";
@@ -16,9 +14,12 @@ import { AwardScheme } from "../models/AwardScheme";
 	providedIn: "root",
 })
 export class SotaApiService implements ISpotSource {
+	private _numberOfSpotsToFetch = 30;
+
 	private _apiEnv = environment.spotSources.get("sota");
 	private _epochEndpoint = `${this._apiEnv.baseHref}spots/epoch/`;
-	private _spotsEndpoint = `${this._apiEnv.baseHref}spots/20/all/all/`;
+	private _spotsEndpoint =
+		`${this._apiEnv.baseHref}spots/` + `${this._numberOfSpotsToFetch}/all/all/`;
 
 	private _lastFetchedSpotTime: string = "1970-01-01T00:00:00.000Z";
 
@@ -62,7 +63,7 @@ export class SotaApiService implements ISpotSource {
 		const siteFilterRegex = new RegExp(this._apiEnv.siteFilter);
 
 		return this._fetchSvc
-			.pollJson<string>(
+			.pollText<string>(
 				this._apiEnv.pollIntervalMinutes,
 				this._epochEndpoint,
 				{},
@@ -124,6 +125,10 @@ export class SotaApiService implements ISpotSource {
 							return of(spot);
 						})
 					);
+				}),
+				catchError((error) => {
+					console.warn("Error fetching SOTA spots:", error);
+					return of(); // Emit an empty observable to keep the stream alive
 				})
 			);
 	}

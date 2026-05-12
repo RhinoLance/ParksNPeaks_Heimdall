@@ -17,6 +17,15 @@ export class FetchService {
 	public constructor(private _deps: FetchServiceDeps) {}
 
 	public fetch<T>(url: string, request: TInit): Observable<T> {
+		const headers = request.headers ?? {};
+		request = {
+			...request,
+			headers: {
+				"User-Agent": "PnP_Heimdall/1.0",
+				...headers,
+			},
+		};
+
 		return this._deps.fromFetch(url, request);
 	}
 
@@ -36,13 +45,10 @@ export class FetchService {
 	public getJson<T>(url: string, request: RequestInit): Observable<T> {
 		const requestInit = {
 			selector: (response: Response) => response.json(),
-			headers: {
-				"User-Agent": "PnP_Heimdall/1.0",
-			},
+			...request,
 		};
-		Object.assign(requestInit, request);
 
-		return this._deps.fromFetch(url, requestInit);
+		return this.fetch(url, requestInit);
 	}
 
 	/// Returns an observable which calls getJson every updateInterval seconds
@@ -59,8 +65,49 @@ export class FetchService {
 	): Observable<T> {
 		cancellationToken = cancellationToken ?? new CancellationToken();
 
+		(request as TInit).selector = (response: Response) => response.json();
+
+		return this.poll<T>(
+			updateInterval,
+			url,
+			request as TInit,
+			cancellationToken
+		);
+	}
+
+	public pollText<T>(
+		updateInterval: number,
+		url: string,
+		request: RequestInit,
+		cancellationToken?: CancellationToken
+	): Observable<T> {
+		cancellationToken = cancellationToken ?? new CancellationToken();
+
+		(request as TInit).selector = (response: Response) => response.text();
+
+		return this.poll<T>(
+			updateInterval,
+			url,
+			request as TInit,
+			cancellationToken
+		);
+	}
+
+	public poll<T>(
+		updateInterval: number,
+		url: string,
+		request: TInit,
+		cancellationToken?: CancellationToken
+	): Observable<T> {
+		cancellationToken = cancellationToken ?? new CancellationToken();
+
 		const safeRequest = mergeMap(() => {
-			return this.getJson<T>(url, request).pipe(catchError((_) => EMPTY));
+			return this.fetch<T>(url, request).pipe(
+				catchError((_) => {
+					console.warn(`Error fetching ${url}:`, _);
+					return EMPTY;
+				})
+			);
 		});
 
 		const obs = this._deps

@@ -1,6 +1,6 @@
 {
 	"root": true,
-	"ignorePatterns": ["projects/**/*"],
+	"ignorePatterns": ["projects/**/*", "**/*.spec.ts"],
 	"parserOptions": {
 		"ecmaVersion": "latest"
 	},
@@ -49,7 +49,7 @@
 					}
 				],
 
-				"no-console": ["error", { "allow": ["assert"] }],
+				"no-console": ["error", { "allow": ["warn", "log", "info", "assert"] }],
 				"@typescript-eslint/explicit-member-accessibility": "warn",
 				"@typescript-eslint/no-namespace": [2, { "allowDeclarations": true }],
 				"@typescript-eslint/no-inferrable-types": [

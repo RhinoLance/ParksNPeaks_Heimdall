@@ -1,4 +1,9 @@
-import { Environment, EnvironmentName, SpotSource } from "./TEnvironment";
+import {
+	DataSource,
+	Environment,
+	EnvironmentName,
+	SpotSource,
+} from "./TEnvironment";
 
 export const environment: Environment = {
 	name: EnvironmentName.Prod,
@@ -10,9 +15,9 @@ export const environment: Environment = {
 	heimdallHubUrl: "https://rhinoswtools.azurewebsites.net/heimdallHub",
 	pnpPollMinutesInterval: 1,
 
-	spotSources: new Map<string, SpotSource>([
+	spotSources: new Map<DataSource, SpotSource>([
 		[
-			"wwff",
+			DataSource.WWFF,
 			{
 				baseHref: "https://spots.wwff.co/static/spots.json",
 				pollIntervalMinutes: 1,
@@ -20,7 +25,7 @@ export const environment: Environment = {
 			},
 		],
 		[
-			"sota",
+			DataSource.SOTA,
 			{
 				baseHref: "https://api-db2.sota.org.uk/api/",
 				pollIntervalMinutes: 1,
@@ -28,7 +33,7 @@ export const environment: Environment = {
 			},
 		],
 		[
-			"pota",
+			DataSource.POTA,
 			{
 				baseHref: "https://api.pota.app/spot/activator",
 				pollIntervalMinutes: 1,
@@ -36,7 +41,15 @@ export const environment: Environment = {
 			},
 		],
 		[
-			"pnp",
+			DataSource.ZLOTA,
+			{
+				baseHref: "https://ontheair.nz/api/spots",
+				pollIntervalMinutes: 1,
+				siteFilter: "^(?:AU|NZ)",
+			},
+		],
+		[
+			DataSource.PNP,
 			{
 				baseHref: "https://rhinoswtools.azurewebsites.net/PnPProxy?suffix=",
 				pollIntervalMinutes: 1,

@@ -10,7 +10,7 @@ export type Environment = {
 
 	maxSpotAgeMinutes: number;
 
-	spotSources: Map<string, SpotSource>;
+	spotSources: Map<DataSource, SpotSource>;
 };
 
 export interface SpotSource {
@@ -24,4 +24,12 @@ export enum EnvironmentName {
 	Prod = "prod",
 	LocalServer = "localServer",
 	Dev = "dev",
+}
+
+export enum DataSource {
+	ZLOTA = "zlota",
+	SOTA = "sota",
+	WWFF = "wwff",
+	PNP = "pnp",
+	POTA = "pota",
 }

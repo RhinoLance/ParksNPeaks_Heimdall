@@ -30,10 +30,8 @@ import { PnPClientService } from "src/app/services/PnPHttpClient.service";
 import { AppRouter, RoutePath } from "src/app/services/AppRountingService";
 import { backOutLeft } from "ng-animate";
 import { tada } from "src/app/utilities/animations";
-import { ActivationAward } from "src/app/models/ActivationAward";
 import { LatLng } from "src/app/models/LatLng";
 import { ActivationPathMapComponent } from "../activation-path-map/activation-path-map.component";
-import { AwardScheme } from "src/app/models/AwardScheme";
 import { CallsignDetails } from "src/app/models/CallsignDetails";
 import { CallsignNameComponent } from "../callsign-name/callsign-name.component";
 
@@ -130,9 +128,10 @@ export class ActivationComponent implements OnInit {
 					this.viewState.hasUpdates = false;
 				});
 
-				if (!this.viewState.siteDetailsRetrieved) {
-					this.retrieveSiteDetails();
-				}
+				this.viewState.mapEnd =
+					this.activation.lat !== 0
+						? new LatLng(this.activation.lat, this.activation.lon)
+						: undefined;
 			});
 		}
 
@@ -143,29 +142,6 @@ export class ActivationComponent implements OnInit {
 		this.setMapStart();
 
 		this.showActivation();
-	}
-
-	public async retrieveSiteDetails(): Promise<void> {
-		const schemes = [
-			AwardScheme.WWFF,
-			AwardScheme.SOTA,
-			AwardScheme.POTA,
-			AwardScheme.ZLOTA,
-		];
-
-		let award: ActivationAward | undefined;
-		while (award == undefined && schemes.length > 0) {
-			award = this.activation.awardList.findByAwardScheme(
-				schemes.pop() as string
-			);
-		}
-
-		if (award == undefined) return;
-
-		const lastSpot = this.activation.getLatestSpot();
-		this.viewState.mapEnd = new LatLng(lastSpot.lat, lastSpot.lon);
-
-		this.viewState.siteDetailsRetrieved = true;
 	}
 
 	public setMapStart(): void {

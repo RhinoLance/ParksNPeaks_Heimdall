@@ -14,10 +14,12 @@ export class Activation {
 	public awardList: ActivationAwardList = new ActivationAwardList();
 	public siteName: string = "";
 	public callsign: Callsign;
+	public lat: number = 0;
+	public lon: number = 0;
 	public isDeleted: boolean = false;
 	public visibility: ActivationVisibility = ActivationVisibility.Visible;
 
-	public onUpdate = new ReplaySubject<Spot>();
+	public onUpdate = new ReplaySubject<void>();
 
 	private _spotList: Spot[] = []; //Sorted spot list oldest to newest
 
@@ -40,18 +42,21 @@ export class Activation {
 	}
 
 	public addSpot(spot: Spot): boolean {
-		if (this.containsDuplicateSpot(spot)) {
-			return false;
+		if (this.lat == 0 && this.lon == 0 && spot.lat != 0 && spot.lon != 0) {
+			this.lat = spot.lat;
+			this.lon = spot.lon;
 		}
 
-		this.setActivationVilbility(spot, this.getLatestSpot());
+		if (!this.containsDuplicateSpot(spot)) {
+			this.setActivationVilbility(spot, this.getLatestSpot());
 
-		this._spotList.push(spot);
-		this.orderSpotsByTime();
-		this.setSpotTypes();
-		this.addAwardIfRequired(spot);
+			this._spotList.push(spot);
+			this.orderSpotsByTime();
+			this.setSpotTypes();
+			this.addAwardIfRequired(spot);
+		}
 
-		this.onUpdate.next(spot);
+		this.onUpdate.next();
 
 		return true;
 	}

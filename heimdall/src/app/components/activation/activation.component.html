@@ -99,11 +99,10 @@
 			</div>
 			<div class="col-sm-12 col-md-auto">
 				<div
-					class="map-container"
 					*ngIf="viewState.mapStart && viewState.mapEnd"
+					class="map-container"
 				>
 					<pph-activation-path-map
-						*ngIf="viewState.siteDetailsRetrieved"
 						[latLngStart]="viewState.mapStart"
 						[latLngEnd]="viewState.mapEnd"
 						[padding]="15"

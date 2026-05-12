@@ -189,14 +189,14 @@ describe("ActivationComponent", () => {
 				let activation: Activation;
 				let spot1: Spot;
 				let spot2: Spot;
-				let subject: ReplaySubject<Spot>;
+				let subject: ReplaySubject<void>;
 
 				beforeEach(() => {
 					spot1 = new Spot();
 					spot2 = new Spot();
 					activation = new Activation(spot1);
 
-					subject = new ReplaySubject<Spot>();
+					subject = new ReplaySubject<void>();
 					activation.onUpdate = subject;
 
 					component.activation = activation;
@@ -211,7 +211,7 @@ describe("ActivationComponent", () => {
 						ActivationVisibility.HiddenPendingNewBandOrMode;
 
 					// Act
-					subject.next(spot2);
+					subject.next();
 					fixture.detectChanges();
 					const result = activation.visibility;
 
@@ -229,7 +229,7 @@ describe("ActivationComponent", () => {
 						ActivationVisibility.HiddenPendingNewBandOrMode;
 
 					// Act
-					subject.next(spot2);
+					subject.next();
 					fixture.detectChanges();
 					const result = activation.visibility;
 

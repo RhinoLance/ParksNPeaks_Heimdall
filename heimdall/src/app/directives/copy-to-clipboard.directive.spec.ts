@@ -30,7 +30,8 @@ describe("CopyToClipboardDirective", async () => {
 
 		public config = {
 			showDelay: 0,
-			hideDelay: 0,
+			hideDelay: 50,
+			hangDelay: 100,
 		};
 	}
 
@@ -60,7 +61,7 @@ describe("CopyToClipboardDirective", async () => {
 	});
 
 	it("should insert on hover", fakeAsync(() => {
-		testEl.triggerEventHandler("mouseover", null);
+		testEl.triggerEventHandler("mouseenter", null);
 		tick(1);
 		fixture.detectChanges();
 
@@ -73,7 +74,7 @@ describe("CopyToClipboardDirective", async () => {
 	it("should copy to clipboard on click", fakeAsync(async () => {
 		spyOn(navigator.clipboard, "writeText").and.returnValue(Promise.resolve());
 
-		testEl.triggerEventHandler("mouseover", null);
+		testEl.triggerEventHandler("mouseenter", null);
 		tick(1);
 		fixture.detectChanges();
 

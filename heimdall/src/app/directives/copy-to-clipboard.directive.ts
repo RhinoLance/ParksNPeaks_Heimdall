@@ -83,7 +83,7 @@ export class CopyToClipboardDirective implements OnInit {
 	private startListeningToHost() {
 		this._hostListenerRemover = this._renderer.listen(
 			this._el.nativeElement,
-			"mouseover",
+			"mouseenter",
 			() => this.addIconEl()
 		);
 	}

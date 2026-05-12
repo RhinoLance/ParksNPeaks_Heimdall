@@ -39,12 +39,14 @@ describe("Activation", () => {
 		spot2.time = spot1.time;
 
 		const activation = new Activation(spot1);
+		const preCount = activation.spotCount;
 
 		// Act
-		const added = activation.addSpot(spot2);
+		activation.addSpot(spot2);
+		const postCount = activation.spotCount;
 
 		// Assert
-		expect(added).toBe(false);
+		expect(postCount).toBe(preCount);
 	});
 
 	it("It gets superseeded spots", () => {

@@ -39,7 +39,7 @@ export const environment: Environment = {
 		[
 			DataSource.POTA,
 			{
-				baseHref: "https://api.pota.app/spot/activator",
+				baseHref: "https://api.pota.app/spot/activator/",
 				pollIntervalMinutes: 1,
 				siteFilter: "^(?:AU|NZ)",
 			},
@@ -47,9 +47,10 @@ export const environment: Environment = {
 		[
 			DataSource.ZLOTA,
 			{
-				baseHref: "https://ontheair.nz/api/spots",
+				//baseHref: "https://ontheair.nz/",
+				baseHref: "https://rhinoswtools.azurewebsites.net/ZLotaProxy?suffix=",
 				pollIntervalMinutes: 1,
-				siteFilter: "^(?:AU|NZ)",
+				siteFilter: "^(?:AU|NZ|ZL)",
 			},
 		],
 		[
@@ -61,7 +62,7 @@ export const environment: Environment = {
 			},
 		],
 	]),
-	maxSpotAgeMinutes: 120,
+	maxSpotAgeMinutes: 1200,
 };
 
 /*

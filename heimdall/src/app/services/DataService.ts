@@ -5,16 +5,14 @@ import { Activation } from "../models/Activation";
 import { PnPClientService, PostResponse } from "./PnPHttpClient.service";
 import { Spot } from "../models/Spot";
 import { SettingsService } from "./SettingsService";
-import { ActivationAward } from "../models/ActivationAward";
-import { AwardScheme } from "../models/AwardScheme";
 import { Site } from "../models/Site";
-import { SiteFactory } from "../models/SiteFactory";
 import { PotaClientService } from "./PotaHttpClient.service";
-import { ZLotaClientService } from "./ZLotaHttpClient";
 import { CallsignDetails } from "../models/CallsignDetails";
 import { WwffApiService } from "./wwffApiSvc";
 import { environment } from "src/environments/environment";
 import { SotaApiService } from "./SotaApiService";
+import { ISpotSource } from "./ISpotSource";
+import { ZLotaApiService } from "./ZLotaApiService";
 
 @Injectable({
 	providedIn: "root",
@@ -40,7 +38,7 @@ export class DataService {
 		private _pnpApiSvc: PnPClientService,
 		private _potaApiSvc: PotaClientService,
 		private _settingsSvc: SettingsService,
-		private _zlotaApiSvc: ZLotaClientService,
+		private _zlotaApiSvc: ZLotaApiService,
 		private _wwffApiSvc: WwffApiService,
 		private _sotaApiSvc: SotaApiService
 	) {
@@ -60,44 +58,6 @@ export class DataService {
 			.pipe(tap(() => this._activations.addSpot(spot.clone())));
 	}
 
-	public async getSiteDetails(award: ActivationAward): Promise<Site> {
-		throw new Error("Depreciated");
-
-		if (this._siteCache.has(award.siteId)) {
-			return (await this._siteCache.get(award.siteId)) as Site;
-		}
-
-		let locationPromise: Promise<Site>;
-
-		switch (award.award) {
-			case AwardScheme.WWFF:
-				locationPromise = this._pnpApiSvc
-					.getPark(AwardScheme.WWFF, award.siteId)
-					.then((v) => SiteFactory.fromPnPPark(v));
-				break;
-			case AwardScheme.SOTA:
-				locationPromise = this._pnpApiSvc
-					.getSummit(award.siteId)
-					.then((v) => SiteFactory.fromPnPPeak(v));
-				break;
-			case AwardScheme.POTA:
-				locationPromise = this._potaApiSvc
-					.getPark(award.siteId)
-					.then((v) => SiteFactory.fromPotaPark(v));
-				break;
-			case AwardScheme.ZLOTA:
-				locationPromise = this._zlotaApiSvc
-					.getSite(award.siteId)
-					.then((v) => SiteFactory.fromZlotaSite(v));
-				break;
-			default:
-				throw new Error("Unknown award type");
-		}
-
-		this._siteCache.set(award.siteId, locationPromise);
-		return await locationPromise;
-	}
-
 	public getUserDetails(callsign: string) {
 		return this._pnpApiSvc.getCallsignDetails(callsign);
 	}
@@ -107,12 +67,15 @@ export class DataService {
 	}
 
 	private initSpotListener(): void {
-		merge(
-			this._pnpApiSvc.subscribeToSpots(),
-			this._wwffApiSvc.subscribeToSpots(),
-			this._sotaApiSvc.subscribeToSpots(),
-			this._potaApiSvc.subscribeToSpots()
-		)
+		const dataServiceList: ISpotSource[] = [
+			this._sotaApiSvc,
+			this._potaApiSvc,
+			this._zlotaApiSvc,
+			this._wwffApiSvc,
+			this._pnpApiSvc,
+		];
+
+		merge(...dataServiceList.map((svc) => svc.subscribeToSpots()))
 			.pipe(
 				filter((spot) => {
 					const spotAgeMinutes =

@@ -135,7 +135,7 @@ export class CopyToClipboardDirective implements OnInit {
 			.pipe(
 				takeUntil(
 					this.mouseLeaveObs(this._el.nativeElement).pipe(
-						tap((v) => this.startListeningToHost())
+						tap((_) => this.startListeningToHost())
 					)
 				)
 			)

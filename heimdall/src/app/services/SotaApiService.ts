@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { ISpotSource } from "./ISpotSource";
 import { environment } from "src/environments/environment";
-import { parseSpotMode, SpotMode } from "../models/SpotMode";
+import { parseSpotMode } from "../models/SpotMode";
 import { CancellationToken } from "../models/CancellationToken";
 import { Spot } from "../models/Spot";
 import { catchError, filter, map, mergeMap, Observable, of } from "rxjs";

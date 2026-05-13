@@ -8,6 +8,7 @@ import { ActivationAwardList } from "./ActivationAwardList";
 import { ReplaySubject } from "rxjs";
 import { Guid } from "./Guid";
 import { Callsign } from "./Callsign";
+import { AwardScheme } from "./AwardScheme";
 
 export class Activation {
 	public activationId: Guid = Guid.create();
@@ -47,13 +48,14 @@ export class Activation {
 			this.lon = spot.lon;
 		}
 
+		this.addAwardIfRequired(spot);
+
 		if (!this.containsDuplicateSpot(spot)) {
 			this.setActivationVilbility(spot, this.getLatestSpot());
 
 			this._spotList.push(spot);
 			this.orderSpotsByTime();
 			this.setSpotTypes();
-			this.addAwardIfRequired(spot);
 		}
 
 		this.onUpdate.next();
@@ -173,10 +175,14 @@ export class Activation {
 
 	private addAwardIfRequired(spot: Spot): void {
 		spot.awardList.toArray().map((v) => {
-			if (!this.awardList.getAwards().includes(v.award)) {
+			if (!this.hasAwardScheme(v.award)) {
 				this.awardList.add(v);
 			}
 		});
+	}
+
+	public hasAwardScheme(awardScheme: AwardScheme): boolean {
+		return this.awardList.getAwards().includes(awardScheme);
 	}
 
 	private setActivationVilbility(addedSpot: Spot, previousSpot: Spot): void {

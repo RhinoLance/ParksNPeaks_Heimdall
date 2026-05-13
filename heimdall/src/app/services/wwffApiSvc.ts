@@ -7,7 +7,7 @@ import { FetchService } from "./FetchService";
 
 import { environment } from "src/environments/environment";
 import { CancellationToken } from "../models/CancellationToken";
-import { SpotMode } from "../models/SpotMode";
+import { parseSpotMode } from "../models/SpotMode";
 import { Callsign } from "../models/Callsign";
 import { ActivationAward } from "../models/ActivationAward";
 import { AwardScheme } from "../models/AwardScheme";
@@ -18,14 +18,6 @@ import { DataSource } from "src/environments/TEnvironment";
 })
 export class WwffApiService implements ISpotSource {
 	private _apiEnv = environment.spotSources.get(DataSource.WWFF);
-	private _modeMap: { [key: string]: SpotMode } = {
-		AM: SpotMode.AM,
-		FM: SpotMode.FM,
-		SSB: SpotMode.SSB,
-		CW: SpotMode.CW,
-		FT8: SpotMode.FT8,
-		FT4: SpotMode.FT4,
-	};
 
 	private _lastFetchedSpotTime: number =
 		new Date("1970-01-01T00:00:00.000Z").getTime() / 1000;
@@ -59,7 +51,7 @@ export class WwffApiService implements ISpotSource {
 					const spot = new Spot();
 					spot.callsign = new Callsign(v.activator);
 					spot.frequency = v.frequency_khz / 1000;
-					spot.mode = this._modeMap[v.mode] ?? SpotMode.Other;
+					spot.mode = parseSpotMode(v.mode);
 					spot.awardList.add(
 						new ActivationAward(AwardScheme.WWFF, v.reference)
 					);

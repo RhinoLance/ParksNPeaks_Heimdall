@@ -35,7 +35,7 @@ export const environment: Environment = {
 		[
 			DataSource.POTA,
 			{
-				baseHref: "https://api.pota.app/spot/activator",
+				baseHref: "https://api.pota.app/spot/activator/",
 				pollIntervalMinutes: 1,
 				siteFilter: "^(?:AU|NZ)",
 			},
@@ -43,7 +43,7 @@ export const environment: Environment = {
 		[
 			DataSource.ZLOTA,
 			{
-				baseHref: "https://ontheair.nz/api/spots",
+				baseHref: "https://ontheair.nz/",
 				pollIntervalMinutes: 1,
 				siteFilter: "^(?:AU|NZ)",
 			},

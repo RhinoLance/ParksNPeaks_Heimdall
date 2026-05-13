@@ -1,22 +1,7 @@
 import { ActivationAward } from "../models/ActivationAward";
-import {
-	AwardScheme,
-	regexPota,
-	regexSota,
-	regexVkff,
-	regexZlff,
-	regexZLota,
-} from "../models/AwardScheme";
+import { awardSchemeRegexMap } from "../models/AwardScheme";
 
 export class AwardSchemeParser {
-	private _regexList = [
-		{ regex: regexSota, scheme: AwardScheme.SOTA },
-		{ regex: regexVkff, scheme: AwardScheme.VKFF },
-		{ regex: regexZlff, scheme: AwardScheme.ZL_WWFF },
-		{ regex: regexPota, scheme: AwardScheme.POTA },
-		{ regex: regexZLota, scheme: AwardScheme.ZLOTA },
-	];
-
 	private _searchString = "";
 
 	public constructor(string: string) {
@@ -30,10 +15,10 @@ export class AwardSchemeParser {
 			return retVal;
 		}
 
-		this._regexList.map((v) => {
-			const matches = this._searchString.match(v.regex);
+		awardSchemeRegexMap.forEach((regex, scheme) => {
+			const matches = this._searchString.match(regex);
 			if (matches != null) {
-				retVal.push(new ActivationAward(v.scheme, matches[0].toUpperCase()));
+				retVal.push(new ActivationAward(scheme, matches[0].toUpperCase()));
 			}
 		});
 

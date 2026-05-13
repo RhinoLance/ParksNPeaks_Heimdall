@@ -51,6 +51,15 @@ export class FetchService {
 		return this.fetch(url, requestInit);
 	}
 
+	public getText(url: string, request: RequestInit): Observable<string> {
+		const requestInit = {
+			selector: (response: Response) => response.text(),
+			...request,
+		};
+
+		return this.fetch(url, requestInit);
+	}
+
 	/// Returns an observable which calls getJson every updateInterval seconds
 	/// @param updateInterval - how often to repeat the request in seconds
 	/// @param url - the url to call

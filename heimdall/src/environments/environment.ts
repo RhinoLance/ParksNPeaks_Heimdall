@@ -2,21 +2,21 @@
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-import { Environment, EnvironmentName, SpotSource } from "./TEnvironment";
+import {
+	DataSource,
+	IEnvironment,
+	EnvironmentName,
+	ISpotSource,
+} from "./IEnvironment";
 
-export const environment: Environment = {
+export const environment: IEnvironment = {
 	name: EnvironmentName.Dev,
 	production: false,
-	potaBaseHref: "https://api.pota.app/",
-	pnpBaseHref: "http://localhost:9000/?suffix=",
-	zlotaBaseHref: "http://localhost:9000/zlota/?suffix=",
 	heimdallHubUrl: "http://heimdall.conryclan.com/heimdallHub",
-	wwffBaseHref: "https://spots.wwff.co/static/spots.json",
-	pnpPollMinutesInterval: 0.1,
 
-	spotSources: new Map<string, SpotSource>([
+	spotSources: new Map<DataSource, ISpotSource>([
 		[
-			"wwff",
+			DataSource.WWFF,
 			{
 				baseHref: "https://spots.wwff.co/static/spots.json",
 				pollIntervalMinutes: 1,
@@ -24,7 +24,7 @@ export const environment: Environment = {
 			},
 		],
 		[
-			"sota",
+			DataSource.SOTA,
 			{
 				baseHref: "https://api-db2.sota.org.uk/api/",
 				pollIntervalMinutes: 1,
@@ -32,15 +32,24 @@ export const environment: Environment = {
 			},
 		],
 		[
-			"pota",
+			DataSource.POTA,
 			{
-				baseHref: "https://api.pota.app/spot/activator",
+				baseHref: "https://api.pota.app/spot/activator/",
 				pollIntervalMinutes: 1,
 				siteFilter: "^(?:AU|NZ)",
 			},
 		],
 		[
-			"pnp",
+			DataSource.ZLOTA,
+			{
+				//baseHref: "https://ontheair.nz/",
+				baseHref: "https://rhinoswtools.azurewebsites.net/ZLotaProxy?suffix=",
+				pollIntervalMinutes: 1,
+				siteFilter: "^(?:AU|NZ|ZL)",
+			},
+		],
+		[
+			DataSource.PNP,
 			{
 				baseHref: "https://rhinoswtools.azurewebsites.net/PnPProxy?suffix=",
 				pollIntervalMinutes: 1,

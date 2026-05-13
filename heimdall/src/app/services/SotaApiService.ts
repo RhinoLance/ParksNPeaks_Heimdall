@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { ISpotSource } from "./ISpotSource";
 import { environment } from "src/environments/environment";
-import { SpotMode } from "../models/SpotMode";
+import { parseSpotMode } from "../models/SpotMode";
 import { CancellationToken } from "../models/CancellationToken";
 import { Spot } from "../models/Spot";
 import { catchError, filter, map, mergeMap, Observable, of } from "rxjs";
@@ -9,6 +9,7 @@ import { FetchService } from "./FetchService";
 import { Callsign } from "../models/Callsign";
 import { ActivationAward } from "../models/ActivationAward";
 import { AwardScheme } from "../models/AwardScheme";
+import { DataSource } from "src/environments/IEnvironment";
 
 @Injectable({
 	providedIn: "root",
@@ -16,7 +17,7 @@ import { AwardScheme } from "../models/AwardScheme";
 export class SotaApiService implements ISpotSource {
 	private _numberOfSpotsToFetch = 30;
 
-	private _apiEnv = environment.spotSources.get("sota");
+	private _apiEnv = environment.spotSources.get(DataSource.SOTA);
 	private _epochEndpoint = `${this._apiEnv.baseHref}spots/epoch/`;
 	private _spotsEndpoint =
 		`${this._apiEnv.baseHref}spots/` + `${this._numberOfSpotsToFetch}/all/all/`;
@@ -93,8 +94,7 @@ export class SotaApiService implements ISpotSource {
 					const spot = new Spot();
 					spot.callsign = new Callsign(v.activatorCallsign);
 					spot.frequency = v.frequency ?? 0;
-					//spot.mode = (SpotMode as any)[v.mode] ?? SpotMode.Other;
-					spot.mode = SpotMode.QRT;
+					spot.mode = parseSpotMode(v.mode);
 					spot.awardList.add(
 						new ActivationAward(AwardScheme.SOTA, v.summitCode)
 					);

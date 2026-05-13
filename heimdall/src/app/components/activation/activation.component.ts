@@ -26,7 +26,7 @@ import { CopyToClipboardDirective } from "src/app/directives/copy-to-clipboard.d
 import { RespotComponent } from "../respot/respot.component";
 import { NgbDropdownModule } from "@ng-bootstrap/ng-bootstrap";
 import { DataService } from "src/app/services/DataService";
-import { PnPClientService } from "src/app/services/PnPHttpClient.service";
+import { PnPApiService } from "src/app/services/PnPApiService";
 import { AppRouter, RoutePath } from "src/app/services/AppRountingService";
 import { backOutLeft } from "ng-animate";
 import { tada } from "src/app/utilities/animations";
@@ -34,6 +34,8 @@ import { LatLng } from "src/app/models/LatLng";
 import { ActivationPathMapComponent } from "../activation-path-map/activation-path-map.component";
 import { CallsignDetails } from "src/app/models/CallsignDetails";
 import { CallsignNameComponent } from "../callsign-name/callsign-name.component";
+import { awardSchemeToName } from "src/app/models/AwardScheme";
+import { ActivationAward } from "src/app/models/ActivationAward";
 
 @Component({
 	selector: "pph-activation",
@@ -73,6 +75,7 @@ export class ActivationComponent implements OnInit {
 	public __activationVisiblility = ActivationVisibility;
 
 	public expand: boolean = false;
+
 	public viewState: ViewState = {
 		spot: new Spot(),
 		respot: new Spot(),
@@ -86,6 +89,7 @@ export class ActivationComponent implements OnInit {
 		mapStart: undefined,
 		mapEnd: undefined,
 		callsignDetails: undefined,
+		awardList: [],
 	};
 
 	public readonly liveTimeAgo: boolean = true;
@@ -95,7 +99,7 @@ export class ActivationComponent implements OnInit {
 
 	public constructor(
 		private _dataSvc: DataService,
-		public pnpClientSvc: PnPClientService,
+		public pnpClientSvc: PnPApiService,
 		private _router: AppRouter
 	) {}
 
@@ -132,6 +136,14 @@ export class ActivationComponent implements OnInit {
 					this.activation.lat !== 0
 						? new LatLng(this.activation.lat, this.activation.lon)
 						: undefined;
+
+				this.viewState.awardList.length = 0;
+				this.activation.awardList.toArray().map((aa) => {
+					this.viewState.awardList.push({
+						scheme: aa,
+						name: awardSchemeToName(aa.award),
+					});
+				});
 			});
 		}
 
@@ -228,6 +240,11 @@ export enum ElapsedTimeState {
 	Inactive = "inactive",
 }
 
+type viewAwardListItem = {
+	scheme: ActivationAward;
+	name: string;
+};
+
 type ViewState = {
 	spot: Spot;
 	respot: Spot;
@@ -241,4 +258,5 @@ type ViewState = {
 	mapStart?: LatLng;
 	mapEnd?: LatLng;
 	callsignDetails?: CallsignDetails;
+	awardList: viewAwardListItem[];
 };

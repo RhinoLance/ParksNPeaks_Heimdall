@@ -233,6 +233,32 @@ describe("Activation", () => {
 			expect(result).toBe(false);
 		});
 
+		it("Different award and site, same time", () => {
+			// Arrange
+			const spot1 = new Spot();
+			spot1.callsign = new Callsign("ZL1GA");
+			spot1.awardList = new ActivationAwardList(
+				new ActivationAward(AwardScheme.ZLOTA_PARK, "ZLP/WL-0014")
+			);
+			spot1.siteName = "Boggy Pond Wildlife Reserve";
+			spot1.time = new Date(2026, 4, 12, 21, 25, 51);
+
+			const spot2 = new Spot();
+			spot2.callsign = new Callsign("ZLL/0042");
+			spot2.awardList = new ActivationAwardList(
+				new ActivationAward(AwardScheme.ZLOTA_LLOTA_LAKE, "ZLP/WL-0014")
+			);
+			spot2.siteName = "Boggy Pond Lagoon";
+			spot2.time = new Date(2026, 4, 12, 21, 25, 51);
+
+			// Act
+			const activation = new Activation(spotTemplate);
+			const result = activation.isPartOfThisActivation(spot2);
+
+			// Assert
+			expect(result).toBe(false);
+		});
+
 		it("Different award and site, different name", () => {
 			// Arrange
 			const spot2 = spotTemplate.clone();

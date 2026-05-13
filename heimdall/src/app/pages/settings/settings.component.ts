@@ -2,7 +2,7 @@ import { CommonModule } from "@angular/common";
 import { Component } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { AppRouter, RoutePath } from "src/app/services/AppRountingService";
-import { PnPUser } from "src/app/services/PnPHttpClient.service";
+import { PnPUser } from "src/app/services/PnPApiService";
 import { SettingsService } from "src/app/services/SettingsService";
 
 @Component({

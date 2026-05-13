@@ -2,7 +2,7 @@ import { PnPSpot } from "../models/PnPSpot";
 import { FetchService, FetchServiceDeps } from "./FetchService";
 import { Subject, from, of, throwError } from "rxjs";
 import { Spot } from "../models/Spot";
-import { PnPClientService } from "./PnPHttpClient.service";
+import { PnPApiService } from "./PnPApiService";
 import { SettingsKey, SettingsService } from "./SettingsService";
 import { PnPPark } from "../models/PnPPark";
 
@@ -29,7 +29,7 @@ describe("PnPHttpClientService", () => {
 				Promise.resolve(new PnPPark())
 			);
 
-			const svc = new PnPClientService(fetch, settingsSvc);
+			const svc = new PnPApiService(fetch, settingsSvc);
 
 			// Act
 			const result = await svc.getPark("WWFF", "VKFF-0344");
@@ -45,7 +45,7 @@ describe("PnPHttpClientService", () => {
 				Promise.resolve(new PnPPark())
 			);
 
-			const svc = new PnPClientService(fetch, settingsSvc);
+			const svc = new PnPApiService(fetch, settingsSvc);
 
 			// Act
 			const result = await svc.getSummit("VK7/SW-001");
@@ -98,7 +98,7 @@ describe("PnPHttpClientService", () => {
 				const fetch = new FetchService(new FetchServiceDeps());
 				spyOn(fetch, "pollJson").and.returnValues(of([pnpSpot]));
 
-				const svc = new PnPClientService(fetch, settingsSvc);
+				const svc = new PnPApiService(fetch, settingsSvc);
 
 				// Act
 				svc.subscribeToSpots().subscribe((result) => {
@@ -121,7 +121,7 @@ describe("PnPHttpClientService", () => {
 				const fetch = new FetchService(new FetchServiceDeps());
 				spyOn(fetch, "pollJson").and.returnValue(subject);
 
-				const svc = new PnPClientService(fetch, settingsSvc);
+				const svc = new PnPApiService(fetch, settingsSvc);
 				const result: Spot[] = [];
 
 				svc.subscribeToSpots().subscribe({
@@ -158,7 +158,7 @@ describe("PnPHttpClientService", () => {
 						of([spot])
 					);
 
-					const svc = new PnPClientService(fetch, settingsSvc);
+					const svc = new PnPApiService(fetch, settingsSvc);
 					const result: Spot[] = [];
 
 					let hadError = false;
@@ -208,7 +208,7 @@ describe("PnPHttpClientService", () => {
 							const fetch = new FetchService(new FetchServiceDeps());
 							spyOn(fetch, "pollJson").and.returnValue(subject);
 
-							const svc = new PnPClientService(fetch, settingsSvc);
+							const svc = new PnPApiService(fetch, settingsSvc);
 							const result: Spot[] = [];
 
 							svc.subscribeToSpots().subscribe({

@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 
 import { RespotComponent } from "./respot.component";
-import { PnPClientService } from "src/app/services/PnPHttpClient.service";
+import { PnPApiService } from "src/app/services/PnPApiService";
 import { Spot } from "src/app/models/Spot";
 import { Observable, of, throwError } from "rxjs";
 import { DataService } from "src/app/services/DataService";
@@ -31,7 +31,7 @@ describe("RespotComponent", () => {
 		TestBed.configureTestingModule({
 			imports: [RespotComponent],
 			providers: [
-				{ provide: PnPClientService, useClass: MockPnpClientService },
+				{ provide: PnPApiService, useClass: MockPnpClientService },
 				{ provide: DataService, useValue: MockDataService },
 			],
 		});

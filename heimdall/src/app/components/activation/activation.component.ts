@@ -26,7 +26,7 @@ import { CopyToClipboardDirective } from "src/app/directives/copy-to-clipboard.d
 import { RespotComponent } from "../respot/respot.component";
 import { NgbDropdownModule } from "@ng-bootstrap/ng-bootstrap";
 import { DataService } from "src/app/services/DataService";
-import { PnPClientService } from "src/app/services/PnPHttpClient.service";
+import { PnPApiService } from "src/app/services/PnPApiService";
 import { AppRouter, RoutePath } from "src/app/services/AppRountingService";
 import { backOutLeft } from "ng-animate";
 import { tada } from "src/app/utilities/animations";
@@ -99,7 +99,7 @@ export class ActivationComponent implements OnInit {
 
 	public constructor(
 		private _dataSvc: DataService,
-		public pnpClientSvc: PnPClientService,
+		public pnpClientSvc: PnPApiService,
 		private _router: AppRouter
 	) {}
 

@@ -12,17 +12,14 @@ import { PnPSummit } from "../models/PnPSummit";
 import { CallsignDetails } from "../models/CallsignDetails";
 import { PnPCallsign } from "../models/PnPCallsign";
 import { CallsignDetailsConvertor } from "../models/CallsignDetailsConvertor";
-import {
-	pnpResponseToJSON,
-	throwOnPnpResponseError,
-} from "./PnPHttpClientOperators";
+import { pnpResponseToJSON, throwOnPnpResponseError } from "./PnPApiOperators";
 import { ISpotSource } from "./ISpotSource";
 import { DataSource } from "src/environments/TEnvironment";
 
 @Injectable({
 	providedIn: "root",
 })
-export class PnPClientService implements ISpotSource {
+export class PnPApiService implements ISpotSource {
 	private _hasApiKey: boolean = false;
 	public get hasApiKey(): boolean {
 		return this._hasApiKey;

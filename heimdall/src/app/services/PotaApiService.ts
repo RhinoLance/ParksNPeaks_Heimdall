@@ -15,7 +15,7 @@ import { DataSource } from "src/environments/TEnvironment";
 @Injectable({
 	providedIn: "root",
 })
-export class PotaClientService implements ISpotSource {
+export class PotaApiService implements ISpotSource {
 	private _apiEnv = environment.spotSources.get(DataSource.POTA);
 
 	private _lastFetchedSpotTime: number =

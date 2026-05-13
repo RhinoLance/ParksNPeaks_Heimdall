@@ -2,13 +2,13 @@ import { Injectable } from "@angular/core";
 import { ActivationCatalogue } from "../models/ActivationCatalogue";
 import { Observable, Subject, tap, merge, bufferTime, filter } from "rxjs";
 import { Activation } from "../models/Activation";
-import { PnPClientService, PostResponse } from "./PnPHttpClient.service";
+import { PnPApiService, PostResponse } from "./PnPApiService";
 import { Spot } from "../models/Spot";
 import { SettingsService } from "./SettingsService";
 import { Site } from "../models/Site";
-import { PotaClientService } from "./PotaHttpClient.service";
+import { PotaApiService } from "./PotaApiService";
 import { CallsignDetails } from "../models/CallsignDetails";
-import { WwffApiService } from "./wwffApiSvc";
+import { WwffApiService } from "./WwffApiService";
 import { environment } from "src/environments/environment";
 import { SotaApiService } from "./SotaApiService";
 import { ISpotSource } from "./ISpotSource";
@@ -35,8 +35,8 @@ export class DataService {
 	}
 
 	public constructor(
-		private _pnpApiSvc: PnPClientService,
-		private _potaApiSvc: PotaClientService,
+		private _pnpApiSvc: PnPApiService,
+		private _potaApiSvc: PotaApiService,
 		private _settingsSvc: SettingsService,
 		private _zlotaApiSvc: ZLotaApiService,
 		private _wwffApiSvc: WwffApiService,

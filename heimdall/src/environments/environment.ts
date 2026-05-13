@@ -4,22 +4,17 @@
 
 import {
 	DataSource,
-	Environment,
+	IEnvironment,
 	EnvironmentName,
-	SpotSource,
-} from "./TEnvironment";
+	ISpotSource,
+} from "./IEnvironment";
 
-export const environment: Environment = {
+export const environment: IEnvironment = {
 	name: EnvironmentName.Dev,
 	production: false,
-	potaBaseHref: "https://api.pota.app/",
-	pnpBaseHref: "http://localhost:9000/?suffix=",
-	zlotaBaseHref: "http://localhost:9000/zlota/?suffix=",
 	heimdallHubUrl: "http://heimdall.conryclan.com/heimdallHub",
-	wwffBaseHref: "https://spots.wwff.co/static/spots.json",
-	pnpPollMinutesInterval: 0.1,
 
-	spotSources: new Map<DataSource, SpotSource>([
+	spotSources: new Map<DataSource, ISpotSource>([
 		[
 			DataSource.WWFF,
 			{
@@ -62,7 +57,7 @@ export const environment: Environment = {
 			},
 		],
 	]),
-	maxSpotAgeMinutes: 1200,
+	maxSpotAgeMinutes: 120,
 };
 
 /*

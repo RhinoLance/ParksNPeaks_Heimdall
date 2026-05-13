@@ -9,7 +9,7 @@ import { FetchService } from "./FetchService";
 import { Callsign } from "../models/Callsign";
 import { ActivationAward } from "../models/ActivationAward";
 import { AwardScheme } from "../models/AwardScheme";
-import { DataSource } from "src/environments/TEnvironment";
+import { DataSource } from "src/environments/IEnvironment";
 
 @Injectable({
 	providedIn: "root",

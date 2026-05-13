@@ -14,7 +14,7 @@ import { PnPCallsign } from "../models/PnPCallsign";
 import { CallsignDetailsConvertor } from "../models/CallsignDetailsConvertor";
 import { pnpResponseToJSON, throwOnPnpResponseError } from "./PnPApiOperators";
 import { ISpotSource } from "./ISpotSource";
-import { DataSource } from "src/environments/TEnvironment";
+import { DataSource } from "src/environments/IEnvironment";
 
 @Injectable({
 	providedIn: "root",

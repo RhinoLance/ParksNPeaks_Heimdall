@@ -2,7 +2,7 @@ import { environment } from "src/environments/environment";
 import { RealTimeUserService } from "./RealTimeUserService";
 import { RealTimeUserServiceMock } from "./RealTimeUserServiceMock";
 import { RealTimeUserServiceSignalR } from "./RealTimeUserServiceSignalR";
-import { EnvironmentName } from "src/environments/TEnvironment";
+import { EnvironmentName } from "src/environments/IEnvironment";
 
 export const provideRealTimeUserService = () => {
 	return {

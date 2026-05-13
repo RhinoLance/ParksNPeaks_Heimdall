@@ -8,7 +8,7 @@ import { catchError, map, mergeMap, Observable, of } from "rxjs";
 import { FetchService } from "./FetchService";
 import { Callsign } from "../models/Callsign";
 import { ActivationAward } from "../models/ActivationAward";
-import { DataSource } from "src/environments/TEnvironment";
+import { DataSource } from "src/environments/IEnvironment";
 
 @Injectable({
 	providedIn: "root",

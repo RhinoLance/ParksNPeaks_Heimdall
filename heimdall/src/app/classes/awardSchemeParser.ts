@@ -5,6 +5,7 @@ import {
 	regexSota,
 	regexVkff,
 	regexZlff,
+	regexZLota,
 } from "../models/AwardScheme";
 
 export class AwardSchemeParser {
@@ -13,6 +14,7 @@ export class AwardSchemeParser {
 		{ regex: regexVkff, scheme: AwardScheme.VKFF },
 		{ regex: regexZlff, scheme: AwardScheme.ZL_WWFF },
 		{ regex: regexPota, scheme: AwardScheme.POTA },
+		{ regex: regexZLota, scheme: AwardScheme.ZLOTA },
 	];
 
 	private _searchString = "";

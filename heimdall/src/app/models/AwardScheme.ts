@@ -30,5 +30,6 @@ const regexSota = /(?:VK|ZL)[0-9]{1,3}\/[A-Z]{1,3}-\d+/i;
 const regexVkff = /VKFF-\d{4}/i;
 const regexZlff = /ZLFF-\d{4}/i;
 const regexPota = /(?:AU|NZ)-\d{4}/i;
+const regexZLota = /(?:ZL)[A-Z]{1}(?:-|\/)\d+/i;
 
-export { regexPota, regexSota, regexVkff, regexZlff };
+export { regexPota, regexSota, regexVkff, regexZlff, regexZLota };

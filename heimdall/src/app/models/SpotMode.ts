@@ -10,7 +10,7 @@ export enum SpotMode {
 	Other = "Other",
 }
 
-const spotModeList: SpotMode[] = [
+export const spotModeList: SpotMode[] = [
 	SpotMode.SSB,
 	SpotMode.CW,
 	SpotMode.FM,
@@ -22,4 +22,10 @@ const spotModeList: SpotMode[] = [
 	SpotMode.Other,
 ];
 
-export { spotModeList };
+export function parseSpotMode(modeStr: string): SpotMode {
+	const upperModeStr = modeStr.toUpperCase();
+	if (upperModeStr in SpotMode) {
+		return SpotMode[upperModeStr as keyof typeof SpotMode];
+	}
+	return SpotMode.Other;
+}

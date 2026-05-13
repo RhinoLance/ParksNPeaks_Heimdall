@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { ISpotSource } from "./ISpotSource";
 import { environment } from "src/environments/environment";
-import { SpotMode } from "../models/SpotMode";
+import { parseSpotMode, SpotMode } from "../models/SpotMode";
 import { CancellationToken } from "../models/CancellationToken";
 import { Spot } from "../models/Spot";
 import { catchError, filter, map, mergeMap, Observable, of } from "rxjs";
@@ -94,8 +94,7 @@ export class SotaApiService implements ISpotSource {
 					const spot = new Spot();
 					spot.callsign = new Callsign(v.activatorCallsign);
 					spot.frequency = v.frequency ?? 0;
-					//spot.mode = (SpotMode as any)[v.mode] ?? SpotMode.Other;
-					spot.mode = SpotMode.QRT;
+					spot.mode = parseSpotMode(v.mode);
 					spot.awardList.add(
 						new ActivationAward(AwardScheme.SOTA, v.summitCode)
 					);

@@ -19,13 +19,8 @@ import { NotificationService } from "src/app/services/NotificationService";
 	animations: [
 		trigger("hideActivationAnimation", [
 			transition(":leave", [
-				animate(
-					150,
-					style({
-						opacity: 0,
-						height: 0,
-					})
-				),
+				animate("500ms", style({ opacity: 0 })),
+				animate("250ms", style({ height: 0 })),
 			]),
 		]),
 	],

@@ -1,19 +1,14 @@
-export type Environment = {
-	potaBaseHref: string;
-	pnpBaseHref: string;
-	zlotaBaseHref: string;
-	wwffBaseHref: string;
+export interface IEnvironment {
 	heimdallHubUrl: string;
-	pnpPollMinutesInterval: number;
 	production: boolean;
 	name: EnvironmentName;
 
 	maxSpotAgeMinutes: number;
 
-	spotSources: Map<string, SpotSource>;
-};
+	spotSources: Map<DataSource, ISpotSource>;
+}
 
-export interface SpotSource {
+export interface ISpotSource {
 	baseHref: string;
 	pollIntervalMinutes: number;
 	siteFilter: string;
@@ -24,4 +19,12 @@ export enum EnvironmentName {
 	Prod = "prod",
 	LocalServer = "localServer",
 	Dev = "dev",
+}
+
+export enum DataSource {
+	ZLOTA = "zlota",
+	SOTA = "sota",
+	WWFF = "wwff",
+	PNP = "pnp",
+	POTA = "pota",
 }

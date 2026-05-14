@@ -21,7 +21,11 @@ export class ActivationAwardList implements Iterable<ActivationAward> {
 	}
 
 	public add(...award: ActivationAward[]): void {
-		this._awardList.push(...award);
+		award.map((a) => {
+			if (!this.containsAward(a.award)) {
+				this._awardList.push(a);
+			}
+		});
 	}
 
 	public getAtIndex(index: number): ActivationAward {
@@ -43,10 +47,8 @@ export class ActivationAwardList implements Iterable<ActivationAward> {
 	public containsAward(...awardScheme: AwardScheme[]): boolean {
 		let retVal = false;
 
-		for (let cI = 0; cI < awardScheme.length; cI++) {
-			if (
-				this._awardList.find((aa) => aa.award == awardScheme[cI]) != undefined
-			) {
+		for (const tA of this._awardList) {
+			if (awardScheme.includes(tA.award)) {
 				retVal = true;
 				break;
 			}

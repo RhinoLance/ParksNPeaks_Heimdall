@@ -1,9 +1,7 @@
 import { Injectable } from "@angular/core";
-import { OAuthService } from "angular-oauth2-oidc";
-import { authConfig } from "../utilities/sota.sso.config";
 import { ISpotSource } from "./ISpotSource";
 import { environment } from "src/environments/environment";
-import { SpotMode } from "../models/SpotMode";
+import { parseSpotMode } from "../models/SpotMode";
 import { CancellationToken } from "../models/CancellationToken";
 import { Spot } from "../models/Spot";
 import { catchError, filter, map, mergeMap, Observable, of } from "rxjs";
@@ -11,14 +9,18 @@ import { FetchService } from "./FetchService";
 import { Callsign } from "../models/Callsign";
 import { ActivationAward } from "../models/ActivationAward";
 import { AwardScheme } from "../models/AwardScheme";
+import { DataSource } from "src/environments/IEnvironment";
 
 @Injectable({
 	providedIn: "root",
 })
 export class SotaApiService implements ISpotSource {
-	private _apiEnv = environment.spotSources.get("sota");
+	private _numberOfSpotsToFetch = 30;
+
+	private _apiEnv = environment.spotSources.get(DataSource.SOTA);
 	private _epochEndpoint = `${this._apiEnv.baseHref}spots/epoch/`;
-	private _spotsEndpoint = `${this._apiEnv.baseHref}spots/20/all/all/`;
+	private _spotsEndpoint =
+		`${this._apiEnv.baseHref}spots/` + `${this._numberOfSpotsToFetch}/all/all/`;
 
 	private _lastFetchedSpotTime: string = "1970-01-01T00:00:00.000Z";
 
@@ -62,7 +64,7 @@ export class SotaApiService implements ISpotSource {
 		const siteFilterRegex = new RegExp(this._apiEnv.siteFilter);
 
 		return this._fetchSvc
-			.pollJson<string>(
+			.pollText<string>(
 				this._apiEnv.pollIntervalMinutes,
 				this._epochEndpoint,
 				{},
@@ -92,8 +94,7 @@ export class SotaApiService implements ISpotSource {
 					const spot = new Spot();
 					spot.callsign = new Callsign(v.activatorCallsign);
 					spot.frequency = v.frequency ?? 0;
-					//spot.mode = (SpotMode as any)[v.mode] ?? SpotMode.Other;
-					spot.mode = SpotMode.QRT;
+					spot.mode = parseSpotMode(v.mode);
 					spot.awardList.add(
 						new ActivationAward(AwardScheme.SOTA, v.summitCode)
 					);
@@ -124,6 +125,10 @@ export class SotaApiService implements ISpotSource {
 							return of(spot);
 						})
 					);
+				}),
+				catchError((error) => {
+					console.warn("Error fetching SOTA spots:", error);
+					return of(); // Emit an empty observable to keep the stream alive
 				})
 			);
 	}

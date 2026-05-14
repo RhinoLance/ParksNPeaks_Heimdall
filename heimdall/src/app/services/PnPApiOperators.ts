@@ -1,5 +1,5 @@
 import { OperatorFunction, map, mergeMap, of, throwError } from "rxjs";
-import { PostResponse } from "./PnPHttpClient.service";
+import { PostResponse } from "./PnPApiService";
 
 const responseErrorStrings = ["Failure.", "bad query!"];
 

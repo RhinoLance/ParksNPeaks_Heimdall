@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { StorageService } from "./StorageService";
 import { Subject, debounceTime } from "rxjs";
-import { PnPUser } from "./PnPHttpClient.service";
+import { PnPUser } from "./PnPApiService";
 
 @Injectable({
 	providedIn: "root",

@@ -1,48 +1,17 @@
-import { Environment, EnvironmentName, SpotSource } from "./TEnvironment";
+// This file can be replaced during build by using the `fileReplacements` array.
+// `ng build` replaces `environment.ts` with `environment.prod.ts`.
+// The list of file replacements can be found in `angular.json`.
 
-export const environment: Environment = {
+import { IEnvironment, EnvironmentName } from "./IEnvironment";
+
+import { environmentBase } from "./environmentBase";
+
+const overrides: Partial<IEnvironment> = {
 	name: EnvironmentName.LocalServer,
-	production: true,
-	potaBaseHref: "https://api.pota.app/",
-	pnpBaseHref: "https://localhost:44321/PnPProxy?suffix=",
-	zlotaBaseHref: "https://localhost:44321/ZLotaProxy?suffix=",
-	wwffBaseHref: "https://spots.wwff.co/static/spots.json",
-	heimdallHubUrl: "https://localhost:44321/heimdallHub",
-	pnpPollMinutesInterval: 1,
+	production: false,
+};
 
-	spotSources: new Map<string, SpotSource>([
-		[
-			"wwff",
-			{
-				baseHref: "https://spots.wwff.co/static/spots.json",
-				pollIntervalMinutes: 1,
-				siteFilter: "^(?:VKFF|ZLFF)",
-			},
-		],
-		[
-			"sota",
-			{
-				baseHref: "https://api-db2.sota.org.uk/api/",
-				pollIntervalMinutes: 1,
-				siteFilter: "^(?:VK|ZL)",
-			},
-		],
-		[
-			"pota",
-			{
-				baseHref: "https://api.pota.app/spot/activator",
-				pollIntervalMinutes: 1,
-				siteFilter: "^(?:AU|NZ)",
-			},
-		],
-		[
-			"pnp",
-			{
-				baseHref: "https://rhinoswtools.azurewebsites.net/PnPProxy?suffix=",
-				pollIntervalMinutes: 1,
-				siteFilter: "^(?:VK|VL|VJ|VI|ZL|ZZ)",
-			},
-		],
-	]),
-	maxSpotAgeMinutes: 120,
+export const environment: IEnvironment = {
+	...environmentBase,
+	...overrides,
 };

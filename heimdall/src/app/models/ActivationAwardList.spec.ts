@@ -1,6 +1,6 @@
 import { ActivationAward } from "./ActivationAward";
 import { ActivationAwardList } from "./ActivationAwardList";
-import { AwardScheme } from "./AwardScheme";
+import { AwardScheme, awardSchemeToName } from "./AwardScheme";
 
 describe("ActivationAwardList", () => {
 	describe("Mirrors Array Methods", () => {
@@ -20,7 +20,7 @@ describe("ActivationAwardList", () => {
 			expect(testList.length).toBe(4);
 		});
 
-		it("Can add elements", () => {
+		it("Can add elements ignoring duplicate schemes", () => {
 			// Arrange
 			const list = testList.clone();
 
@@ -28,7 +28,7 @@ describe("ActivationAwardList", () => {
 			list.add(new ActivationAward(AwardScheme.BOTA, "BB-1234"));
 
 			// Assert
-			expect(list.length).toBe(5);
+			expect(list.length).toBe(4);
 		});
 
 		it("Is Iterable", () => {
@@ -42,7 +42,7 @@ describe("ActivationAwardList", () => {
 			let awards = "";
 
 			for (const item of list) {
-				awards += item.award;
+				awards += awardSchemeToName(item.award);
 			}
 
 			// Assert

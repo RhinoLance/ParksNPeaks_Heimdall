@@ -12,9 +12,9 @@
 							[style.--award-count]="activation.awardCount"
 						>
 							<div
-								*ngFor="let award of activation.awardList; index as cI"
+								*ngFor="let award of viewState.awardList; index as cI"
 								href="#"
-								[ngClass]="'award-' + award.award"
+								[ngClass]="'award-' + award.name"
 								class="award-icon"
 							></div>
 						</div>
@@ -55,14 +55,14 @@
 								{{ activation.siteName }}
 							</li>
 							<li
-								*ngFor="let site of activation.awardList; index as cI"
+								*ngFor="let site of viewState.awardList; index as cI"
 								class="site-id"
 							>
 								<span
-									[pphCopyToClipboard]="site.siteId"
+									[pphCopyToClipboard]="site.scheme.siteId"
 									(copied)="onClipboardCopy($event)"
 								>
-									{{ site.award }}: {{ site.siteId }}
+									{{ site.name }}: {{ site.scheme.siteId }}
 								</span>
 							</li>
 							<li
@@ -99,11 +99,10 @@
 			</div>
 			<div class="col-sm-12 col-md-auto">
 				<div
-					class="map-container"
 					*ngIf="viewState.mapStart && viewState.mapEnd"
+					class="map-container"
 				>
 					<pph-activation-path-map
-						*ngIf="viewState.siteDetailsRetrieved"
 						[latLngStart]="viewState.mapStart"
 						[latLngEnd]="viewState.mapEnd"
 						[padding]="15"

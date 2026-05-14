@@ -12,16 +12,14 @@ import { PnPSummit } from "../models/PnPSummit";
 import { CallsignDetails } from "../models/CallsignDetails";
 import { PnPCallsign } from "../models/PnPCallsign";
 import { CallsignDetailsConvertor } from "../models/CallsignDetailsConvertor";
-import {
-	pnpResponseToJSON,
-	throwOnPnpResponseError,
-} from "./PnPHttpClientOperators";
+import { pnpResponseToJSON, throwOnPnpResponseError } from "./PnPApiOperators";
 import { ISpotSource } from "./ISpotSource";
+import { DataSource } from "src/environments/IEnvironment";
 
 @Injectable({
 	providedIn: "root",
 })
-export class PnPClientService implements ISpotSource {
+export class PnPApiService implements ISpotSource {
 	private _hasApiKey: boolean = false;
 	public get hasApiKey(): boolean {
 		return this._hasApiKey;
@@ -32,7 +30,7 @@ export class PnPClientService implements ISpotSource {
 		return this._hasUserId;
 	}
 
-	private _apiEnv = environment.spotSources.get("pnp");
+	private _apiEnv = environment.spotSources.get(DataSource.PNP);
 
 	private _pnpSubscription = {
 		latestSpot: new Date("1970-01-01T00:00:00.000Z"),
@@ -69,7 +67,7 @@ export class PnPClientService implements ISpotSource {
 		updateInterval?: number,
 		cancellationToken?: CancellationToken
 	): Observable<Spot> {
-		updateInterval = updateInterval || environment.pnpPollMinutesInterval;
+		updateInterval = updateInterval || this._apiEnv.pollIntervalMinutes;
 
 		cancellationToken = cancellationToken || new CancellationToken();
 

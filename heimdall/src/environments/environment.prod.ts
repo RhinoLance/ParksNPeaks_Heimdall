@@ -1,12 +1,11 @@
+import { environmentBase } from "./environmentBase";
 import { IEnvironment, EnvironmentName, DataSource } from "./IEnvironment";
-
-import { environment as masterEnvironment } from "./environment.localServer";
 
 const overrides: Partial<IEnvironment> = {
 	name: EnvironmentName.Prod,
 	production: true,
 	heimdallHubUrl: "https://rhinoswtools.azurewebsites.net/heimdallHub",
-	spotSources: masterEnvironment.spotSources,
+	spotSources: environmentBase.spotSources,
 };
 
 overrides.spotSources.set(DataSource.ZLOTA, {
@@ -17,6 +16,6 @@ overrides.spotSources.set(DataSource.ZLOTA, {
 });
 
 export const environment: IEnvironment = {
-	...masterEnvironment,
+	...environmentBase,
 	...overrides,
 };

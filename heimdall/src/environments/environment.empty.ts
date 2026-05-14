@@ -4,7 +4,7 @@
 
 import { IEnvironment, EnvironmentName } from "./IEnvironment";
 
-import { environment as masterEnvironment } from "./environment.localServer";
+import { environmentBase } from "./environmentBase";
 
 const overrides: Partial<IEnvironment> = {
 	name: EnvironmentName.Empty,
@@ -12,6 +12,6 @@ const overrides: Partial<IEnvironment> = {
 };
 
 export const environment: IEnvironment = {
-	...masterEnvironment,
+	...environmentBase,
 	...overrides,
 };

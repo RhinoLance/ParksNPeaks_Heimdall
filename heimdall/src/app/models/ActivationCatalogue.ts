@@ -65,8 +65,6 @@ export class ActivationCatalogue {
 	}
 
 	private purgeStaleActivations() {
-		console.log("Purging stale activations...");
-
 		this._activationList.map((v) => {
 			const now = new Date();
 			const purgeBefore = new Date(

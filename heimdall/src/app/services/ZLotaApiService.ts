@@ -16,8 +16,8 @@ import { DataSource } from "src/environments/IEnvironment";
 export class ZLotaApiService implements ISpotSource {
 	private _apiEnv = environment.spotSources.get(DataSource.ZLOTA);
 	//private _spotEndpoint = `${this._apiEnv.baseHref}api/spots/?zlota_only=true`;
-	private _spotEndpoint = `${this._apiEnv.baseHref}api/spots/`;
-	private _siteEndpoint = `${this._apiEnv.baseHref}assets/`;
+	private _spotEndpoint = `${this._apiEnv.baseHref}api/spots/?1=1`;
+	private _siteEndpoint = `${this._apiEnv.baseHref}api/assets.json`;
 
 	private _lastFetchedSpotTime: string = "1970-01-01T00:00:00.000Z";
 
@@ -32,7 +32,7 @@ export class ZLotaApiService implements ISpotSource {
 		return this._fetchSvc
 			.pollJson<IZLotaSpot[]>(
 				this._apiEnv.pollIntervalMinutes,
-				this._spotEndpoint + `&startTime=${this._lastFetchedSpotTime}`,
+				this._spotEndpoint,
 				{},
 				cancellationToken
 			)
@@ -99,23 +99,29 @@ export class ZLotaApiService implements ISpotSource {
 	public getSiteCoords(siteId: string): Observable<number[]> {
 		siteId = siteId.replace("/", "_");
 
-		return this._fetchSvc.getText(`${this._siteEndpoint}${siteId}`, {}).pipe(
-			map((data) => {
-				const latLng = this.extractCoords(data);
+		return this._fetchSvc
+			.getJson<IZLotaAsset[]>(`${this._siteEndpoint}?code=${siteId}`, {})
+			.pipe(
+				map((data) => {
+					if (data.length === 0) {
+						throw new Error(`No site found for ${siteId}`);
+					}
 
-				return latLng;
-			}),
-			catchError((error) => {
-				console.warn(`Error fetching site details for ${siteId}:`, error);
-				return of([0, 0]);
-			})
-		);
+					const latLng = this.extractCoords(data[0]);
+
+					return latLng;
+				}),
+				catchError((error) => {
+					console.warn(`Error fetching site details for ${siteId}:`, error);
+					return of([0, 0]);
+				})
+			);
 	}
 
-	private extractCoords(data: string): number[] {
-		const regEx = /place_init\('POINT \((-?\d+\.\d+) (-?\d+\.\d+)\)/;
+	private extractCoords(data: IZLotaAsset): number[] {
+		const regEx = /POINT \((-?\d+\.\d+) (-?\d+\.\d+)\)/;
 
-		const coords = data.match(regEx);
+		const coords = data.location.match(regEx);
 
 		if (coords === null) {
 			throw new Error("Could not extract coords");
@@ -175,19 +181,19 @@ interface IZLotaSpot {
 	spotter: string;
 }
 
-export interface IZLotaAsset {
+interface IZLotaAsset {
 	id: number;
-	code: string;
-	old_code?: string;
-	name: string;
-	asset_type: string;
-	region: string;
-	area: number;
-	altitude: number | null;
-	created_at: string;
-	updated_at: string;
-	is_active: boolean;
-	location: string; // WKT POINT(long lat)
-	minor: boolean;
 	url: string;
+	asset_type: "summit";
+	code: string;
+	name: string;
+	location: string; // e.g. "POINT (170.1418 -43.5951)"
+	altitude: number;
+	minor: boolean;
+	is_active: boolean;
+	region: string;
+	created_at: string; // ISO timestamp
+	updated_at: string; // ISO timestamp
+	old_code: string | null;
+	area: string | null;
 }

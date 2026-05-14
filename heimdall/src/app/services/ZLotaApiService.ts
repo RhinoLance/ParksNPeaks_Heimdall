@@ -16,7 +16,7 @@ import { DataSource } from "src/environments/IEnvironment";
 export class ZLotaApiService implements ISpotSource {
 	private _apiEnv = environment.spotSources.get(DataSource.ZLOTA);
 	//private _spotEndpoint = `${this._apiEnv.baseHref}api/spots/?zlota_only=true`;
-	private _spotEndpoint = `${this._apiEnv.baseHref}api/spots/?1=1`;
+	private _spotEndpoint = `${this._apiEnv.baseHref}api/spots/`;
 	private _siteEndpoint = `${this._apiEnv.baseHref}api/assets.json`;
 
 	private _lastFetchedSpotTime: string = "1970-01-01T00:00:00.000Z";

@@ -11,23 +11,18 @@ import { Callsign } from "../models/Callsign";
 import { ActivationAward } from "../models/ActivationAward";
 import { AwardScheme } from "../models/AwardScheme";
 import { DataSource } from "src/environments/IEnvironment";
+import { ISiteInfo, ISiteInfoSource } from "./ISiteInfoSource";
 
 @Injectable({
 	providedIn: "root",
 })
-export class PotaApiService implements ISpotSource {
+export class PotaApiService implements ISpotSource, ISiteInfoSource {
 	private _apiEnv = environment.spotSources.get(DataSource.POTA);
 
 	private _lastFetchedSpotTime: number =
 		new Date("1970-01-01T00:00:00.000Z").getTime() / 1000;
 
 	public constructor(private _fetchSvc: FetchService) {}
-
-	public async getPark(parkId: string): Promise<PotaPark> {
-		const data = await this.get<PotaPark>(`park/${parkId}`);
-
-		return data;
-	}
 
 	private async get<T>(suffix: string): Promise<T> {
 		const request: RequestInit = {
@@ -94,6 +89,21 @@ export class PotaApiService implements ISpotSource {
 				})
 			);
 	}
+
+	public getSiteInfo(siteId: string): Observable<ISiteInfo> {
+		const url = `${this._apiEnv.baseHref}park/${siteId}`;
+
+		return this._fetchSvc.getJson<PotaPark>(url, {}).pipe(
+			map((park) => {
+				return {
+					siteId: park.reference,
+					siteName: park.name,
+					lat: park.latitude,
+					lon: park.longitude,
+				} as ISiteInfo;
+			})
+		);
+	}
 }
 
 export type PostResponse = {
@@ -120,4 +130,33 @@ export interface IPotaSpot {
 	longitude: number;
 	count: number;
 	expire: number;
+}
+
+export interface IPotaPark {
+	parkId: number;
+	reference: string;
+	name: string;
+	latitude: number;
+	longitude: number;
+	grid4: string;
+	grid6: string;
+	parktypeId: number;
+	active: number;
+	parkComments: string;
+	accessibility: string | null;
+	sensitivity: string | null;
+	accessMethods: string[] | null;
+	activationMethods: string[] | null;
+	agencies: string[] | null;
+	agencyURLs: string[] | null;
+	parkURLs: string[] | null;
+	website: string;
+	createdByAdmin: string;
+	parktypeDesc: string;
+	locationDesc: string;
+	locationName: string;
+	entityId: number;
+	entityName: string;
+	referencePrefix: string;
+	entityDeleted: number;
 }

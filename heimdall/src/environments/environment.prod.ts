@@ -9,8 +9,8 @@ const overrides: Partial<IEnvironment> = {
 };
 
 overrides.spotSources.set(DataSource.ZLOTA, {
-	baseHref: "https://ontheair.nz/",
-	//baseHref: "https://rhinoswtools.azurewebsites.net/ZLotaProxy?suffix=",
+	//baseHref: "https://ontheair.nz/",
+	baseHref: "https://rhinoswtools.azurewebsites.net/ZLotaProxy?suffix=",
 	pollIntervalMinutes: 1,
 	siteFilter: "^(?:AU|NZ|ZL)",
 });

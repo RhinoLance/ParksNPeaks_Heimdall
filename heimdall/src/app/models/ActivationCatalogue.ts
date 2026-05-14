@@ -1,6 +1,9 @@
-import { Observable, Subject } from "rxjs";
+import { Observable, Subject, timer } from "rxjs";
 import { Activation } from "./Activation";
 import { Spot } from "./Spot";
+import { environment } from "src/environments/environment";
+
+const PURGE_INTERVAL_MINUTES = 5;
 
 export class ActivationCatalogue {
 	private _activationList: Activation[] = [];
@@ -11,6 +14,10 @@ export class ActivationCatalogue {
 	private _onUpdate = new Subject<Activation>();
 	public get onUpdate() {
 		return this._onUpdate as Observable<Activation>;
+	}
+
+	public constructor() {
+		this.schedulePurge();
 	}
 
 	public addSpot(spot: Spot): Activation | undefined {
@@ -55,5 +62,29 @@ export class ActivationCatalogue {
 		}
 
 		return retVal;
+	}
+
+	private purgeStaleActivations() {
+		console.log("Purging stale activations...");
+
+		this._activationList.map((v) => {
+			const now = new Date();
+			const purgeBefore = new Date(
+				now.getTime() - environment.maxSpotAgeMinutes * 60 * 1000
+			);
+
+			if (v.getLatestSpot().time < purgeBefore) {
+				v.isDeleted = true;
+				this._onUpdate.next(v);
+			}
+
+			return v;
+		});
+	}
+
+	private schedulePurge() {
+		timer(0, PURGE_INTERVAL_MINUTES * 60 * 1000).subscribe(() => {
+			this.purgeStaleActivations();
+		});
 	}
 }

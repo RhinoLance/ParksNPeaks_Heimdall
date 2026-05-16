@@ -4,7 +4,7 @@ import { NgbDropdown, NgbDropdownModule } from "@ng-bootstrap/ng-bootstrap";
 import { SpotMode } from "src/app/models/SpotMode";
 import { ModeBadgeComponent } from "../mode-badge/mode-badge.component";
 import { FormsModule } from "@angular/forms";
-import { AwardScheme } from "src/app/models/AwardScheme";
+import { AwardScheme, awardSchemeToName } from "src/app/models/AwardScheme";
 import { Band } from "src/app/models/Band";
 import { SpotFilterService } from "src/app/services/SpotFilterService";
 
@@ -48,13 +48,41 @@ export class SpotFilterComponent implements AfterViewInit {
 	];
 
 	public awardSchemeList: ISchemeFilterItem[] = [
-		{ key: AwardScheme.BOTA, checked: true },
-		{ key: AwardScheme.IOTA, checked: true },
-		{ key: AwardScheme.POTA, checked: true },
-		{ key: AwardScheme.SiOTA, checked: true },
-		{ key: AwardScheme.SOTA, checked: true },
-		{ key: AwardScheme.WWFF, checked: true },
-		{ key: AwardScheme.ZLOTA, checked: true },
+		{
+			key: AwardScheme.BOTA,
+			name: awardSchemeToName(AwardScheme.BOTA),
+			checked: true,
+		},
+		{
+			key: AwardScheme.IOTA,
+			name: awardSchemeToName(AwardScheme.IOTA),
+			checked: true,
+		},
+		{
+			key: AwardScheme.POTA,
+			name: awardSchemeToName(AwardScheme.POTA),
+			checked: true,
+		},
+		{
+			key: AwardScheme.SiOTA,
+			name: awardSchemeToName(AwardScheme.SiOTA),
+			checked: true,
+		},
+		{
+			key: AwardScheme.SOTA,
+			name: awardSchemeToName(AwardScheme.SOTA),
+			checked: true,
+		},
+		{
+			key: AwardScheme.WWFF,
+			name: awardSchemeToName(AwardScheme.WWFF),
+			checked: true,
+		},
+		{
+			key: AwardScheme.ZLOTA,
+			name: awardSchemeToName(AwardScheme.ZLOTA),
+			checked: true,
+		},
 	];
 
 	public filterState: IFilterState = {
@@ -215,6 +243,7 @@ interface IBandFilterItem extends IChecked {
 }
 interface ISchemeFilterItem extends IChecked {
 	key: AwardScheme;
+	name: string;
 }
 
 interface IFilterState {

@@ -24,8 +24,21 @@ export const spotModeList: SpotMode[] = [
 
 export function parseSpotMode(modeStr: string): SpotMode {
 	const upperModeStr = modeStr.toUpperCase();
-	if (upperModeStr in SpotMode) {
-		return SpotMode[upperModeStr as keyof typeof SpotMode];
+
+	let modeString;
+
+	switch (upperModeStr) {
+		case "LSB":
+		case "USB":
+			modeString = SpotMode.SSB;
+			break;
+
+		default:
+			modeString = upperModeStr;
+	}
+
+	if (modeString in SpotMode) {
+		return SpotMode[modeString as keyof typeof SpotMode];
 	}
 	return SpotMode.Other;
 }

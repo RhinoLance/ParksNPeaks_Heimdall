@@ -2,7 +2,12 @@
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-import { IEnvironment, EnvironmentName } from "./IEnvironment";
+import {
+	IEnvironment,
+	EnvironmentName,
+	DataSource,
+	ISpotSourceArgs,
+} from "./IEnvironment";
 
 import { environmentBase } from "./environmentBase";
 

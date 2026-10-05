@@ -15,27 +15,53 @@ const server = http.createServer((req, res) => {
 		"X-Requested-With,content-type"
 	);
 
-	const path = url.parse(req.url).href;
+	//	const url = new URL(req.url);
+	//	const path = url.pathname;
+	const path = req.url;
 	console.log("Requested path: " + path + " ...");
+
+	let responseData;
+	let responseType;
 
 	switch (path) {
 		case "/?suffix=ALL":
 			responseData = feedData("./data/ALL.json");
+			responseType = "application/json";
 			break;
 		case "/?suffix=PARK/WWFF/VKFF-0994":
 			responseData = getData("./data/PARK/VKFF-0994.json");
+			responseType = "application/json";
 			break;
 		case "/?suffix=PARK/WWFF/VKFF-0490":
 			responseData = getData("./data/PARK/VKFF-0490.json");
+			responseType = "application/json";
 			break;
 		case "/?suffix=SUMMIT/VK2/CT-007":
 			responseData = getData("./data/SUMMIT/VK2-CT-007.json");
+			responseType = "application/json";
 			break;
 		case "/?suffix=SUMMIT/VK2/ST-008":
 			responseData = getData("./data/SUMMIT/VK2-ST-008.json");
+			responseType = "application/json";
 			break;
 		case "/?suffix=CALLSIGN/ZL3RIK":
 			responseData = getData("./data/CALLSIGN/missing.json");
+			responseType = "application/json";
+			break;
+
+		//SOTA
+		case "/spots/epoch/":
+			responseData = "1970-01-01T00:00:00.000Z";
+			break;
+		case "/spots/30/all/all/":
+			responseData = feedData("./data/sota.json");
+			responseType = "application/json";
+			break;
+
+		//POTA
+		case "/pota/":
+			responseData = feedData("./data/POTA/pota.json");
+			responseType = "application/json";
 			break;
 
 		//defaults
@@ -64,6 +90,7 @@ const server = http.createServer((req, res) => {
 			}
 	}
 
+	res.setHeader("Content-Type", responseType ?? "text");
 	res.end(responseData);
 });
 

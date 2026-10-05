@@ -8,3 +8,7 @@ export interface ISpotSource {
 		cancellationToken?: CancellationToken
 	): Observable<Spot>;
 }
+
+export type PostResponse = {
+	response: string;
+};

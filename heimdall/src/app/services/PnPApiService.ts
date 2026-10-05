@@ -13,7 +13,7 @@ import { CallsignDetails } from "../models/CallsignDetails";
 import { PnPCallsign } from "../models/PnPCallsign";
 import { CallsignDetailsConvertor } from "../models/CallsignDetailsConvertor";
 import { pnpResponseToJSON, throwOnPnpResponseError } from "./PnPApiOperators";
-import { ISpotSource } from "./ISpotSource";
+import { ISpotSource, PostResponse } from "./ISpotSource";
 import { DataSource } from "src/environments/IEnvironment";
 
 @Injectable({
@@ -206,10 +206,6 @@ export class PnPApiService implements ISpotSource {
 		});
 	}
 }
-
-export type PostResponse = {
-	response: string;
-};
 
 export type PnPUser = {
 	userName: string;

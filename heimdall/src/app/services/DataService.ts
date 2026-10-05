@@ -1,8 +1,8 @@
 import { Injectable } from "@angular/core";
 import { ActivationCatalogue } from "../models/ActivationCatalogue";
-import { Observable, Subject, tap, merge, bufferTime, filter } from "rxjs";
+import { Observable, Subject, tap, merge, bufferTime, filter, of } from "rxjs";
 import { Activation } from "../models/Activation";
-import { PnPApiService, PostResponse } from "./PnPApiService";
+import { PnPApiService } from "./PnPApiService";
 import { Spot } from "../models/Spot";
 import { SettingsService } from "./SettingsService";
 import { Site } from "../models/Site";
@@ -11,8 +11,10 @@ import { CallsignDetails } from "../models/CallsignDetails";
 import { WwffApiService } from "./WwffApiService";
 import { environment } from "src/environments/environment";
 import { SotaApiService } from "./SotaApiService";
-import { ISpotSource } from "./ISpotSource";
+import { ISpotSource, PostResponse } from "./ISpotSource";
 import { ZLotaApiService } from "./ZLotaApiService";
+import { DataSource } from "src/environments/IEnvironment";
+import { FetchService } from "./FetchService";
 
 @Injectable({
 	providedIn: "root",
@@ -21,6 +23,7 @@ export class DataService {
 	public activationUpdated = new Subject<Activation[]>();
 
 	private _activations: ActivationCatalogue = new ActivationCatalogue();
+	private _dataServiceList = new Map<DataSource, ISpotSource>();
 	public get activationCalalogue(): ActivationCatalogue {
 		return this._activations;
 	}
@@ -28,19 +31,15 @@ export class DataService {
 	private _siteCache = new Map<string, Promise<Site>>();
 
 	public get canSpot(): boolean {
-		return this._pnpApiSvc.hasApiKey && this._pnpApiSvc.hasUserId;
+		return false;
 	}
 	public get canUpdateCallsignDetails(): boolean {
-		return this._pnpApiSvc.hasApiKey && this._pnpApiSvc.hasUserId;
+		return false;
 	}
 
 	public constructor(
-		private _pnpApiSvc: PnPApiService,
-		private _potaApiSvc: PotaApiService,
 		private _settingsSvc: SettingsService,
-		private _zlotaApiSvc: ZLotaApiService,
-		private _wwffApiSvc: WwffApiService,
-		private _sotaApiSvc: SotaApiService
+		private _fetchSvc: FetchService
 	) {
 		this.initSpotListener();
 	}
@@ -50,32 +49,82 @@ export class DataService {
 	}
 
 	public submitSpot(spot: Spot): Observable<PostResponse> {
+		const pnpApiSvc = this._dataServiceList.get(
+			DataSource.PNP
+		) as unknown as PnPApiService;
+
+		if (!pnpApiSvc) {
+			return of();
+		}
+
 		spot.time = new Date();
 		spot.spotter = this._settingsSvc.getPnpUser().userName;
 
-		return this._pnpApiSvc
+		return pnpApiSvc
 			.submitSpot(spot)
 			.pipe(tap(() => this._activations.addSpot(spot.clone())));
 	}
 
-	public getUserDetails(callsign: string) {
-		return this._pnpApiSvc.getCallsignDetails(callsign);
+	public getUserDetails(callsign: string): Observable<CallsignDetails> {
+		const pnpApiSvc = this._dataServiceList.get(
+			DataSource.PNP
+		) as unknown as PnPApiService;
+
+		if (!pnpApiSvc) {
+			return of(new CallsignDetails("Unknown", "Unknown", "", new Date()));
+		}
+
+		return pnpApiSvc.getCallsignDetails(callsign);
 	}
 
 	public updateUserDetails(callsignDetails: CallsignDetails) {
-		return this._pnpApiSvc.updateCallsignDetails(callsignDetails);
+		const pnpApiSvc = this._dataServiceList.get(
+			DataSource.PNP
+		) as unknown as PnPApiService;
+
+		if (!pnpApiSvc) {
+			return of(false);
+		}
+
+		return pnpApiSvc.updateCallsignDetails(callsignDetails);
 	}
 
 	private initSpotListener(): void {
-		const dataServiceList: ISpotSource[] = [
-			this._sotaApiSvc,
-			this._potaApiSvc,
-			this._zlotaApiSvc,
-			this._wwffApiSvc,
-			this._pnpApiSvc,
-		];
+		if (environment.spotSources.has(DataSource.WWFF))
+			this._dataServiceList.set(
+				DataSource.WWFF,
+				new WwffApiService(this._fetchSvc)
+			);
 
-		merge(...dataServiceList.map((svc) => svc.subscribeToSpots()))
+		if (environment.spotSources.has(DataSource.SOTA))
+			this._dataServiceList.set(
+				DataSource.SOTA,
+				new SotaApiService(this._fetchSvc)
+			);
+
+		if (environment.spotSources.has(DataSource.POTA))
+			this._dataServiceList.set(
+				DataSource.POTA,
+				new PotaApiService(this._fetchSvc)
+			);
+
+		if (environment.spotSources.has(DataSource.ZLOTA))
+			this._dataServiceList.set(
+				DataSource.WWFF,
+				new ZLotaApiService(this._fetchSvc)
+			);
+
+		if (environment.spotSources.has(DataSource.PNP))
+			this._dataServiceList.set(
+				DataSource.PNP,
+				new PnPApiService(this._fetchSvc, this._settingsSvc)
+			);
+
+		merge(
+			...Array.from(this._dataServiceList.values()).map((svc) =>
+				svc.subscribeToSpots()
+			)
+		)
 			.pipe(
 				filter((spot) => {
 					const spotAgeMinutes =

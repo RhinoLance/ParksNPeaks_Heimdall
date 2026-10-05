@@ -6,7 +6,7 @@ import {
 	DataSource,
 	IEnvironment,
 	EnvironmentName,
-	ISpotSource,
+	ISpotSourceArgs,
 } from "./IEnvironment";
 
 export const environmentBase: IEnvironment = {
@@ -14,7 +14,7 @@ export const environmentBase: IEnvironment = {
 	production: false,
 	heimdallHubUrl: "http://heimdall.conryclan.com/heimdallHub",
 
-	spotSources: new Map<DataSource, ISpotSource>([
+	spotSources: new Map<DataSource, ISpotSourceArgs>([
 		[
 			DataSource.WWFF,
 			{

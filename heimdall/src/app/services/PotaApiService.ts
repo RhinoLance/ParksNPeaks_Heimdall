@@ -5,7 +5,7 @@ import { PotaPark } from "../models/PotaPark";
 import { ISpotSource } from "./ISpotSource";
 import { CancellationToken } from "../models/CancellationToken";
 import { Spot } from "../models/Spot";
-import { map, mergeMap, Observable, tap } from "rxjs";
+import { map, mergeMap, Observable } from "rxjs";
 import { parseSpotMode } from "../models/SpotMode";
 import { Callsign } from "../models/Callsign";
 import { ActivationAward } from "../models/ActivationAward";
@@ -86,8 +86,7 @@ export class PotaApiService implements ISpotSource, ISiteInfoSource {
 					);
 
 					return spot;
-				}),
-				tap((v) => console.log("sending spot from API svc: ", v))
+				})
 			);
 	}
 

@@ -106,10 +106,6 @@ export class PotaApiService implements ISpotSource, ISiteInfoSource {
 	}
 }
 
-export type PostResponse = {
-	response: string;
-};
-
 export interface IPotaSpot {
 	spotId: number;
 	activator: string;

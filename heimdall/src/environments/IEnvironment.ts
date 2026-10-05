@@ -5,10 +5,10 @@ export interface IEnvironment {
 
 	maxSpotAgeMinutes: number;
 
-	spotSources: Map<DataSource, ISpotSource>;
+	spotSources: Map<DataSource, ISpotSourceArgs>;
 }
 
-export interface ISpotSource {
+export interface ISpotSourceArgs {
 	baseHref: string;
 	pollIntervalMinutes: number;
 	siteFilter: string;

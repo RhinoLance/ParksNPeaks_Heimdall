@@ -7,7 +7,16 @@ import {
 	ViewChild,
 } from "@angular/core";
 import { LatLng } from "src/app/models/LatLng";
-import { greatCircle, distance, along } from "@turf/turf";
+import {
+	greatCircle,
+	distance,
+	along,
+	length,
+	multiLineString,
+	lineString,
+	flatten,
+	feature,
+} from "@turf/turf";
 import {
 	MapLibreBuilder,
 	defaultGlyfFonts,
@@ -27,6 +36,7 @@ import { FeatureCollection, LineString, Point } from "geojson";
 export class ActivationPathMapComponent implements OnInit, AfterViewInit {
 	private _latLngStart: LatLng = new LatLng(0, 0);
 	private _latLngEnd: LatLng = new LatLng(0, 0);
+	private _latLngEndFixed: LatLng;
 
 	@Input() public set latLngStart(latLng: LatLng) {
 		this._latLngStart = latLng;
@@ -82,10 +92,32 @@ export class ActivationPathMapComponent implements OnInit, AfterViewInit {
 			},
 		});
 
+		const geom = path.geometry;
+
+		//If the line crosses the antimeridian, fix.
+		if ((geom.type as unknown) == "MultiLineString") {
+			const endLine1 = geom.coordinates[0][
+				geom.coordinates[0].length - 1
+			] as number;
+			const startLine2 = geom.coordinates[1][0] as number;
+			const factor = startLine2 - endLine1 >= 180 ? -360 : 360;
+
+			const coords = geom.coordinates as unknown as Array<Array<Array<number>>>;
+			coords[1].map((v) => coords[0].push([(v[0] += factor), v[1]]));
+
+			geom.type = "LineString";
+			path.geometry.coordinates = coords[0];
+		}
+
 		const featureCollection = {
 			type: "FeatureCollection",
 			features: [path],
 		};
+
+		const newEnd =
+			path.geometry.coordinates[path.geometry.coordinates.length - 1];
+
+		this._latLngEndFixed = new LatLng(newEnd[1] as number, newEnd[0] as number);
 
 		return featureCollection as FeatureCollection<LineString>;
 	}
@@ -142,7 +174,7 @@ export class ActivationPathMapComponent implements OnInit, AfterViewInit {
 		const bounds = new LngLatBounds();
 
 		bounds.extend([this._latLngStart.lng, this._latLngStart.lat]);
-		bounds.extend([this._latLngEnd.lng, this._latLngEnd.lat]);
+		bounds.extend([this._latLngEndFixed.lng, this._latLngEndFixed.lat]);
 
 		return bounds;
 	}
